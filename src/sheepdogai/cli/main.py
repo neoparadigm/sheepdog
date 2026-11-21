@@ -119,6 +119,8 @@ def main(argv: list[str] | None = None) -> int:
         a.cmd = "doctor"
     try:
         return _dispatch(a)
+    except BrokenPipeError:  # e.g. `sheepdogai status | head`: not an error
+        return 0
     except Exception as e:
         print(f"{CLI_NAME}: error: {e}", file=sys.stderr)
         return 1

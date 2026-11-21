@@ -107,3 +107,16 @@ def test_gemini_users_are_told_why_things_get_blocked(
     out = capsys.readouterr().out
     assert "Gemini CLI" in out and "cannot ask" in out and "sheepdogai allow" in out
     (home / ".gemini" / "settings.json").unlink()
+
+
+def test_broken_pipe_is_not_an_error(
+    home: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    import sheepdogai.cli.main as m
+
+    def boom(a: object) -> int:
+        raise BrokenPipeError
+
+    monkeypatch.setattr(m, "_dispatch", boom)
+    assert m.main(["status"]) == 0
+    assert capsys.readouterr().err == ""
