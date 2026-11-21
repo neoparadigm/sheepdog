@@ -55,6 +55,8 @@ jobs:
         with:
           name: dist-signed
           path: dist/
+      - name: Keep only the wheel and sdist (PyPI rejects the SBOM and signature files)
+        run: mkdir upload && cp dist/*.whl dist/*.tar.gz upload/ && ls -l upload
       - uses: pypa/gh-action-pypi-publish@76f52bc884231f62b9a034ebfe128415bbaabdfc # v1.12.4
         with:
-          packages-dir: dist/
+          packages-dir: upload/

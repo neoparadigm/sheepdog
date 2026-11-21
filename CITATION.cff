@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 title: "sheepdogai: a safety and observability gate for AI agent tool calls"
 type: software
-version: 0.1.0
+version: 0.1.1
 license: Apache-2.0
 authors:
   - name: "sheepdogai contributors"

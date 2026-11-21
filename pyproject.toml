@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "sheepdogai"
-version = "0.1.0"
+version = "0.1.1"
 description = "Framework-agnostic safety and observability gate for AI agent tool calls."
 readme = "README.md"
 requires-python = ">=3.11"
