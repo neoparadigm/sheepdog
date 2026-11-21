@@ -1,5 +1,5 @@
 blank_issues_enabled: false
 contact_links:
   - name: Security vulnerability or policy bypass
-    url: https://github.com/neoparadigm/sheepdogai/security/advisories/new
+    url: https://github.com/neoparadigm/sheepdog.ai/security/advisories/new
     about: Report privately (see SECURITY.md).

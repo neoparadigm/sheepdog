@@ -7,7 +7,7 @@ Nothing is published automatically. The release workflow (`.github/workflows/rel
 One-time setup, by the project owner:
 
 1. Create a PyPI account (with 2FA) and, on PyPI, **Add a pending publisher** (Account > Publishing):
-   project name `sheepdogai`, owner `neoparadigm`, repository `sheepdogai` (rename the GitHub repo from `sheepdog` first), workflow `release.yml`,
+   project name `sheepdogai`, owner `neoparadigm`, repository `sheepdogai`, workflow `release.yml`,
    environment `pypi`.
 2. In GitHub, repository Settings > Environments: create `pypi` (optionally require a reviewer).
 3. Make sure the name is what you want: **a PyPI name cannot be renamed or reclaimed later.** The command is

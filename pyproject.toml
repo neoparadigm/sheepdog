@@ -11,6 +11,12 @@ requires-python = ">=3.11"
 license = { text = "Apache-2.0" }
 dependencies = ["pyyaml>=6.0.2,<7", "pydantic>=2.9,<3"]
 
+[project.urls]
+Homepage = "https://github.com/neoparadigm/sheepdog.ai"
+Repository = "https://github.com/neoparadigm/sheepdog.ai"
+Issues = "https://github.com/neoparadigm/sheepdog.ai/issues"
+Security = "https://github.com/neoparadigm/sheepdog.ai/security/policy"
+
 [project.optional-dependencies]
 otel = ["opentelemetry-api>=1.27,<2"]
 rdf = ["rdflib>=7.0,<8", "pyshacl>=0.26,<1"]

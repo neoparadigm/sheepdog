@@ -18,7 +18,7 @@ adapter is experimental because parts of its contract could not be verified.
 ## Install: two commands
 
 ```bash
-uv tool install sheepdogai      # after publication; today: uv tool install git+https://github.com/neoparadigm/sheepdogai
+uv tool install sheepdogai      # after publication; today: uv tool install git+https://github.com/neoparadigm/sheepdog.ai
 sheepdogai setup
 ```
 

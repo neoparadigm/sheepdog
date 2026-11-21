@@ -3,7 +3,7 @@
 ## Reporting a vulnerability or a policy bypass
 
 **Do not open a public issue.** Use GitHub private vulnerability reporting:
-`https://github.com/neoparadigm/sheepdogai/security/advisories/new` (replace if the repo moves; before
+`https://github.com/neoparadigm/sheepdog.ai/security/advisories/new` (replace if the repo moves; before
 publishing) or email `security@example.invalid` (placeholder).
 
 A *policy bypass* (a command that should be denied or asked but is allowed) is a security report
