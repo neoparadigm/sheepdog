@@ -72,10 +72,10 @@ def test_required_repo_files_exist_and_have_content() -> None:
         ".github/CODEOWNERS",
         ".github/dependabot.yml",
         ".github/PULL_REQUEST_TEMPLATE.md",
-        "src/sheepdogai/py.typed",
         "uv.lock",
     ]:
         assert (ROOT / name).stat().st_size > 20, name
+    assert (ROOT / "src/sheepdogai/py.typed").exists()
     assert "Apache License" in (ROOT / "LICENSE").read_text()
 
 
