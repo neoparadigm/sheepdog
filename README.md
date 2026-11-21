@@ -13,8 +13,10 @@ sheepdogai setup
 That's it. `setup` finds Claude Code and Gemini CLI, shows exactly what it will change, waits for you to press
 Enter, and proves it works by blocking a test command. Undo any time with `sheepdogai setup --undo`.
 
-<!-- IMAGE: add docs/assets/landing.png, then replace this line with:
-<p align="center"><img src="docs/assets/landing.png" alt="sheepdogai: one gate, three answers" width="420"></p> -->
+<p align="center">
+  <a href="docs/assets/landing-full.png"><img src="docs/assets/landing.png" alt="Sheepdog guards the fence: install with uv tool install sheepdogai, then sheepdogai setup" width="420"></a>
+  <br><sub>Sheepdog is the name; the package and command are <code>sheepdogai</code>. <a href="docs/assets/landing-full.png">See the full page</a>.</sub>
+</p>
 
 ## One gate. Three answers.
 
