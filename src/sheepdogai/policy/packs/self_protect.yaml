@@ -3,14 +3,23 @@
 name: self_protect
 description: Protect the guard from the thing it guards.
 rules:
+  - id: sp-approval-secrets
+    match:
+      path: ["**/{state}/approved/**", "**/{state}/approved", "**/{state}/approval.key", "**/{state}/approval.used"]
+    action: deny
+    reason: approvals belong to the human; the agent may not read, write or answer them
+  - id: sp-cli-self-management
+    match:
+      command: ["{cli} approve*", "{cli} uninstall*", "{cli} install*", "{cli} init*", "{cli} daemon*"]
+    action: deny
+    reason: the agent may not change or approve its own guard
   - id: sp-rules-and-hooks
     match:
       mutates: true
       path:
-        - sheepdog.yaml
-        - sheepdog.yml
-        - "**/.sheepdog/shared.yaml"
-        - "**/.sheepdog/approved/**"
+        - "{config}"
+        - "{config_alt}"
+        - "**/{state}/shared.yaml"
         - "**/.claude/settings.json"
         - "**/.claude/settings.local.json"
         - "~/.claude/settings.json"
@@ -25,11 +34,11 @@ rules:
   - id: sp-log-dir
     match:
       mutates: true
-      path: ["**/.sheepdog/**", "{project}/.sheepdog"]
+      path: ["**/{state}/**", "{project}/{state}"]
     action: deny
     reason: the run log directory is append-only and not editable by the agent
   - id: sp-kill-daemon
     match:
-      command: ["re:\\b(pkill|killall)\\b.{0,40}sheepdog", "re:\\bkill\\b.{0,20}sheepdog"]
+      command: ["re:\\b(pkill|killall)\\b.{0,40}{cli}", "re:\\bkill\\b.{0,20}{cli}"]
     action: ask
     reason: stopping the guard needs a human

@@ -5,13 +5,13 @@ rules:
     match:
       kind: shell
       command:
-        - "sheepdog uninstall*"
-        - "sheepdog install*"
+        - "{cli} uninstall*"
+        - "{cli} install*"
         - "*--dangerously-skip-permissions*"
-        - "*SHEEPDOG_DISABLE*"
-        - "*SHEEPDOG_BYPASS*"
-        - "unset SHEEPDOG*"
-        - "re:(?i)\\b(disable|uninstall|remove|bypass)\\b.{0,30}\\bsheepdog\\b"
+        - "*{ENV}_DISABLE*"
+        - "*{ENV}_BYPASS*"
+        - "unset {ENV}*"
+        - "re:(?i)\\b(disable|uninstall|remove|bypass)\\b.{0,30}\\b{cli}\\b"
     action: deny
     reason: instruction to disable the harness
   - id: inj-risky-after-untrusted-shell

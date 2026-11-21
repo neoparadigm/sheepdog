@@ -1019,8 +1019,81 @@ _PATH_KEYS = ("file_path", "path", "filePath", "notebook_path", "target_file", "
 _PATCH_FILE = re.compile(r"^\*\*\* (?:Update|Add|Delete) File: (.+)$|^\*\*\* Move to: (.+)$", re.M)
 
 
+_AMOUNT_KEYS = ("amount", "amount_usd", "price", "total", "value", "cost", "sum")
+_RCPT_KEYS = (
+    "to",
+    "cc",
+    "bcc",
+    "recipient",
+    "recipients",
+    "attendees",
+    "invitees",
+    "email",
+    "address",
+    "channel",
+)
+
+
+def _num(v: Any) -> float | None:
+    if isinstance(v, bool):
+        return None
+    if isinstance(v, (int, float)):
+        return float(v)
+    if isinstance(v, str):
+        m = re.fullmatch(r"\s*[$€£]?\s*([0-9][0-9,]*(?:\.[0-9]+)?)\s*(?:usd|eur|gbp)?\s*", v, re.I)
+        if m:
+            return float(m.group(1).replace(",", ""))
+    return None
+
+
+def _personal_facts(f: Facts, own: tuple[str, ...]) -> None:
+    """Amount, external-recipient and bulk facts used by the personal pack."""
+    args = f.event.args
+    amounts = [x for k in _AMOUNT_KEYS if (x := _num(args.get(k))) is not None]
+    if amounts:
+        f.extra["amount"] = max(amounts)
+    rcpts: list[str] = []
+    for k in _RCPT_KEYS:
+        v = args.get(k)
+        if isinstance(v, str):
+            rcpts.extend(x.strip() for x in re.split(r"[,;]", v) if x.strip())
+        elif isinstance(v, list):
+            rcpts.extend(
+                x if isinstance(x, str) else str(x.get("email", "")) if isinstance(x, dict) else ""
+                for x in v
+            )
+    mine = {o.lower() for o in own}
+    f.extra["recipient_external"] = (not rcpts) or any(r.lower() not in mine for r in rcpts)
+    bulk = False
+    for k, v in args.items():
+        if isinstance(v, list) and len(v) >= 5:
+            bulk = True
+        if k in {"recursive", "all", "force_all"} and v is True:
+            bulk = True
+        if (
+            isinstance(v, str)
+            and k in {"path", "file_path", "pattern", "glob", "paths"}
+            and re.search(r"[*?]", v)
+        ):
+            bulk = True
+    if f.parsed:
+        for seg in f.parsed.segments:
+            if seg.cmd and seg.cmd[0] in {"rm", "find", "trash", "shred"}:
+                if (
+                    "-r" in seg.cmd
+                    or "-delete" in seg.cmd
+                    or any(re.search(r"[*?]", t) for t in seg.cmd[1:])
+                ):
+                    bulk = True
+    f.extra["bulk"] = bulk
+
+
 def compute_facts(
-    event: ToolCallEvent, project: str, home: str, scratch: tuple[str, ...] = DEFAULT_SCRATCH
+    event: ToolCallEvent,
+    project: str,
+    home: str,
+    scratch: tuple[str, ...] = DEFAULT_SCRATCH,
+    own_addresses: tuple[str, ...] = (),
 ) -> Facts:
     """Derive paths, hosts and flags for one event. Never raises."""
     f = Facts(event=event, project=project, home=home, scratch=scratch)
@@ -1082,6 +1155,7 @@ def compute_facts(
             elif rp not in _DEVICES:
                 f.paths.append(rp)
         f.text = event_text(event)
+        _personal_facts(f, own_addresses)
     except Exception as e:
         f.parsed = Parsed(opaque=True, notes=[f"facts_error:{type(e).__name__}"])
         f.extra["facts_error"] = type(e).__name__
@@ -1159,9 +1233,18 @@ def _aslist(v: str | list[str] | None) -> list[str]:
 class CompiledMatch:
     """A rule's match compiled once; call ``matches(facts, budget)``."""
 
-    def __init__(self, m: Match, project: str, home: str, *, settings_cap: float = 50.0) -> None:
+    def __init__(
+        self,
+        m: Match,
+        project: str,
+        home: str,
+        *,
+        settings_cap: float = 50.0,
+        delete_allow: list[str] | None = None,
+    ) -> None:
         self.m = m
         self.tools = [t.lower() for t in _aslist(m.tool)]
+        self.delete_allow = [compile_path_glob(g, home, project) for g in (delete_allow or [])]
         self.kinds = _aslist(m.kind)
         self.cmd_globs: list[str] = []
         self.cmd_res: list[re.Pattern[str]] = []
@@ -1184,8 +1267,10 @@ class CompiledMatch:
     def matches(self, f: Facts, b: BudgetState | None = None) -> bool:  # noqa: C901
         """Return True when every matcher in the rule holds for these facts."""
         m, ev = self.m, f.event
-        if self.tools and ev.tool.name.lower() not in self.tools:
-            return False
+        if self.tools:
+            tn = ev.tool.name.lower()
+            if not any(tn == t or fnmatch.fnmatchcase(tn, t) for t in self.tools):
+                return False
         if self.kinds and ev.tool.kind not in self.kinds:
             return False
         if self.cmd_globs or self.cmd_res:
@@ -1235,6 +1320,19 @@ class CompiledMatch:
         if m.opaque is not None and bool(f.parsed and f.parsed.opaque) != m.opaque:
             return False
         if m.secret_env is not None and f.secret_env != m.secret_env:
+            return False
+        if m.amount_over_cap is not None:
+            amt = f.extra.get("amount")
+            over = isinstance(amt, (int, float)) and amt > self.cap
+            if over != m.amount_over_cap:
+                return False
+        if m.outside_allowlist is not None:
+            outside = (not f.paths) or any(
+                not any(r.match(p) for r in self.delete_allow) for p in f.paths
+            )
+            if outside != m.outside_allowlist:
+                return False
+        if m.bulk is not None and bool(f.extra.get("bulk")) != m.bulk:
             return False
         if m.amount_gt is not None:
             amt = f.extra.get("amount")

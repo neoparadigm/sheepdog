@@ -53,6 +53,9 @@ def _parser() -> argparse.ArgumentParser:
     h.add_argument("cli", choices=["claude", "codex", "gemini"])
     h.add_argument("--experimental", action="store_true")
     sub.add_parser("status", help="show policy, daemon and installed hooks")
+    ap = sub.add_parser("approve-shared", help="approve (or revoke) the committed shared config")
+    ap.add_argument("--yes", action="store_true", help="do not ask for confirmation")
+    ap.add_argument("--revoke", action="store_true")
     v = sub.add_parser("verify-log", help="verify a run's hash chain")
     v.add_argument("run")
     g2 = sub.add_parser("graph", help="export a run graph")
@@ -137,6 +140,10 @@ def _dispatch(a: argparse.Namespace) -> int:  # noqa: C901
         else:
             print(inst.uninstall(a.cli, scope, project, home, a.dry_run))
         return 0
+    if a.cmd == "approve-shared":
+        from sheepdogai.cli.approve import cmd_approve_shared
+
+        return cmd_approve_shared(project, a.yes, a.revoke)
     if a.cmd == "status":
         from sheepdogai.cli.status import cmd_status
 

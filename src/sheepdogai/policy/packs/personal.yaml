@@ -1,0 +1,102 @@
+# personal: opt-in pack for personal-assistant agents (email, calendar, payments, files).
+# Noisy for coding agents, so it is not in the default pack list. List it BEFORE `secrets` so its
+# credential denies win over the secrets pack's asks (first match wins):
+#   packs: [self_protect, personal, machine, secrets, repo, network, injection]
+# Tool names are matched by glob (case-insensitive); adapt them to your agent's tool names.
+# Settings (sheepdog.yaml): settings.payment_cap_usd, settings.delete_allowlist, settings.own_addresses.
+name: personal
+description: "Personal agents - communication, money, credentials, deletion, account changes."
+budget: {max_steps: 60, max_cost_usd: 2, max_repeats: 2}
+defs:
+  credential_stores: &credential_stores
+    - "~/.ssh"
+    - "~/.ssh/**"
+    - "~/.gnupg/**"
+    - "**/1Password/**"
+    - "**/Bitwarden/**"
+    - "**/KeePass*/**"
+    - "**/*.kdbx"
+    - "**/*.kdb"
+    - "~/.config/google-chrome/**"
+    - "~/.config/chromium/**"
+    - "~/Library/Application Support/Google/Chrome/**"
+    - "~/.mozilla/firefox/**"
+    - "~/Library/Application Support/Firefox/**"
+    - "**/cookies.sqlite"
+    - "**/Cookies"
+    - "**/Login Data"
+    - "~/Library/Keychains/**"
+    - "**/*.keychain*"
+    - "**/wallet.dat"
+    - "**/.electrum/**"
+    - "~/.bitcoin/**"
+    - "**/MetaMask/**"
+rules:
+  - id: personal-credentials-exfil
+    match: {path: *credential_stores, network_use: true}
+    action: deny
+    reason: password managers, browser profiles, keychains, wallets and ssh keys must not be sent anywhere
+  - id: personal-credentials-access
+    match: {path: *credential_stores}
+    action: deny
+    reason: password managers, browser profiles, cookie stores, keychains, wallets and ssh keys are off limits
+  - id: personal-public-post
+    match:
+      tool: ["*post_tweet*", "*tweet*", "*social*post*", "*publish_post*", "*create_gist*", "*create_paste*", "*pastebin*", "*create_public_repo*", "*make_repo_public*", "*mastodon*post*", "*linkedin*post*"]
+    action: ask
+    once_only: true
+    reason: public posting needs approval every time
+  - id: personal-payment-over-cap
+    match:
+      tool: ["*pay*", "*purchase*", "*buy*", "*transfer*", "*subscribe*", "*checkout*", "*order*", "*send_money*"]
+      amount_over_cap: true
+    action: deny
+    reason: amount is above the configured cap
+  - id: personal-payment
+    match:
+      tool: ["*pay*", "*purchase*", "*buy*", "*transfer*", "*subscribe*", "*checkout*", "*order*", "*send_money*"]
+    action: ask
+    once_only: true
+    reason: payments, purchases, transfers and subscriptions need approval
+  - id: personal-share-public
+    match:
+      tool: ["*share*public*", "*make_public*", "*publish_document*", "*anyone_with_link*", "*set_sharing*", "*share_document*"]
+    action: ask
+    once_only: true
+    reason: sharing a document publicly needs approval every time
+  - id: personal-account-change
+    match:
+      tool: ["*account*setting*", "*change_password*", "*update_recovery*", "*recovery*", "*set_permission*", "*permissions*", "*two_factor*", "*2fa*", "*update_email*", "*update_phone*"]
+    action: ask
+    once_only: true
+    reason: account settings, permissions and recovery details need approval
+  - id: personal-bulk-delete-tool
+    match:
+      tool: ["*delete*", "*remove*", "*trash*", "*purge*", "*empty_*"]
+      bulk: true
+    action: deny
+    reason: bulk delete is not allowed
+  - id: personal-bulk-delete-shell
+    match:
+      command: ["rm", "rm *", "unlink *", "trash *", "shred *", "find * -delete*"]
+      bulk: true
+    action: deny
+    reason: bulk delete is not allowed
+  - id: personal-delete-move-tool
+    match:
+      tool: ["*delete*", "*remove*", "*trash*", "*move*", "*rename*"]
+      outside_allowlist: true
+    action: ask
+    reason: deleting or moving files outside the allowlist needs approval
+  - id: personal-delete-move-shell
+    match:
+      command: ["rm", "rm *", "mv *", "unlink *", "trash *", "rmdir *", "shred *"]
+      outside_allowlist: true
+    action: ask
+    reason: deleting or moving files outside the allowlist needs approval
+  - id: personal-send-external
+    match:
+      tool: ["*send_email*", "*send_message*", "*send_sms*", "*send_dm*", "*create_event*", "*calendar*", "*invite*", "*slack*post*", "*forward*", "*reply*"]
+      recipient_external: true
+    action: ask
+    reason: messages and invites to someone other than you need approval

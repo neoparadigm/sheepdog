@@ -27,6 +27,7 @@ class Decision:
     origin: str = "engine"
     rules_verdict: Verdict | None = None
     decider_proposed: Verdict | None = None
+    once_only: bool = False
 
 
 def load_decider(spec: str) -> Decider | None:
@@ -123,6 +124,7 @@ class PolicyEngine:
             self.policy.project_root,
             self.policy.home,
             tuple(self.policy.config.settings.scratch_paths),
+            tuple(self.policy.config.settings.own_addresses),
         )
         if f.parsed and f.parsed.notes:
             notes.extend(f"normaliser:{n}" for n in f.parsed.notes)
@@ -132,6 +134,7 @@ class PolicyEngine:
         notes.append(f"budget_basis: {self.guard.basis(new_state)}")
         verdict: Verdict | None = None
         origin = "default"
+        once_only = False
         for lr in self.policy.rules:
             if lr.origin != "self_protect" and budget_verdict is not None:
                 break
@@ -143,6 +146,7 @@ class PolicyEngine:
                     decided_by="rules",
                 )
                 origin = lr.origin
+                once_only = lr.rule.once_only
                 break
         if budget_verdict is not None and (verdict is None or verdict.action < Action.DENY):
             verdict, origin = budget_verdict, "budget"
@@ -166,4 +170,4 @@ class PolicyEngine:
                 notes.append("ask_downgraded_to_deny: adapter cannot ask")
             if not caps.can_block:
                 notes.append("adapter_cannot_block: verdict is advisory only")
-        return Decision(verdict, notes, new_state, origin, rules_verdict, proposed)
+        return Decision(verdict, notes, new_state, origin, rules_verdict, proposed, once_only)

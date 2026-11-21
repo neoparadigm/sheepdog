@@ -12,13 +12,17 @@ from typing import Any
 import yaml
 from pydantic import ValidationError
 
+from sheepdogai.constants import CLI_NAME, CONFIG_FILE, STATE_DIR
 from sheepdogai.core.canonical import canonical_json, sha256_hex
 from sheepdogai.core.errors import RulesError
 from sheepdogai.policy.matchers import CompiledMatch, check_regex_safe
-from sheepdogai.policy.schema import BudgetConfig, Config, Match, PackFile, Rule
+from sheepdogai.policy.schema import BudgetConfig, Config, Match, PackFile, Rule, SharedConfig
 
 BUILTIN_PACKS = ("self_protect", "machine", "secrets", "repo", "network", "injection", "personal")
 ALWAYS_FIRST = "self_protect"
+SHARED_REL = f"{STATE_DIR}/shared.yaml"
+APPROVED_REL = f"{STATE_DIR}/approved/shared.sha256"
+MODE_RANK = {"relaxed": 0, "balanced": 1, "strict": 2}
 
 
 class _UniqueKeyLoader(yaml.SafeLoader):
@@ -156,7 +160,7 @@ def _covers(a: Match, b: Match) -> bool:
     return True
 
 
-def check_rules(rules: list[Rule], lines: list[int | None], file: str) -> None:
+def check_rules(rules: list[Rule], lines: list[int | None], file: str, shadow: bool = True) -> None:
     """Reject duplicate ids, unsafe regexes and rules shadowed by an earlier one."""
     seen: dict[str, int | None] = {}
     for i, r in enumerate(rules):
@@ -170,7 +174,7 @@ def check_rules(rules: list[Rule], lines: list[int | None], file: str) -> None:
                 bad = check_regex_safe(c[3:])
                 if bad:
                     raise RulesError(f"rule {r.id!r}: unsafe regex {c!r}: {bad}", file, lines[i])
-        for j in range(i):
+        for j in range(i if shadow else 0):
             if _covers(rules[j].match, r.match):
                 raise RulesError(
                     f"rule {r.id!r} is unreachable: shadowed by earlier rule {rules[j].id!r} "
@@ -186,6 +190,13 @@ def load_pack(name: str) -> tuple[PackFile, list[int | None]]:
         raise RulesError(f"unknown pack {name!r}; built-in packs: {', '.join(BUILTIN_PACKS)}")
     file = f"packs/{name}.yaml"
     text = resources.files("sheepdogai.policy.packs").joinpath(f"{name}.yaml").read_text("utf-8")
+    text = (
+        text.replace("{cli}", CLI_NAME)
+        .replace("{ENV}", CLI_NAME.upper())
+        .replace("{state}", STATE_DIR)
+        .replace("{config_alt}", CONFIG_FILE.replace(".yaml", ".yml"))
+        .replace("{config}", CONFIG_FILE)
+    )
     data, root = parse_yaml(text, file)
     pack = _validate(PackFile, data, root, file)
     lines: list[int | None] = []
@@ -205,10 +216,15 @@ def build_policy(
     home: str | None = None,
     source: str = "<default>",
     user_lines: list[int | None] | None = None,
+    shared: SharedConfig | None = None,
+    shared_lines: list[int | None] | None = None,
 ) -> Policy:
-    """Compile a validated config + packs into a Policy."""
+    """Compile a validated config + packs (+ an approved shared config) into a Policy."""
     home = home or os.path.expanduser("~")
     project_root = os.path.realpath(project_root)
+    user_config = config
+    if shared is not None:
+        config = merge_shared(user_config, shared)
     names = list(dict.fromkeys(config.packs))
     notes: list[str] = []
     if ALWAYS_FIRST in names:
@@ -216,8 +232,8 @@ def build_policy(
     else:
         notes.append("self_protect was not listed in packs; it is always enabled")
     names.insert(0, ALWAYS_FIRST)
-    user_lines = user_lines or [None] * len(config.rules)
-    check_rules(config.rules, user_lines, source)
+    user_lines = user_lines or [None] * len(user_config.rules)
+    check_rules(user_config.rules, user_lines, source)
     loaded: list[LoadedRule] = []
     packs: dict[str, Any] = {}
     cap = config.settings.payment_cap_usd
@@ -226,7 +242,16 @@ def build_policy(
     def add(r: Rule, origin: str, line: int | None) -> None:
         loaded.append(
             LoadedRule(
-                r, origin, line, CompiledMatch(r.match, project_root, home, settings_cap=cap)
+                r,
+                origin,
+                line,
+                CompiledMatch(
+                    r.match,
+                    project_root,
+                    home,
+                    settings_cap=cap,
+                    delete_allow=config.settings.delete_allowlist,
+                ),
             )
         )
 
@@ -235,8 +260,14 @@ def build_policy(
     packs[ALWAYS_FIRST] = sp.model_dump(mode="json")
     for r, ln in zip(sp.rules, sp_lines, strict=True):
         add(r, ALWAYS_FIRST, ln)
-    for r, ln in zip(config.rules, user_lines, strict=True):
+    for r, ln in zip(user_config.rules, user_lines, strict=True):
         add(r, "user", ln)
+    if shared is not None:
+        srules = [r.model_copy(update={"id": f"shared.{r.id}"}) for r in shared.rules]
+        slines = shared_lines or [None] * len(srules)
+        check_rules(srules, slines, SHARED_REL, shadow=False)
+        for r, ln in zip(srules, slines, strict=True):
+            add(r, "shared", ln)
     for n in names[1:]:
         pk, lines = load_pack(n)
         packs[n] = pk.model_dump(mode="json")
@@ -263,26 +294,173 @@ def build_policy(
     if "budget" not in config.model_fields_set and pack_budget is not None:
         budget = pack_budget
         notes.append("budget taken from rule packs (lower personal defaults)")
-    h = sha256_hex(canonical_json({"config": config.model_dump(mode="json"), "packs": packs}))
+    h = sha256_hex(
+        canonical_json(
+            {
+                "config": config.model_dump(mode="json"),
+                "packs": packs,
+                "shared": shared.model_dump(mode="json") if shared is not None else None,
+            }
+        )
+    )
     return Policy(config, loaded, h, project_root, home, source, budget, notes)
 
 
-def load_policy(
-    path: Path | None, *, project_root: Path | None = None, home: str | None = None
-) -> Policy:
-    """Load ``path`` (or built-in defaults when None). Raises RulesError on any problem."""
-    root = project_root or (path.parent if path else Path.cwd())
-    if path is None:
-        return build_policy(Config(version=1), project_root=str(root), home=home)
+def shared_state(project_root: Path) -> tuple[str, str | None]:
+    """('absent'|'unapproved'|'approved', sha256 of the shared file)."""
+    f = project_root / SHARED_REL
+    if not f.is_file():
+        return "absent", None
+    h = sha256_hex(f.read_bytes())
+    ap = project_root / APPROVED_REL
     try:
-        text = path.read_text("utf-8")
-    except (OSError, UnicodeDecodeError) as e:
-        raise RulesError(f"cannot read rules file: {e}", file=str(path)) from e
-    data, node = parse_yaml(text, str(path))
-    cfg: Config = _validate(Config, data, node, str(path))
+        approved = ap.read_text().strip() if ap.is_file() else ""
+    except OSError:
+        approved = ""
+    return ("approved" if approved == h else "unapproved"), h
+
+
+def parse_shared(path: Path) -> tuple[SharedConfig, list[int | None]]:
+    """Parse and schema-check a shared config; raises RulesError with file and line."""
+    text = path.read_text("utf-8")
+    data, node = parse_yaml(text, SHARED_REL)
+    cfg: SharedConfig = _validate(SharedConfig, data, node, SHARED_REL)
     lines: list[int | None] = [None] * len(cfg.rules)
     if isinstance(node, yaml.MappingNode):
         for k, v in node.value:
             if k.value == "rules" and isinstance(v, yaml.SequenceNode):
                 lines = [_line_of(n) for n in v.value]
-    return build_policy(cfg, project_root=str(root), home=home, source=str(path), user_lines=lines)
+    return cfg, lines
+
+
+def validate_shared(shared: SharedConfig, base: Config, lines: list[int | None]) -> None:
+    """Reject anything in a shared config that would loosen the user's own configuration."""
+    if shared.mode is not None and MODE_RANK[shared.mode] < MODE_RANK[base.mode]:
+        raise RulesError(
+            f"shared config tries to loosen mode ({base.mode} -> {shared.mode}); it can only tighten",
+            SHARED_REL,
+        )
+    for p in shared.packs:
+        if p not in BUILTIN_PACKS:
+            raise RulesError(f"unknown pack {p!r}", SHARED_REL)
+    if shared.budget is not None:
+        for fld in ("max_steps", "max_cost_usd", "max_repeats"):
+            if getattr(shared.budget, fld) > getattr(base.budget, fld):
+                raise RulesError(
+                    f"shared config tries to raise budget.{fld} above the user's "
+                    f"{getattr(base.budget, fld)}; it can only lower it",
+                    SHARED_REL,
+                )
+    for r, ln in zip(shared.rules, lines, strict=True):
+        if r.action == "allow":
+            raise RulesError(
+                f"shared rule {r.id!r} has action allow; a shared config may only add ask or deny "
+                "rules (it can only tighten)",
+                SHARED_REL,
+                ln,
+            )
+        if len(r.id) > 56:
+            raise RulesError(f"shared rule id {r.id!r} is too long", SHARED_REL, ln)
+
+
+def merge_shared(base: Config, shared: SharedConfig) -> Config:
+    """Merge under the user's config: stricter mode, union of packs, lower budget."""
+    mode = base.mode
+    if shared.mode is not None and MODE_RANK[shared.mode] > MODE_RANK[mode]:
+        mode = shared.mode
+    packs = list(base.packs) + [p for p in shared.packs if p not in base.packs]
+    upd: dict[str, Any] = {"mode": mode, "packs": packs}
+    if shared.budget is not None:
+        upd["budget"] = BudgetConfig(
+            max_steps=min(base.budget.max_steps, shared.budget.max_steps),
+            max_cost_usd=min(base.budget.max_cost_usd, shared.budget.max_cost_usd),
+            max_repeats=min(base.budget.max_repeats, shared.budget.max_repeats),
+        )
+    return base.model_copy(update=upd)
+
+
+def approve_shared(project_root: Path) -> str:
+    """Record the human's approval of the current shared.yaml hash. Returns the hash."""
+    f = project_root / SHARED_REL
+    if not f.is_file():
+        raise RulesError("no shared config to approve", SHARED_REL)
+    cfg, lines = parse_shared(f)
+    validate_shared(cfg, load_user_config(project_root), lines)  # never approve a loosening file
+    h = sha256_hex(f.read_bytes())
+    ap = project_root / APPROVED_REL
+    ap.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+    os.chmod(ap.parent, 0o700)
+    fd = os.open(ap, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    try:
+        os.write(fd, h.encode())
+    finally:
+        os.close(fd)
+    return h
+
+
+def load_user_config(project_root: Path) -> Config:
+    """The user's own config (without shared), or the defaults."""
+    p = project_root / CONFIG_FILE
+    if not p.exists():
+        return Config(version=1)
+    data, node = parse_yaml(p.read_text("utf-8"), str(p))
+    cfg: Config = _validate(Config, data, node, str(p))
+    return cfg
+
+
+def load_policy(
+    path: Path | None,
+    *,
+    project_root: Path | None = None,
+    home: str | None = None,
+    use_shared: bool = True,
+) -> Policy:
+    """Load ``path`` (or built-in defaults when None). Raises RulesError on any problem.
+
+    A committed ``.sheepdog/shared.yaml`` is untrusted: it applies only when its sha256 matches
+    the hash the user approved, and it can only tighten the user's own configuration.
+    """
+    root = project_root or (path.parent if path else Path.cwd())
+    notes: list[str] = []
+    shared: SharedConfig | None = None
+    shared_lines: list[int | None] | None = None
+    if path is None:
+        cfg = Config(version=1)
+        user_lines: list[int | None] = []
+        source = "<default>"
+    else:
+        try:
+            text = path.read_text("utf-8")
+        except (OSError, UnicodeDecodeError) as e:
+            raise RulesError(f"cannot read rules file: {e}", file=str(path)) from e
+        data, node = parse_yaml(text, str(path))
+        cfg = _validate(Config, data, node, str(path))
+        user_lines = [None] * len(cfg.rules)
+        if isinstance(node, yaml.MappingNode):
+            for k, v in node.value:
+                if k.value == "rules" and isinstance(v, yaml.SequenceNode):
+                    user_lines = [_line_of(n) for n in v.value]
+        source = str(path)
+    if use_shared:
+        state, h = shared_state(root)
+        if state == "approved":
+            shared, shared_lines = parse_shared(root / SHARED_REL)
+            validate_shared(shared, cfg, shared_lines)
+        elif state == "unapproved":
+            notes.append(
+                f"shared config {SHARED_REL} ignored: sha256 {str(h)[:12]} is not approved "
+                f"(review it, then run: {CLI_NAME} approve-shared)"
+            )
+    pol = build_policy(
+        cfg,
+        project_root=str(root),
+        home=home,
+        source=source,
+        user_lines=user_lines or None,
+        shared=shared,
+        shared_lines=shared_lines,
+    )
+    pol.notes.extend(notes)
+    if shared is not None:
+        pol.notes.append("shared config applied (can only tighten)")
+    return pol

@@ -31,7 +31,7 @@ from sheepdogai.core.events import ToolCallEvent
 from sheepdogai.core.verdict import Action, BudgetState, DecisionRecord, Verdict
 from sheepdogai.log.writer import RunLogWriter
 from sheepdogai.policy.engine import Decision, PolicyEngine
-from sheepdogai.policy.loader import Policy, load_policy
+from sheepdogai.policy.loader import APPROVED_REL, SHARED_REL, Policy, load_policy
 
 MAX_REQUEST = 20 * 1024 * 1024
 _SAFE = re.compile(r"[^A-Za-z0-9_.-]")
@@ -90,21 +90,29 @@ class Gateway:
         self.sessions: dict[str, RunSession] = {}
         self.lock = threading.Lock()
         self.broken: str | None = None
-        self._sig: tuple[float, int] | None = None
+        self._sig: tuple[tuple[float, int] | None, ...] | None = None
         self.engine: PolicyEngine = self._load()  # raises RulesError at startup
 
     def _find_rules(self) -> Path | None:
         p = self.project_root / CONFIG_FILE
         return p if p.exists() else None
 
-    def _signature(self) -> tuple[float, int] | None:
-        if self.rules_path is None:
-            return None
-        try:
-            st = self.rules_path.stat()
-            return (st.st_mtime, st.st_size)
-        except OSError:
-            return (-1.0, -1)
+    def _signature(self) -> tuple[tuple[float, int] | None, ...]:
+        """Stat signature of everything the policy depends on (rules, shared config, approval)."""
+        out: list[tuple[float, int] | None] = []
+        paths = [self.rules_path, self.project_root / SHARED_REL, self.project_root / APPROVED_REL]
+        for p in paths:
+            if p is None:
+                out.append(None)
+                continue
+            try:
+                st = p.stat()
+                out.append((st.st_mtime, st.st_size))
+            except FileNotFoundError:
+                out.append(None)
+            except OSError:
+                out.append((-1.0, -1))
+        return tuple(out)
 
     def _load(self) -> PolicyEngine:
         self._sig = self._signature()

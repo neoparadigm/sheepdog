@@ -26,6 +26,14 @@ def cmd_status(project: Path, home: Path) -> int:
     except SheepdogError as e:
         print(f"policy:  INVALID: {e}")
         print("         (the daemon denies every call until this is fixed)")
+    from sheepdogai.policy.loader import shared_state
+
+    state, h = shared_state(project)
+    if state != "absent":
+        print(
+            f"shared:  .sheepdog/shared.yaml sha256 {str(h)[:16]} is {state}"
+            + ("" if state == "approved" else f" (review it, then `{CLI_NAME} approve-shared`)")
+        )
     s = sock_for(str(project))
     print(
         f"daemon:  {'running' if os.path.exists(s) else 'not running (starts on first hook call)'}"

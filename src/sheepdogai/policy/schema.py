@@ -50,7 +50,10 @@ class Match(_Strict):
     opaque: bool | None = None
     secret_env: bool | None = None
     amount_gt: float | None = None
+    amount_over_cap: bool | None = None  # amount > settings.payment_cap_usd
     recipient_external: bool | None = None
+    outside_allowlist: bool | None = None  # target not inside settings.delete_allowlist
+    bulk: bool | None = None  # many targets, a wildcard or a recursive flag
 
 
 class Rule(_Strict):
@@ -60,6 +63,7 @@ class Rule(_Strict):
     match: Match
     action: Literal["allow", "ask", "deny"]
     reason: str = ""
+    once_only: bool = False  # approvals for this rule are never remembered for the run
 
     @field_validator("match")
     @classmethod
@@ -82,6 +86,7 @@ class ApprovalsConfig(_Strict):
 
     ask_timeout_s: int = Field(60, ge=1, le=3600)
     remember: Literal["none", "session", "run"] = "session"
+    channel: Literal["cli", "terminal", "ntfy", "telegram", "webhook"] = "cli"
 
 
 class LogConfig(_Strict):
@@ -160,3 +165,13 @@ class PackFile(_Strict):
     defs: dict[str, Any] = Field(default_factory=dict)  # YAML anchors live here
     budget: BudgetConfig | None = None
     rules: list[Rule]
+
+
+class SharedConfig(_Strict):
+    """Committed .sheepdog/shared.yaml. Untrusted; it can only tighten the user's own config."""
+
+    version: Literal[1]
+    mode: Literal["strict", "balanced", "relaxed"] | None = None
+    packs: list[str] = Field(default_factory=list)
+    budget: BudgetConfig | None = None
+    rules: list[Rule] = Field(default_factory=list)
