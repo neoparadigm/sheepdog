@@ -1,100 +1,100 @@
 {
   "@context": {
     "@version": 1.1,
-    "Adapter": "sheepdog:Adapter",
-    "Agent": "sheepdog:Agent",
-    "Budget": "sheepdog:Budget",
-    "Decider": "sheepdog:Decider",
-    "HumanApproval": "sheepdog:HumanApproval",
-    "LogRecord": "sheepdog:LogRecord",
+    "Adapter": "sheepdogai:Adapter",
+    "Agent": "sheepdogai:Agent",
+    "Budget": "sheepdogai:Budget",
+    "Decider": "sheepdogai:Decider",
+    "HumanApproval": "sheepdogai:HumanApproval",
+    "LogRecord": "sheepdogai:LogRecord",
     "Person": "prov:Person",
-    "Policy": "sheepdog:Policy",
-    "Rule": "sheepdog:Rule",
-    "Run": "sheepdog:Run",
-    "ToolCall": "sheepdog:ToolCall",
-    "Verdict": "sheepdog:Verdict",
+    "Policy": "sheepdogai:Policy",
+    "Rule": "sheepdogai:Rule",
+    "Run": "sheepdogai:Run",
+    "ToolCall": "sheepdogai:ToolCall",
+    "Verdict": "sheepdogai:Verdict",
     "approvedBy": {
-      "@id": "sheepdog:approvedBy",
+      "@id": "sheepdogai:approvedBy",
       "@type": "@id"
     },
-    "channel": "sheepdog:channel",
+    "channel": "sheepdogai:channel",
     "decidedBy": {
-      "@id": "sheepdog:decidedBy",
+      "@id": "sheepdogai:decidedBy",
       "@type": "@id"
     },
     "exceeded": {
-      "@id": "sheepdog:exceeded",
+      "@id": "sheepdogai:exceeded",
       "@type": "@id"
     },
     "follows": {
-      "@id": "sheepdog:follows",
+      "@id": "sheepdogai:follows",
       "@type": "@id"
     },
     "governedBy": {
-      "@id": "sheepdog:governedBy",
+      "@id": "sheepdogai:governedBy",
       "@type": "@id"
     },
     "hasCapability": {
-      "@id": "sheepdog:hasCapability",
+      "@id": "sheepdogai:hasCapability",
       "@type": "@id"
     },
-    "hash": "sheepdog:hash",
+    "hash": "sheepdogai:hash",
     "id": "@id",
     "index": {
-      "@id": "sheepdog:index",
+      "@id": "sheepdogai:index",
       "@type": "xsd:integer"
     },
     "label": "rdfs:label",
     "matchedRule": {
-      "@id": "sheepdog:matchedRule",
+      "@id": "sheepdogai:matchedRule",
       "@type": "@id"
     },
     "memberOf": {
-      "@id": "sheepdog:memberOf",
+      "@id": "sheepdogai:memberOf",
       "@type": "@id"
     },
-    "name": "sheepdog:name",
+    "name": "sheepdogai:name",
     "observedBy": {
-      "@id": "sheepdog:observedBy",
+      "@id": "sheepdogai:observedBy",
       "@type": "@id"
     },
-    "outcome": "sheepdog:outcome",
+    "outcome": "sheepdogai:outcome",
     "partOf": {
-      "@id": "sheepdog:partOf",
+      "@id": "sheepdogai:partOf",
       "@type": "@id"
     },
-    "policyHash": "sheepdog:policyHash",
-    "prevHash": "sheepdog:prevHash",
+    "policyHash": "sheepdogai:policyHash",
+    "prevHash": "sheepdogai:prevHash",
     "priorVerdict": {
-      "@id": "sheepdog:priorVerdict",
+      "@id": "sheepdogai:priorVerdict",
       "@type": "@id"
     },
     "prov": "http://www.w3.org/ns/prov#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "reason": "sheepdog:reason",
-    "ruleId": "sheepdog:ruleId",
+    "reason": "sheepdogai:reason",
+    "ruleId": "sheepdogai:ruleId",
     "seq": {
-      "@id": "sheepdog:seq",
+      "@id": "sheepdogai:seq",
       "@type": "xsd:integer"
     },
-    "sheepdog": "https://example.org/sheepdog#",
+    "sheepdogai": "https://example.org/sheepdogai#",
     "startedAtTime": {
       "@id": "prov:startedAtTime",
       "@type": "xsd:dateTime"
     },
     "strictness": {
-      "@id": "sheepdog:strictness",
+      "@id": "sheepdogai:strictness",
       "@type": "xsd:integer"
     },
-    "summary": "sheepdog:summary",
-    "toolKind": "sheepdog:toolKind",
-    "toolName": "sheepdog:toolName",
+    "summary": "sheepdogai:summary",
+    "toolKind": "sheepdogai:toolKind",
+    "toolName": "sheepdogai:toolName",
     "type": "@type",
     "untrustedContentSeen": {
-      "@id": "sheepdog:untrustedContentSeen",
+      "@id": "sheepdogai:untrustedContentSeen",
       "@type": "xsd:boolean"
     },
-    "verdictValue": "sheepdog:verdictValue",
+    "verdictValue": "sheepdogai:verdictValue",
     "wasAssociatedWith": {
       "@id": "prov:wasAssociatedWith",
       "@type": "@id"
@@ -113,19 +113,19 @@
     {
       "hasCapability": [
         {
-          "id": "sheepdog:CanAsk"
+          "id": "sheepdogai:CanAsk"
         },
         {
-          "id": "sheepdog:CanBlock"
+          "id": "sheepdogai:CanBlock"
         },
         {
-          "id": "sheepdog:SeesFileEdits"
+          "id": "sheepdogai:SeesFileEdits"
         },
         {
-          "id": "sheepdog:SeesMcp"
+          "id": "sheepdogai:SeesMcp"
         }
       ],
-      "id": "urn:sheepdog:adapter:claude_code",
+      "id": "urn:sheepdogai:adapter:claude_code",
       "label": "claude_code",
       "name": "claude_code",
       "type": [
@@ -134,7 +134,7 @@
       ]
     },
     {
-      "id": "urn:sheepdog:agent:claude_code",
+      "id": "urn:sheepdogai:agent:claude_code",
       "label": "claude_code",
       "name": "claude_code",
       "type": [
@@ -144,7 +144,7 @@
     },
     {
       "channel": "claude_code_prompt",
-      "id": "urn:sheepdog:approval:00000000-0000-7000-8000-000000000002",
+      "id": "urn:sheepdogai:approval:00000000-0000-7000-8000-000000000002",
       "label": "approval: delegated",
       "outcome": "delegated",
       "type": [
@@ -152,12 +152,12 @@
         "prov:Activity"
       ],
       "wasAssociatedWith": {
-        "id": "urn:sheepdog:person:claude_code_prompt"
+        "id": "urn:sheepdogai:person:claude_code_prompt"
       }
     },
     {
       "channel": "claude_code_prompt",
-      "id": "urn:sheepdog:approval:00000000-0000-7000-8000-000000000007",
+      "id": "urn:sheepdogai:approval:00000000-0000-7000-8000-000000000007",
       "label": "approval: delegated",
       "outcome": "delegated",
       "type": [
@@ -165,12 +165,12 @@
         "prov:Activity"
       ],
       "wasAssociatedWith": {
-        "id": "urn:sheepdog:person:claude_code_prompt"
+        "id": "urn:sheepdogai:person:claude_code_prompt"
       }
     },
     {
       "channel": "claude_code_prompt",
-      "id": "urn:sheepdog:approval:00000000-0000-7000-8000-000000000008",
+      "id": "urn:sheepdogai:approval:00000000-0000-7000-8000-000000000008",
       "label": "approval: delegated",
       "outcome": "delegated",
       "type": [
@@ -178,12 +178,12 @@
         "prov:Activity"
       ],
       "wasAssociatedWith": {
-        "id": "urn:sheepdog:person:claude_code_prompt"
+        "id": "urn:sheepdogai:person:claude_code_prompt"
       }
     },
     {
       "channel": "claude_code_prompt",
-      "id": "urn:sheepdog:approval:00000000-0000-7000-8000-000000000009",
+      "id": "urn:sheepdogai:approval:00000000-0000-7000-8000-000000000009",
       "label": "approval: delegated",
       "outcome": "delegated",
       "type": [
@@ -191,11 +191,11 @@
         "prov:Activity"
       ],
       "wasAssociatedWith": {
-        "id": "urn:sheepdog:person:claude_code_prompt"
+        "id": "urn:sheepdogai:person:claude_code_prompt"
       }
     },
     {
-      "id": "urn:sheepdog:decider:rules",
+      "id": "urn:sheepdogai:decider:rules",
       "label": "rules",
       "name": "rules",
       "type": [
@@ -205,18 +205,18 @@
     },
     {
       "governedBy": {
-        "id": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201"
+        "id": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0"
       },
-      "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000001",
+      "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000001",
       "label": "Bash #1",
       "matchedRule": {
-        "id": "urn:sheepdog:rule:7d2b27ff7099c151:allow-echo"
+        "id": "urn:sheepdogai:rule:fbb82e93f83ef3e1:allow-echo"
       },
       "observedBy": {
-        "id": "urn:sheepdog:adapter:claude_code"
+        "id": "urn:sheepdogai:adapter:claude_code"
       },
       "partOf": {
-        "id": "urn:sheepdog:run:golden"
+        "id": "urn:sheepdogai:run:golden"
       },
       "seq": 1,
       "startedAtTime": "2026-01-01T00:00:01Z",
@@ -229,26 +229,26 @@
       ],
       "untrustedContentSeen": false,
       "wasAssociatedWith": {
-        "id": "urn:sheepdog:agent:claude_code"
+        "id": "urn:sheepdogai:agent:claude_code"
       }
     },
     {
       "approvedBy": {
-        "id": "urn:sheepdog:approval:00000000-0000-7000-8000-000000000002"
+        "id": "urn:sheepdogai:approval:00000000-0000-7000-8000-000000000002"
       },
       "governedBy": {
-        "id": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201"
+        "id": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0"
       },
-      "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000002",
+      "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000002",
       "label": "Bash #2",
       "matchedRule": {
-        "id": "urn:sheepdog:rule:7d2b27ff7099c151:default.strict"
+        "id": "urn:sheepdogai:rule:fbb82e93f83ef3e1:default.strict"
       },
       "observedBy": {
-        "id": "urn:sheepdog:adapter:claude_code"
+        "id": "urn:sheepdogai:adapter:claude_code"
       },
       "partOf": {
-        "id": "urn:sheepdog:run:golden"
+        "id": "urn:sheepdogai:run:golden"
       },
       "seq": 2,
       "startedAtTime": "2026-01-01T00:00:02Z",
@@ -261,23 +261,23 @@
       ],
       "untrustedContentSeen": false,
       "wasAssociatedWith": {
-        "id": "urn:sheepdog:agent:claude_code"
+        "id": "urn:sheepdogai:agent:claude_code"
       }
     },
     {
       "governedBy": {
-        "id": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201"
+        "id": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0"
       },
-      "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000003",
+      "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000003",
       "label": "Bash #3",
       "matchedRule": {
-        "id": "urn:sheepdog:rule:7d2b27ff7099c151:no-force-push"
+        "id": "urn:sheepdogai:rule:fbb82e93f83ef3e1:no-force-push"
       },
       "observedBy": {
-        "id": "urn:sheepdog:adapter:claude_code"
+        "id": "urn:sheepdogai:adapter:claude_code"
       },
       "partOf": {
-        "id": "urn:sheepdog:run:golden"
+        "id": "urn:sheepdogai:run:golden"
       },
       "seq": 3,
       "startedAtTime": "2026-01-01T00:00:03Z",
@@ -290,23 +290,23 @@
       ],
       "untrustedContentSeen": false,
       "wasAssociatedWith": {
-        "id": "urn:sheepdog:agent:claude_code"
+        "id": "urn:sheepdogai:agent:claude_code"
       }
     },
     {
       "governedBy": {
-        "id": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201"
+        "id": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0"
       },
-      "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000004",
+      "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000004",
       "label": "Bash #4",
       "matchedRule": {
-        "id": "urn:sheepdog:rule:7d2b27ff7099c151:machine-recursive-delete-outside"
+        "id": "urn:sheepdogai:rule:fbb82e93f83ef3e1:machine-recursive-delete-outside"
       },
       "observedBy": {
-        "id": "urn:sheepdog:adapter:claude_code"
+        "id": "urn:sheepdogai:adapter:claude_code"
       },
       "partOf": {
-        "id": "urn:sheepdog:run:golden"
+        "id": "urn:sheepdogai:run:golden"
       },
       "seq": 4,
       "startedAtTime": "2026-01-01T00:00:04Z",
@@ -319,23 +319,23 @@
       ],
       "untrustedContentSeen": false,
       "wasAssociatedWith": {
-        "id": "urn:sheepdog:agent:claude_code"
+        "id": "urn:sheepdogai:agent:claude_code"
       }
     },
     {
       "governedBy": {
-        "id": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201"
+        "id": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0"
       },
-      "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000005",
+      "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000005",
       "label": "Bash #5",
       "matchedRule": {
-        "id": "urn:sheepdog:rule:7d2b27ff7099c151:secrets-exfil"
+        "id": "urn:sheepdogai:rule:fbb82e93f83ef3e1:secrets-exfil"
       },
       "observedBy": {
-        "id": "urn:sheepdog:adapter:claude_code"
+        "id": "urn:sheepdogai:adapter:claude_code"
       },
       "partOf": {
-        "id": "urn:sheepdog:run:golden"
+        "id": "urn:sheepdogai:run:golden"
       },
       "seq": 5,
       "startedAtTime": "2026-01-01T00:00:05Z",
@@ -348,23 +348,23 @@
       ],
       "untrustedContentSeen": false,
       "wasAssociatedWith": {
-        "id": "urn:sheepdog:agent:claude_code"
+        "id": "urn:sheepdogai:agent:claude_code"
       }
     },
     {
       "governedBy": {
-        "id": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201"
+        "id": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0"
       },
-      "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000006",
+      "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000006",
       "label": "Write #6",
       "matchedRule": {
-        "id": "urn:sheepdog:rule:7d2b27ff7099c151:repo-write-outside"
+        "id": "urn:sheepdogai:rule:fbb82e93f83ef3e1:repo-write-outside"
       },
       "observedBy": {
-        "id": "urn:sheepdog:adapter:claude_code"
+        "id": "urn:sheepdogai:adapter:claude_code"
       },
       "partOf": {
-        "id": "urn:sheepdog:run:golden"
+        "id": "urn:sheepdogai:run:golden"
       },
       "seq": 6,
       "startedAtTime": "2026-01-01T00:00:06Z",
@@ -377,30 +377,30 @@
       ],
       "untrustedContentSeen": false,
       "wasAssociatedWith": {
-        "id": "urn:sheepdog:agent:claude_code"
+        "id": "urn:sheepdogai:agent:claude_code"
       }
     },
     {
       "approvedBy": {
-        "id": "urn:sheepdog:approval:00000000-0000-7000-8000-000000000007"
+        "id": "urn:sheepdogai:approval:00000000-0000-7000-8000-000000000007"
       },
       "governedBy": {
-        "id": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201"
+        "id": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0"
       },
-      "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000007",
+      "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000007",
       "label": "Write #7",
       "matchedRule": {
-        "id": "urn:sheepdog:rule:7d2b27ff7099c151:sp-rules-and-hooks"
+        "id": "urn:sheepdogai:rule:fbb82e93f83ef3e1:sp-rules-and-hooks"
       },
       "observedBy": {
-        "id": "urn:sheepdog:adapter:claude_code"
+        "id": "urn:sheepdogai:adapter:claude_code"
       },
       "partOf": {
-        "id": "urn:sheepdog:run:golden"
+        "id": "urn:sheepdogai:run:golden"
       },
       "seq": 7,
       "startedAtTime": "2026-01-01T00:00:07Z",
-      "summary": "/work/proj/sheepdog.yaml",
+      "summary": "/work/proj/sheepdogai.yaml",
       "toolKind": "file_write",
       "toolName": "Write",
       "type": [
@@ -409,26 +409,26 @@
       ],
       "untrustedContentSeen": false,
       "wasAssociatedWith": {
-        "id": "urn:sheepdog:agent:claude_code"
+        "id": "urn:sheepdogai:agent:claude_code"
       }
     },
     {
       "approvedBy": {
-        "id": "urn:sheepdog:approval:00000000-0000-7000-8000-000000000008"
+        "id": "urn:sheepdogai:approval:00000000-0000-7000-8000-000000000008"
       },
       "governedBy": {
-        "id": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201"
+        "id": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0"
       },
-      "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000008",
+      "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000008",
       "label": "WebFetch #8",
       "matchedRule": {
-        "id": "urn:sheepdog:rule:7d2b27ff7099c151:default.strict"
+        "id": "urn:sheepdogai:rule:fbb82e93f83ef3e1:default.strict"
       },
       "observedBy": {
-        "id": "urn:sheepdog:adapter:claude_code"
+        "id": "urn:sheepdogai:adapter:claude_code"
       },
       "partOf": {
-        "id": "urn:sheepdog:run:golden"
+        "id": "urn:sheepdogai:run:golden"
       },
       "seq": 8,
       "startedAtTime": "2026-01-01T00:00:08Z",
@@ -441,26 +441,26 @@
       ],
       "untrustedContentSeen": false,
       "wasAssociatedWith": {
-        "id": "urn:sheepdog:agent:claude_code"
+        "id": "urn:sheepdogai:agent:claude_code"
       }
     },
     {
       "approvedBy": {
-        "id": "urn:sheepdog:approval:00000000-0000-7000-8000-000000000009"
+        "id": "urn:sheepdogai:approval:00000000-0000-7000-8000-000000000009"
       },
       "governedBy": {
-        "id": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201"
+        "id": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0"
       },
-      "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000009",
+      "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000009",
       "label": "Bash #9",
       "matchedRule": {
-        "id": "urn:sheepdog:rule:7d2b27ff7099c151:inj-risky-after-untrusted-shell"
+        "id": "urn:sheepdogai:rule:fbb82e93f83ef3e1:inj-risky-after-untrusted-shell"
       },
       "observedBy": {
-        "id": "urn:sheepdog:adapter:claude_code"
+        "id": "urn:sheepdogai:adapter:claude_code"
       },
       "partOf": {
-        "id": "urn:sheepdog:run:golden"
+        "id": "urn:sheepdogai:run:golden"
       },
       "seq": 9,
       "startedAtTime": "2026-01-01T00:00:09Z",
@@ -473,23 +473,23 @@
       ],
       "untrustedContentSeen": true,
       "wasAssociatedWith": {
-        "id": "urn:sheepdog:agent:claude_code"
+        "id": "urn:sheepdogai:agent:claude_code"
       }
     },
     {
       "governedBy": {
-        "id": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201"
+        "id": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0"
       },
-      "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000010",
+      "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000010",
       "label": "Bash #10",
       "matchedRule": {
-        "id": "urn:sheepdog:rule:7d2b27ff7099c151:machine-pipe-to-shell"
+        "id": "urn:sheepdogai:rule:fbb82e93f83ef3e1:machine-pipe-to-shell"
       },
       "observedBy": {
-        "id": "urn:sheepdog:adapter:claude_code"
+        "id": "urn:sheepdogai:adapter:claude_code"
       },
       "partOf": {
-        "id": "urn:sheepdog:run:golden"
+        "id": "urn:sheepdogai:run:golden"
       },
       "seq": 10,
       "startedAtTime": "2026-01-01T00:00:10Z",
@@ -502,16 +502,16 @@
       ],
       "untrustedContentSeen": true,
       "wasAssociatedWith": {
-        "id": "urn:sheepdog:agent:claude_code"
+        "id": "urn:sheepdogai:agent:claude_code"
       }
     },
     {
-      "hash": "1c8e17a780a22f1e3cde593688dbb77759a36157686eeb44142a53d131edc537",
-      "id": "urn:sheepdog:log:golden:0",
+      "hash": "ae5d8f7cb08576b01a197b75e9d9201c2904df57e7a65645dd99a3a1bb04c889",
+      "id": "urn:sheepdogai:log:golden:0",
       "index": 0,
       "label": "#0 anchor",
       "partOf": {
-        "id": "urn:sheepdog:run:golden"
+        "id": "urn:sheepdogai:run:golden"
       },
       "prevHash": "0000000000000000000000000000000000000000000000000000000000000000",
       "type": [
@@ -521,16 +521,16 @@
     },
     {
       "follows": {
-        "id": "urn:sheepdog:log:golden:0"
+        "id": "urn:sheepdogai:log:golden:0"
       },
-      "hash": "909f785f7506955e7ded4fe477bfe4fbdb56e1fc362e455120d62656fccf6ef4",
-      "id": "urn:sheepdog:log:golden:1",
+      "hash": "e77292c558f461683ab073443de6de34038d862cdff270d889a0a958c270eba3",
+      "id": "urn:sheepdogai:log:golden:1",
       "index": 1,
       "label": "#1 decision",
       "partOf": {
-        "id": "urn:sheepdog:run:golden"
+        "id": "urn:sheepdogai:run:golden"
       },
-      "prevHash": "1c8e17a780a22f1e3cde593688dbb77759a36157686eeb44142a53d131edc537",
+      "prevHash": "ae5d8f7cb08576b01a197b75e9d9201c2904df57e7a65645dd99a3a1bb04c889",
       "type": [
         "LogRecord",
         "prov:Entity"
@@ -538,16 +538,16 @@
     },
     {
       "follows": {
-        "id": "urn:sheepdog:log:golden:9"
+        "id": "urn:sheepdogai:log:golden:9"
       },
-      "hash": "ae24aeee52deb735795400257e5f22e8fec82fef1a6f88340a0d586ae2b1a13c",
-      "id": "urn:sheepdog:log:golden:10",
+      "hash": "3795374b8b17e86c086ca119697a62bbcbb4b1e97d16be2e224c1ab02548c14a",
+      "id": "urn:sheepdogai:log:golden:10",
       "index": 10,
       "label": "#10 decision",
       "partOf": {
-        "id": "urn:sheepdog:run:golden"
+        "id": "urn:sheepdogai:run:golden"
       },
-      "prevHash": "611a0d80b7ba082fb2ec7eb4f14cbbd1944e62825a33a4652beaa9e77525462f",
+      "prevHash": "5be572a7228cf375cd10562b57a149d0e7747872371f89a6c7d65e5da475f31f",
       "type": [
         "LogRecord",
         "prov:Entity"
@@ -555,16 +555,16 @@
     },
     {
       "follows": {
-        "id": "urn:sheepdog:log:golden:10"
+        "id": "urn:sheepdogai:log:golden:10"
       },
-      "hash": "290ee5cdd79248f8afd1c54b72de73c74650223df5a66596a52aaea3650d261f",
-      "id": "urn:sheepdog:log:golden:11",
+      "hash": "940819ad754c82acaa4486944472bbcde42b8337a9a32fe663c61bdb7d367667",
+      "id": "urn:sheepdogai:log:golden:11",
       "index": 11,
       "label": "#11 approval",
       "partOf": {
-        "id": "urn:sheepdog:run:golden"
+        "id": "urn:sheepdogai:run:golden"
       },
-      "prevHash": "ae24aeee52deb735795400257e5f22e8fec82fef1a6f88340a0d586ae2b1a13c",
+      "prevHash": "3795374b8b17e86c086ca119697a62bbcbb4b1e97d16be2e224c1ab02548c14a",
       "type": [
         "LogRecord",
         "prov:Entity"
@@ -572,16 +572,16 @@
     },
     {
       "follows": {
-        "id": "urn:sheepdog:log:golden:11"
+        "id": "urn:sheepdogai:log:golden:11"
       },
-      "hash": "fb15e2e751e89d8ede541bcd7c4d3dc1061059a7f8757ec0711aa515514936c8",
-      "id": "urn:sheepdog:log:golden:12",
+      "hash": "724338c680eee90dab4efaf4628027104830619b24e14af7ace998cfeb426ade",
+      "id": "urn:sheepdogai:log:golden:12",
       "index": 12,
       "label": "#12 decision",
       "partOf": {
-        "id": "urn:sheepdog:run:golden"
+        "id": "urn:sheepdogai:run:golden"
       },
-      "prevHash": "290ee5cdd79248f8afd1c54b72de73c74650223df5a66596a52aaea3650d261f",
+      "prevHash": "940819ad754c82acaa4486944472bbcde42b8337a9a32fe663c61bdb7d367667",
       "type": [
         "LogRecord",
         "prov:Entity"
@@ -589,16 +589,16 @@
     },
     {
       "follows": {
-        "id": "urn:sheepdog:log:golden:12"
+        "id": "urn:sheepdogai:log:golden:12"
       },
-      "hash": "b7019c7720a5a421139f6a78cf73f6be17bfc5a211f202b7ebbbd9f2e97f2ca7",
-      "id": "urn:sheepdog:log:golden:13",
+      "hash": "d446c0f7ebcf908b8623e802b8fbcfea95f67ed395db3f76cec0643dea121920",
+      "id": "urn:sheepdogai:log:golden:13",
       "index": 13,
       "label": "#13 approval",
       "partOf": {
-        "id": "urn:sheepdog:run:golden"
+        "id": "urn:sheepdogai:run:golden"
       },
-      "prevHash": "fb15e2e751e89d8ede541bcd7c4d3dc1061059a7f8757ec0711aa515514936c8",
+      "prevHash": "724338c680eee90dab4efaf4628027104830619b24e14af7ace998cfeb426ade",
       "type": [
         "LogRecord",
         "prov:Entity"
@@ -606,16 +606,16 @@
     },
     {
       "follows": {
-        "id": "urn:sheepdog:log:golden:13"
+        "id": "urn:sheepdogai:log:golden:13"
       },
-      "hash": "3a9f9c074e0fd57672f3af2f7d392d67e584de751635b13a69f64d469ca546d8",
-      "id": "urn:sheepdog:log:golden:14",
+      "hash": "4fafabb53f619ee6bff25e5f1c36cc7c4d731a1b7df18485381ffb66f7b47728",
+      "id": "urn:sheepdogai:log:golden:14",
       "index": 14,
       "label": "#14 decision",
       "partOf": {
-        "id": "urn:sheepdog:run:golden"
+        "id": "urn:sheepdogai:run:golden"
       },
-      "prevHash": "b7019c7720a5a421139f6a78cf73f6be17bfc5a211f202b7ebbbd9f2e97f2ca7",
+      "prevHash": "d446c0f7ebcf908b8623e802b8fbcfea95f67ed395db3f76cec0643dea121920",
       "type": [
         "LogRecord",
         "prov:Entity"
@@ -623,16 +623,16 @@
     },
     {
       "follows": {
-        "id": "urn:sheepdog:log:golden:1"
+        "id": "urn:sheepdogai:log:golden:1"
       },
-      "hash": "4fb3b0265ccf3bdcf12287dd222b964ad6031231fa530ee60bd6f4aaf67f28cc",
-      "id": "urn:sheepdog:log:golden:2",
+      "hash": "899f2694931201dfb25e195550fb3d12390228bb6fb6a91a8d4dd3230b1b0355",
+      "id": "urn:sheepdogai:log:golden:2",
       "index": 2,
       "label": "#2 decision",
       "partOf": {
-        "id": "urn:sheepdog:run:golden"
+        "id": "urn:sheepdogai:run:golden"
       },
-      "prevHash": "909f785f7506955e7ded4fe477bfe4fbdb56e1fc362e455120d62656fccf6ef4",
+      "prevHash": "e77292c558f461683ab073443de6de34038d862cdff270d889a0a958c270eba3",
       "type": [
         "LogRecord",
         "prov:Entity"
@@ -640,16 +640,16 @@
     },
     {
       "follows": {
-        "id": "urn:sheepdog:log:golden:2"
+        "id": "urn:sheepdogai:log:golden:2"
       },
-      "hash": "2199dd65a24cf31d8ab1b74263ad7c8803293705aa9ea66508d3cba1b41e43ff",
-      "id": "urn:sheepdog:log:golden:3",
+      "hash": "a17cea84cd523d5b680823892acbb8f1e1497313d8fd581c9bb6140cb6d78aa5",
+      "id": "urn:sheepdogai:log:golden:3",
       "index": 3,
       "label": "#3 approval",
       "partOf": {
-        "id": "urn:sheepdog:run:golden"
+        "id": "urn:sheepdogai:run:golden"
       },
-      "prevHash": "4fb3b0265ccf3bdcf12287dd222b964ad6031231fa530ee60bd6f4aaf67f28cc",
+      "prevHash": "899f2694931201dfb25e195550fb3d12390228bb6fb6a91a8d4dd3230b1b0355",
       "type": [
         "LogRecord",
         "prov:Entity"
@@ -657,16 +657,16 @@
     },
     {
       "follows": {
-        "id": "urn:sheepdog:log:golden:3"
+        "id": "urn:sheepdogai:log:golden:3"
       },
-      "hash": "3a65e4dfa674cba282298d1f6d51f0e5abd5bb2f8662c188d9d3e9997b7d2ab7",
-      "id": "urn:sheepdog:log:golden:4",
+      "hash": "071d4a020d3f2086f1ea6a97dc1081d15a40715b278342c899fd583a9f4db9ba",
+      "id": "urn:sheepdogai:log:golden:4",
       "index": 4,
       "label": "#4 decision",
       "partOf": {
-        "id": "urn:sheepdog:run:golden"
+        "id": "urn:sheepdogai:run:golden"
       },
-      "prevHash": "2199dd65a24cf31d8ab1b74263ad7c8803293705aa9ea66508d3cba1b41e43ff",
+      "prevHash": "a17cea84cd523d5b680823892acbb8f1e1497313d8fd581c9bb6140cb6d78aa5",
       "type": [
         "LogRecord",
         "prov:Entity"
@@ -674,16 +674,16 @@
     },
     {
       "follows": {
-        "id": "urn:sheepdog:log:golden:4"
+        "id": "urn:sheepdogai:log:golden:4"
       },
-      "hash": "bc0a0d73ff5becaa91d2891b0f2ece7f9138bcacb7e76d07274f063b53f42137",
-      "id": "urn:sheepdog:log:golden:5",
+      "hash": "793f63f1f0e5e61123c67e31cf8be9b8af09c792b25312c0c7805f4516c4d95f",
+      "id": "urn:sheepdogai:log:golden:5",
       "index": 5,
       "label": "#5 decision",
       "partOf": {
-        "id": "urn:sheepdog:run:golden"
+        "id": "urn:sheepdogai:run:golden"
       },
-      "prevHash": "3a65e4dfa674cba282298d1f6d51f0e5abd5bb2f8662c188d9d3e9997b7d2ab7",
+      "prevHash": "071d4a020d3f2086f1ea6a97dc1081d15a40715b278342c899fd583a9f4db9ba",
       "type": [
         "LogRecord",
         "prov:Entity"
@@ -691,16 +691,16 @@
     },
     {
       "follows": {
-        "id": "urn:sheepdog:log:golden:5"
+        "id": "urn:sheepdogai:log:golden:5"
       },
-      "hash": "42f71ce3812bb8f1f2b41c9cd81472ab7b6f831f943cbf654722a96e0299e84e",
-      "id": "urn:sheepdog:log:golden:6",
+      "hash": "d3bf6893fe254f063349dff7a63d1627109a559306121789109a0da9ec2fc721",
+      "id": "urn:sheepdogai:log:golden:6",
       "index": 6,
       "label": "#6 decision",
       "partOf": {
-        "id": "urn:sheepdog:run:golden"
+        "id": "urn:sheepdogai:run:golden"
       },
-      "prevHash": "bc0a0d73ff5becaa91d2891b0f2ece7f9138bcacb7e76d07274f063b53f42137",
+      "prevHash": "793f63f1f0e5e61123c67e31cf8be9b8af09c792b25312c0c7805f4516c4d95f",
       "type": [
         "LogRecord",
         "prov:Entity"
@@ -708,16 +708,16 @@
     },
     {
       "follows": {
-        "id": "urn:sheepdog:log:golden:6"
+        "id": "urn:sheepdogai:log:golden:6"
       },
-      "hash": "ec6c38c1ce0306bd086fcc1e254d2cebcc27159501849b6432be713d72229391",
-      "id": "urn:sheepdog:log:golden:7",
+      "hash": "85108535d889454f3b9db7858f9bf50444c26ae92abd4d855e1bc8a7276a1098",
+      "id": "urn:sheepdogai:log:golden:7",
       "index": 7,
       "label": "#7 decision",
       "partOf": {
-        "id": "urn:sheepdog:run:golden"
+        "id": "urn:sheepdogai:run:golden"
       },
-      "prevHash": "42f71ce3812bb8f1f2b41c9cd81472ab7b6f831f943cbf654722a96e0299e84e",
+      "prevHash": "d3bf6893fe254f063349dff7a63d1627109a559306121789109a0da9ec2fc721",
       "type": [
         "LogRecord",
         "prov:Entity"
@@ -725,16 +725,16 @@
     },
     {
       "follows": {
-        "id": "urn:sheepdog:log:golden:7"
+        "id": "urn:sheepdogai:log:golden:7"
       },
-      "hash": "274b071837ca2d69d3091f43b8a21c27141b35e79c600e640a4fcc371bc8f640",
-      "id": "urn:sheepdog:log:golden:8",
+      "hash": "be211fe667affecca0ff27ed14e9f15e06f686ed55d2cbc415330a0da9e697a6",
+      "id": "urn:sheepdogai:log:golden:8",
       "index": 8,
       "label": "#8 decision",
       "partOf": {
-        "id": "urn:sheepdog:run:golden"
+        "id": "urn:sheepdogai:run:golden"
       },
-      "prevHash": "ec6c38c1ce0306bd086fcc1e254d2cebcc27159501849b6432be713d72229391",
+      "prevHash": "85108535d889454f3b9db7858f9bf50444c26ae92abd4d855e1bc8a7276a1098",
       "type": [
         "LogRecord",
         "prov:Entity"
@@ -742,23 +742,23 @@
     },
     {
       "follows": {
-        "id": "urn:sheepdog:log:golden:8"
+        "id": "urn:sheepdogai:log:golden:8"
       },
-      "hash": "611a0d80b7ba082fb2ec7eb4f14cbbd1944e62825a33a4652beaa9e77525462f",
-      "id": "urn:sheepdog:log:golden:9",
+      "hash": "5be572a7228cf375cd10562b57a149d0e7747872371f89a6c7d65e5da475f31f",
+      "id": "urn:sheepdogai:log:golden:9",
       "index": 9,
       "label": "#9 approval",
       "partOf": {
-        "id": "urn:sheepdog:run:golden"
+        "id": "urn:sheepdogai:run:golden"
       },
-      "prevHash": "274b071837ca2d69d3091f43b8a21c27141b35e79c600e640a4fcc371bc8f640",
+      "prevHash": "be211fe667affecca0ff27ed14e9f15e06f686ed55d2cbc415330a0da9e697a6",
       "type": [
         "LogRecord",
         "prov:Entity"
       ]
     },
     {
-      "id": "urn:sheepdog:person:claude_code_prompt",
+      "id": "urn:sheepdogai:person:claude_code_prompt",
       "label": "human via claude_code_prompt",
       "type": [
         "Person",
@@ -766,22 +766,22 @@
       ]
     },
     {
-      "id": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
-      "label": "policy 7d2b27ff7099",
+      "id": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0",
+      "label": "policy fbb82e93f83e",
       "partOf": {
-        "id": "urn:sheepdog:run:golden"
+        "id": "urn:sheepdogai:run:golden"
       },
-      "policyHash": "7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
+      "policyHash": "fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0",
       "type": [
         "Policy",
         "prov:Plan"
       ]
     },
     {
-      "id": "urn:sheepdog:rule:7d2b27ff7099c151:allow-echo",
+      "id": "urn:sheepdogai:rule:fbb82e93f83ef3e1:allow-echo",
       "label": "allow-echo",
       "memberOf": {
-        "id": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201"
+        "id": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0"
       },
       "ruleId": "allow-echo",
       "type": [
@@ -790,10 +790,10 @@
       ]
     },
     {
-      "id": "urn:sheepdog:rule:7d2b27ff7099c151:default.strict",
+      "id": "urn:sheepdogai:rule:fbb82e93f83ef3e1:default.strict",
       "label": "default.strict",
       "memberOf": {
-        "id": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201"
+        "id": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0"
       },
       "ruleId": "default.strict",
       "type": [
@@ -802,10 +802,10 @@
       ]
     },
     {
-      "id": "urn:sheepdog:rule:7d2b27ff7099c151:inj-risky-after-untrusted-shell",
+      "id": "urn:sheepdogai:rule:fbb82e93f83ef3e1:inj-risky-after-untrusted-shell",
       "label": "inj-risky-after-untrusted-shell",
       "memberOf": {
-        "id": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201"
+        "id": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0"
       },
       "ruleId": "inj-risky-after-untrusted-shell",
       "type": [
@@ -814,10 +814,10 @@
       ]
     },
     {
-      "id": "urn:sheepdog:rule:7d2b27ff7099c151:machine-pipe-to-shell",
+      "id": "urn:sheepdogai:rule:fbb82e93f83ef3e1:machine-pipe-to-shell",
       "label": "machine-pipe-to-shell",
       "memberOf": {
-        "id": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201"
+        "id": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0"
       },
       "ruleId": "machine-pipe-to-shell",
       "type": [
@@ -826,10 +826,10 @@
       ]
     },
     {
-      "id": "urn:sheepdog:rule:7d2b27ff7099c151:machine-recursive-delete-outside",
+      "id": "urn:sheepdogai:rule:fbb82e93f83ef3e1:machine-recursive-delete-outside",
       "label": "machine-recursive-delete-outside",
       "memberOf": {
-        "id": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201"
+        "id": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0"
       },
       "ruleId": "machine-recursive-delete-outside",
       "type": [
@@ -838,10 +838,10 @@
       ]
     },
     {
-      "id": "urn:sheepdog:rule:7d2b27ff7099c151:no-force-push",
+      "id": "urn:sheepdogai:rule:fbb82e93f83ef3e1:no-force-push",
       "label": "no-force-push",
       "memberOf": {
-        "id": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201"
+        "id": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0"
       },
       "ruleId": "no-force-push",
       "type": [
@@ -850,10 +850,10 @@
       ]
     },
     {
-      "id": "urn:sheepdog:rule:7d2b27ff7099c151:repo-write-outside",
+      "id": "urn:sheepdogai:rule:fbb82e93f83ef3e1:repo-write-outside",
       "label": "repo-write-outside",
       "memberOf": {
-        "id": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201"
+        "id": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0"
       },
       "ruleId": "repo-write-outside",
       "type": [
@@ -862,10 +862,10 @@
       ]
     },
     {
-      "id": "urn:sheepdog:rule:7d2b27ff7099c151:secrets-exfil",
+      "id": "urn:sheepdogai:rule:fbb82e93f83ef3e1:secrets-exfil",
       "label": "secrets-exfil",
       "memberOf": {
-        "id": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201"
+        "id": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0"
       },
       "ruleId": "secrets-exfil",
       "type": [
@@ -874,10 +874,10 @@
       ]
     },
     {
-      "id": "urn:sheepdog:rule:7d2b27ff7099c151:sp-rules-and-hooks",
+      "id": "urn:sheepdogai:rule:fbb82e93f83ef3e1:sp-rules-and-hooks",
       "label": "sp-rules-and-hooks",
       "memberOf": {
-        "id": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201"
+        "id": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0"
       },
       "ruleId": "sp-rules-and-hooks",
       "type": [
@@ -886,9 +886,9 @@
       ]
     },
     {
-      "id": "urn:sheepdog:run:golden",
+      "id": "urn:sheepdogai:run:golden",
       "label": "run golden",
-      "policyHash": "7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
+      "policyHash": "fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0",
       "type": [
         "Run",
         "prov:Bundle"
@@ -896,9 +896,9 @@
     },
     {
       "decidedBy": {
-        "id": "urn:sheepdog:decider:rules"
+        "id": "urn:sheepdogai:decider:rules"
       },
-      "id": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000001",
+      "id": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000001",
       "label": "allow",
       "strictness": 0,
       "type": [
@@ -907,17 +907,17 @@
       ],
       "verdictValue": "allow",
       "wasAttributedTo": {
-        "id": "urn:sheepdog:decider:rules"
+        "id": "urn:sheepdogai:decider:rules"
       },
       "wasGeneratedBy": {
-        "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000001"
+        "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000001"
       }
     },
     {
       "decidedBy": {
-        "id": "urn:sheepdog:decider:rules"
+        "id": "urn:sheepdogai:decider:rules"
       },
-      "id": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000002",
+      "id": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000002",
       "label": "ask",
       "reason": "no rule matched (strict mode asks)",
       "strictness": 1,
@@ -927,17 +927,17 @@
       ],
       "verdictValue": "ask",
       "wasAttributedTo": {
-        "id": "urn:sheepdog:decider:rules"
+        "id": "urn:sheepdogai:decider:rules"
       },
       "wasGeneratedBy": {
-        "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000002"
+        "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000002"
       }
     },
     {
       "decidedBy": {
-        "id": "urn:sheepdog:decider:rules"
+        "id": "urn:sheepdogai:decider:rules"
       },
-      "id": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000003",
+      "id": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000003",
       "label": "deny",
       "reason": "force-push rewrites shared history",
       "strictness": 2,
@@ -947,17 +947,17 @@
       ],
       "verdictValue": "deny",
       "wasAttributedTo": {
-        "id": "urn:sheepdog:decider:rules"
+        "id": "urn:sheepdogai:decider:rules"
       },
       "wasGeneratedBy": {
-        "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000003"
+        "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000003"
       }
     },
     {
       "decidedBy": {
-        "id": "urn:sheepdog:decider:rules"
+        "id": "urn:sheepdogai:decider:rules"
       },
-      "id": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000004",
+      "id": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000004",
       "label": "deny",
       "reason": "recursive delete outside the project",
       "strictness": 2,
@@ -967,17 +967,17 @@
       ],
       "verdictValue": "deny",
       "wasAttributedTo": {
-        "id": "urn:sheepdog:decider:rules"
+        "id": "urn:sheepdogai:decider:rules"
       },
       "wasGeneratedBy": {
-        "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000004"
+        "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000004"
       }
     },
     {
       "decidedBy": {
-        "id": "urn:sheepdog:decider:rules"
+        "id": "urn:sheepdogai:decider:rules"
       },
-      "id": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000005",
+      "id": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000005",
       "label": "deny",
       "reason": "secret files must not be sent over the network",
       "strictness": 2,
@@ -987,17 +987,17 @@
       ],
       "verdictValue": "deny",
       "wasAttributedTo": {
-        "id": "urn:sheepdog:decider:rules"
+        "id": "urn:sheepdogai:decider:rules"
       },
       "wasGeneratedBy": {
-        "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000005"
+        "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000005"
       }
     },
     {
       "decidedBy": {
-        "id": "urn:sheepdog:decider:rules"
+        "id": "urn:sheepdogai:decider:rules"
       },
-      "id": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000006",
+      "id": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000006",
       "label": "deny",
       "reason": "writes outside the project are not allowed",
       "strictness": 2,
@@ -1007,17 +1007,17 @@
       ],
       "verdictValue": "deny",
       "wasAttributedTo": {
-        "id": "urn:sheepdog:decider:rules"
+        "id": "urn:sheepdogai:decider:rules"
       },
       "wasGeneratedBy": {
-        "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000006"
+        "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000006"
       }
     },
     {
       "decidedBy": {
-        "id": "urn:sheepdog:decider:rules"
+        "id": "urn:sheepdogai:decider:rules"
       },
-      "id": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000007",
+      "id": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000007",
       "label": "ask",
       "reason": "edits to the rules file or hook configuration need a human",
       "strictness": 1,
@@ -1027,17 +1027,17 @@
       ],
       "verdictValue": "ask",
       "wasAttributedTo": {
-        "id": "urn:sheepdog:decider:rules"
+        "id": "urn:sheepdogai:decider:rules"
       },
       "wasGeneratedBy": {
-        "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000007"
+        "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000007"
       }
     },
     {
       "decidedBy": {
-        "id": "urn:sheepdog:decider:rules"
+        "id": "urn:sheepdogai:decider:rules"
       },
-      "id": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000008",
+      "id": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000008",
       "label": "ask",
       "reason": "no rule matched (strict mode asks)",
       "strictness": 1,
@@ -1047,17 +1047,17 @@
       ],
       "verdictValue": "ask",
       "wasAttributedTo": {
-        "id": "urn:sheepdog:decider:rules"
+        "id": "urn:sheepdogai:decider:rules"
       },
       "wasGeneratedBy": {
-        "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000008"
+        "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000008"
       }
     },
     {
       "decidedBy": {
-        "id": "urn:sheepdog:decider:rules"
+        "id": "urn:sheepdogai:decider:rules"
       },
-      "id": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000009",
+      "id": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000009",
       "label": "ask",
       "reason": "risky action after untrusted content was read",
       "strictness": 1,
@@ -1067,17 +1067,17 @@
       ],
       "verdictValue": "ask",
       "wasAttributedTo": {
-        "id": "urn:sheepdog:decider:rules"
+        "id": "urn:sheepdogai:decider:rules"
       },
       "wasGeneratedBy": {
-        "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000009"
+        "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000009"
       }
     },
     {
       "decidedBy": {
-        "id": "urn:sheepdog:decider:rules"
+        "id": "urn:sheepdogai:decider:rules"
       },
-      "id": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000010",
+      "id": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000010",
       "label": "deny",
       "reason": "piping downloaded or decoded content into a shell is not allowed",
       "strictness": 2,
@@ -1087,10 +1087,10 @@
       ],
       "verdictValue": "deny",
       "wasAttributedTo": {
-        "id": "urn:sheepdog:decider:rules"
+        "id": "urn:sheepdogai:decider:rules"
       },
       "wasGeneratedBy": {
-        "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000010"
+        "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000010"
       }
     }
   ]

@@ -112,11 +112,11 @@ def test_files_are_created_owner_only(tmp_path: Path) -> None:
         b'{"session_id":"p","hook_event_name":"PreToolUse","tool_name":"Bash","tool_input":{"command":"ls"}}',
     )
     gw.close()
-    files = [tmp_path / "sheepdog.yaml", *(tmp_path / ".sheepdog/runs").iterdir()]
+    files = [tmp_path / "sheepdogai.yaml", *(tmp_path / ".sheepdogai/runs").iterdir()]
     assert files
     for f in files:
         assert stat.S_IMODE(os.stat(f).st_mode) & 0o077 == 0, f
-    assert stat.S_IMODE(os.stat(tmp_path / ".sheepdog/runs").st_mode) == 0o700
+    assert stat.S_IMODE(os.stat(tmp_path / ".sheepdogai/runs").st_mode) == 0o700
 
 
 def test_otel_mapping_is_pure_and_uses_pinned_names() -> None:
@@ -131,5 +131,5 @@ def test_otel_mapping_is_pure_and_uses_pinned_names() -> None:
     assert len(spans) == 10
     a = spans[0]["attributes"]
     assert a["gen_ai.operation.name"] == "execute_tool" and a["gen_ai.tool.name"] == "Bash"
-    assert all(k.startswith(("gen_ai.", "sheepdog.")) for s in spans for k in s["attributes"])
+    assert all(k.startswith(("gen_ai.", "sheepdogai.")) for s in spans for k in s["attributes"])
     assert spans[0]["semconv_version"] == "1.37.0"

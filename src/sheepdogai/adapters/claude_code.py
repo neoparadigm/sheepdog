@@ -16,7 +16,7 @@ Verified from that page:
 Design choices:
 * deny -> exit 2 with the reason on stderr (does not depend on JSON parsing).
 * ask  -> ``permissionDecision: "ask"``.
-* allow -> exit 0 with no output. sheepdog never *grants* permission ("allow" in the docs skips
+* allow -> exit 0 with no output. sheepdogai never *grants* permission ("allow" in the docs skips
   the user's own permission prompt); it only restricts.
 """
 
@@ -55,7 +55,7 @@ def classify(name: str) -> ToolKind:
 def reason_text(v: Verdict) -> str:
     """Human-readable reason including the rule id."""
     rid = f" [{v.rule_id}]" if v.rule_id else ""
-    return f"sheepdog: {v.reason or v.action.label}{rid}"
+    return f"sheepdogai: {v.reason or v.action.label}{rid}"
 
 
 class ClaudeCodeAdapter:
@@ -112,5 +112,5 @@ class ClaudeCodeAdapter:
     def fail_closed(self, reason: str) -> AdapterResponse:
         """Exit 2 with a non-empty reason."""
         return AdapterResponse(
-            stderr=f"sheepdog: {reason or 'failing closed'} (fail closed)", exit_code=2
+            stderr=f"sheepdogai: {reason or 'failing closed'} (fail closed)", exit_code=2
         )

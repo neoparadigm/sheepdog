@@ -1,4 +1,4 @@
-"""The ``sheepdog`` command. Heavy imports are deferred so ``hook`` starts fast."""
+"""The ``sheepdogai`` command. Heavy imports are deferred so ``hook`` starts fast."""
 
 from __future__ import annotations
 
@@ -9,14 +9,14 @@ from pathlib import Path
 from sheepdogai.constants import CLI_NAME, CONFIG_FILE, __version__
 
 INIT_TEMPLATE = """\
-# sheepdog.yaml: strict by default. Hooks are guardrails, not isolation (see docs/limitations.md).
+# sheepdogai.yaml: strict by default. Hooks are guardrails, not isolation (see docs/limitations.md).
 version: 1
 mode: strict            # strict: ask when no rule matches | balanced: allow read-only | relaxed: allow
 fail: closed            # the only supported value
 packs: [self_protect, machine, secrets, repo, network, injection]
 budget: {max_steps: 200, max_cost_usd: 5, max_repeats: 3}
 approvals: {ask_timeout_s: 60, remember: session}
-log: {path: .sheepdog/runs, hash_chain: true, redact_secrets: true}
+log: {path: .sheepdogai/runs, hash_chain: true, redact_secrets: true}
 decider: {type: rules}  # a Decider can only make a verdict stricter, never looser
 
 # Your rules run before packs, top to bottom, first match wins.
@@ -31,9 +31,11 @@ rules:
 def _parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog=CLI_NAME, description="Safety gate for AI agent tool calls.")
     p.add_argument("--version", action="version", version=f"{CLI_NAME} {__version__}")
-    p.add_argument("--project", default=None, help="project root (default: nearest sheepdog.yaml)")
+    p.add_argument(
+        "--project", default=None, help="project root (default: nearest sheepdogai.yaml)"
+    )
     sub = p.add_subparsers(dest="cmd", required=False)
-    i = sub.add_parser("init", help="write a commented strict sheepdog.yaml")
+    i = sub.add_parser("init", help="write a commented strict sheepdogai.yaml")
     i.add_argument("--force", action="store_true")
     for name in ("install", "uninstall"):
         s = sub.add_parser(name, help=f"{name} the hook for an agent CLI")
@@ -107,13 +109,13 @@ def main(argv: list[str] | None = None) -> int:
     if argv[:1] == ["hook"]:  # fast path: no argparse, no heavy imports
         cli = argv[1] if len(argv) > 1 else ""
         if cli not in {"claude", "codex", "gemini"}:
-            sys.stderr.write("sheepdog: unknown hook target (fail closed)\n")
+            sys.stderr.write("sheepdogai: unknown hook target (fail closed)\n")
             return 2
         from sheepdogai.cli.hook import run_hook
 
         return run_hook(cli, "--experimental" in argv[2:])
     a = _parser().parse_args(argv)
-    if a.cmd is None:  # bare `sheepdog`: answer "is it working?"
+    if a.cmd is None:  # bare `sheepdogai`: answer "is it working?"
         a.cmd = "doctor"
     try:
         return _dispatch(a)
@@ -189,9 +191,9 @@ def _dispatch(a: argparse.Namespace) -> int:  # noqa: C901
 
         cmd = [c for c in a.server_cmd if c != "--"][:]
         if not cmd:
-            print("usage: sheepdog mcp-proxy --name NAME -- <server command>", file=sys.stderr)
+            print("usage: sheepdogai mcp-proxy --name NAME -- <server command>", file=sys.stderr)
             return 2
-        sid = os.environ.get("SHEEPDOG_SESSION") or f"mcp-{uuid7()[:8]}"
+        sid = os.environ.get("SHEEPDOGAI_SESSION") or f"mcp-{uuid7()[:8]}"
         return McpProxy(cmd, a.name, sid, os.getcwd(), default_decide).run()
     if a.cmd == "approve-shared":
         from sheepdogai.cli.approve import cmd_approve_shared

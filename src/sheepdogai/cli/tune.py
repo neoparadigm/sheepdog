@@ -1,6 +1,6 @@
-"""``sheepdog mode|allow|block``: change the active policy from the command line or from chat.
+"""``sheepdogai mode|allow|block``: change the active policy from the command line or from chat.
 
-The agent can run these (that is the point of ``/sheepdog``), but ``self_protect`` makes every one of
+The agent can run these (that is the point of ``/sheepdogai``), but ``self_protect`` makes every one of
 them ask the human first, so an agent cannot loosen its own guard unattended.
 """
 
@@ -19,7 +19,7 @@ MODES = ("strict", "balanced", "relaxed")
 
 
 def active_config(project: Path, home: Path) -> Path:
-    """The file that governs this project: its own sheepdog.yaml, else the user-wide one (created)."""
+    """The file that governs this project: its own sheepdogai.yaml, else the user-wide one (created)."""
     p = project / CONFIG_FILE
     if p.exists():
         return p

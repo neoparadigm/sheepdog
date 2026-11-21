@@ -1,4 +1,4 @@
 FROM gcr.io/oss-fuzz-base/base-builder-python
-COPY . $SRC/sheepdog
-WORKDIR $SRC/sheepdog
+COPY . $SRC/sheepdogai
+WORKDIR $SRC/sheepdogai
 COPY .clusterfuzzlite/build.sh $SRC/

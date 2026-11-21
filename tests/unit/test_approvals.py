@@ -43,7 +43,7 @@ class Clock:
 
 
 def broker(tmp: Path, clock: Clock | None = None) -> ApprovalBroker:
-    return ApprovalBroker(tmp / ".sheepdog", clock=clock)
+    return ApprovalBroker(tmp / ".sheepdogai", clock=clock)
 
 
 def req(b: ApprovalBroker, ev: Any = None, ttl: float = 60, once: bool = False) -> ApprovalRequest:
@@ -114,7 +114,7 @@ def test_used_nonces_survive_restart_and_files_are_private(tmp_path: Path) -> No
     b2 = broker(tmp_path)
     assert b2.redeem(r.token, r.event_hash) is False
     for f in ("approval.key", "approval.used"):
-        assert os.stat(tmp_path / ".sheepdog" / f).st_mode & 0o077 == 0
+        assert os.stat(tmp_path / ".sheepdogai" / f).st_mode & 0o077 == 0
 
 
 # ---- ask() --------------------------------------------------------------------
@@ -238,7 +238,7 @@ class Human:
 
 
 def mk(tmp: Path, human: Human) -> Gateway:
-    (tmp / "sheepdog.yaml").write_text(
+    (tmp / "sheepdogai.yaml").write_text(
         CFG + "settings: {own_addresses: [me@example.org], scratch_paths: []}\n"
     )
     return Gateway(tmp, notifier=human)
@@ -253,7 +253,7 @@ def test_allow_once_deny_and_timeout_are_logged_as_human_approvals(tmp_path: Pat
     gw.close()
     assert (r1.exit_code, r2.exit_code, r3.exit_code) == (0, 2, 2)
     assert r1.stdout == "" and "denied by human" in r2.stderr and "timed out" in r3.stderr
-    p = tmp_path / ".sheepdog/runs/h1.jsonl"
+    p = tmp_path / ".sheepdogai/runs/h1.jsonl"
     assert verify_log(p).ok
     recs = [json.loads(x) for x in p.read_text().splitlines()]
     ap = [r["data"] for r in recs if r["kind"] == "approval"]
@@ -290,7 +290,7 @@ def test_gemini_cannot_ask_but_a_phone_can(tmp_path: Path) -> None:
     # without a notifier the same call is denied (ask downgraded because Gemini cannot ask)
     plain = tmp_path / "plain"
     plain.mkdir()
-    (plain / "sheepdog.yaml").write_text(CFG)
+    (plain / "sheepdogai.yaml").write_text(CFG)
     gw2 = Gateway(plain)
     r = gw2.handle("gemini", raw.replace(b"g1", b"g2"))
     gw2.close()
@@ -310,7 +310,7 @@ def test_allow_run_is_remembered_but_once_only_is_not(tmp_path: Path) -> None:
     gw.close()
     recs = [
         json.loads(x)["data"]
-        for x in (tmp_path / ".sheepdog/runs/h1.jsonl").read_text().splitlines()
+        for x in (tmp_path / ".sheepdogai/runs/h1.jsonl").read_text().splitlines()
         if '"approval"' in x
     ]
     assert [r["channel"] for r in recs][:2] == ["test-phone", "remembered"]
@@ -330,15 +330,15 @@ def test_agent_cannot_read_or_answer_approvals(tmp_path: Path) -> None:
 
     eng = make_engine(tmp_path, mode="relaxed", packs=[])
     for cmd in (
-        "cat .sheepdog/approval.key",
-        "cat .sheepdog/approval.used",
-        "ls .sheepdog/approved",
-        "cat ~/.config/sheepdog/notify.json",
-        "echo 1 > .sheepdog/approval.used",
-        "cp ~/.config/sheepdog/notify.json /tmp/x",
+        "cat .sheepdogai/approval.key",
+        "cat .sheepdogai/approval.used",
+        "ls .sheepdogai/approved",
+        "cat ~/.config/sheepdogai/notify.json",
+        "echo 1 > .sheepdogai/approval.used",
+        "cp ~/.config/sheepdogai/notify.json /tmp/x",
     ):
         assert eng.decide(event(cmd, cwd=str(tmp_path))).verdict.action is Action.DENY, cmd
-    for p in (".sheepdog/approval.key", "~/.config/sheepdog/notify.json"):
+    for p in (".sheepdogai/approval.key", "~/.config/sheepdogai/notify.json"):
         d = eng.decide(event(kind="file_read", file_path=p, cwd=str(tmp_path)))
         assert d.verdict.action is Action.DENY, p
 
@@ -487,7 +487,7 @@ def test_telegram_notifier_only_accepts_the_configured_chat(tmp_path: Path, serv
 
 
 def test_notify_config_must_be_private(tmp_path: Path) -> None:
-    d = tmp_path / ".config" / "sheepdog"
+    d = tmp_path / ".config" / "sheepdogai"
     d.mkdir(parents=True)
     f = d / "notify.json"
     f.write_text(json.dumps({"webhook": {"url": "http://127.0.0.1:1/x"}}))

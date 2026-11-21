@@ -21,9 +21,9 @@ def short_tmp() -> Iterator[Path]:
 def runtime(short_tmp: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
     rt = short_tmp / "rt"
     rt.mkdir(mode=0o700)
-    monkeypatch.setenv("SHEEPDOG_RUNTIME_DIR", str(rt))
+    monkeypatch.setenv("SHEEPDOGAI_RUNTIME_DIR", str(rt))
     monkeypatch.delenv("CLAUDE_PROJECT_DIR", raising=False)
-    monkeypatch.delenv("SHEEPDOG_PROJECT", raising=False)
+    monkeypatch.delenv("SHEEPDOGAI_PROJECT", raising=False)
     return rt
 
 

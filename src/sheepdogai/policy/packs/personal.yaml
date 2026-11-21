@@ -3,7 +3,7 @@
 # credential denies win over the secrets pack's asks (first match wins):
 #   packs: [self_protect, personal, machine, secrets, repo, network, injection]
 # Tool names are matched by glob (case-insensitive); adapt them to your agent's tool names.
-# Settings (sheepdog.yaml): settings.payment_cap_usd, settings.delete_allowlist, settings.own_addresses.
+# Settings (sheepdogai.yaml): settings.payment_cap_usd, settings.delete_allowlist, settings.own_addresses.
 name: personal
 description: "Personal agents - communication, money, credentials, deletion, account changes."
 budget: {max_steps: 60, max_cost_usd: 2, max_repeats: 2}

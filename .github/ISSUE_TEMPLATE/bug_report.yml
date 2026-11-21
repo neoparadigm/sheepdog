@@ -4,10 +4,10 @@ body:
   - type: markdown
     attributes: {value: "**Security bypass?** Do not open a public issue. See SECURITY.md."}
   - type: input
-    attributes: {label: sheepdog version, description: "output of `sheepdog --version`"}
+    attributes: {label: sheepdogai version, description: "output of `sheepdogai --version`"}
     validations: {required: true}
   - type: input
     attributes: {label: Agent CLI and version}
   - type: textarea
-    attributes: {label: What happened, description: "Redact secrets. `sheepdog verify-log <run>` output helps."}
+    attributes: {label: What happened, description: "Redact secrets. `sheepdogai verify-log <run>` output helps."}
     validations: {required: true}

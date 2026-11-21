@@ -42,7 +42,7 @@ EDGE_KINDS = (
 STRICT = {"allow": 0, "ask": 1, "deny": 2}
 OUTCOMES_OK = {"approved", "denied", "timeout_deny", "delegated", "allow_once", "allow_run"}
 
-NS = "urn:sheepdog:"
+NS = "urn:sheepdogai:"
 
 
 @dataclass(frozen=True)

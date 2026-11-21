@@ -1,4 +1,4 @@
-"""Load and validate sheepdog.yaml and rule packs. Any problem raises RulesError (fail closed)."""
+"""Load and validate sheepdogai.yaml and rule packs. Any problem raises RulesError (fail closed)."""
 
 from __future__ import annotations
 
@@ -417,7 +417,7 @@ def load_policy(
 ) -> Policy:
     """Load ``path`` (or built-in defaults when None). Raises RulesError on any problem.
 
-    A committed ``.sheepdog/shared.yaml`` is untrusted: it applies only when its sha256 matches
+    A committed ``.sheepdogai/shared.yaml`` is untrusted: it applies only when its sha256 matches
     the hash the user approved, and it can only tighten the user's own configuration.
     """
     root = project_root or (path.parent if path else Path.cwd())

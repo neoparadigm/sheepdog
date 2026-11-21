@@ -1,4 +1,4 @@
-"""``sheepdog install|uninstall``: merge or remove our hook entry, with backup and exact undo."""
+"""``sheepdogai install|uninstall``: merge or remove our hook entry, with backup and exact undo."""
 
 from __future__ import annotations
 
@@ -123,7 +123,7 @@ def install(cli: str, scope: str, project: Path, home: Path, dry_run: bool = Fal
         os.close(fd)
     mode = os.stat(path).st_mode & 0o777 if path.exists() else 0o600
     path.parent.mkdir(parents=True, exist_ok=True)
-    tmp = path.with_name(path.name + ".sheepdog-tmp")
+    tmp = path.with_name(path.name + ".sheepdogai-tmp")
     fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, mode)
     try:
         os.write(fd, plan.after)

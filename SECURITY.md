@@ -3,14 +3,14 @@
 ## Reporting a vulnerability or a policy bypass
 
 **Do not open a public issue.** Use GitHub private vulnerability reporting:
-`https://github.com/neoparadigm/sheepdog/security/advisories/new` (replace if the repo moves; before
+`https://github.com/neoparadigm/sheepdogai/security/advisories/new` (replace if the repo moves; before
 publishing) or email `security@example.invalid` (placeholder).
 
 A *policy bypass* (a command that should be denied or asked but is allowed) is a security report
 for this project even though the limits are documented in `docs/limitations.md`: we want to fix
 it or document it, and add a permanent regression case.
 
-Include: version (`sheepdog --version`), agent CLI and version, the exact tool call or payload, the
+Include: version (`sheepdogai --version`), agent CLI and version, the exact tool call or payload, the
 rules in force, and what you expected. Please redact secrets.
 
 ## Supported versions

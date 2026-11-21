@@ -96,11 +96,11 @@ class GeminiAdapter:
         """Deny exits 2 with the reason; anything else prints an empty JSON object."""
         if v.action is Action.DENY or v.action is Action.ASK:
             rid = f" [{v.rule_id}]" if v.rule_id else ""
-            return AdapterResponse(stderr=f"sheepdog: {v.reason or 'denied'}{rid}", exit_code=2)
+            return AdapterResponse(stderr=f"sheepdogai: {v.reason or 'denied'}{rid}", exit_code=2)
         return AdapterResponse(stdout=json.dumps({}), exit_code=0)
 
     def fail_closed(self, reason: str) -> AdapterResponse:
         """Exit 2 with a non-empty reason."""
         return AdapterResponse(
-            stderr=f"sheepdog: {reason or 'failing closed'} (fail closed)", exit_code=2
+            stderr=f"sheepdogai: {reason or 'failing closed'} (fail closed)", exit_code=2
         )

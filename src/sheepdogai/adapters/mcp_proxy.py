@@ -81,14 +81,14 @@ class McpProxyAdapter:
         if v.action in (Action.DENY, Action.ASK):
             rid = f" [{v.rule_id}]" if v.rule_id else ""
             return AdapterResponse(
-                stderr=f"sheepdog: blocked{rid}: {v.reason or 'denied'}", exit_code=2
+                stderr=f"sheepdogai: blocked{rid}: {v.reason or 'denied'}", exit_code=2
             )
         return AdapterResponse(exit_code=0)
 
     def fail_closed(self, reason: str) -> AdapterResponse:
         """Exit 2 with a non-empty reason."""
         return AdapterResponse(
-            stderr=f"sheepdog: {reason or 'failing closed'} (fail closed)", exit_code=2
+            stderr=f"sheepdogai: {reason or 'failing closed'} (fail closed)", exit_code=2
         )
 
 
@@ -170,8 +170,8 @@ class McpProxy:
             ).encode()
             code, _out, err = self.decide(payload)
         except BaseException as e:  # fail closed
-            return f"sheepdog: proxy error {type(e).__name__} (fail closed)"
-        return None if code == 0 else (err.strip() or "sheepdog: blocked (fail closed)")
+            return f"sheepdogai: proxy error {type(e).__name__} (fail closed)"
+        return None if code == 0 else (err.strip() or "sheepdogai: blocked (fail closed)")
 
     def _agent_to_server(self, proc: subprocess.Popen[bytes]) -> None:
         assert proc.stdin is not None
@@ -190,7 +190,7 @@ class McpProxy:
                             "id": None,
                             "error": {
                                 "code": -32600,
-                                "message": "sheepdog: batched tools/call is not supported (fail closed)",
+                                "message": "sheepdogai: batched tools/call is not supported (fail closed)",
                             },
                         }
                     ).encode()

@@ -1,4 +1,4 @@
-"""``sheepdog replay <run>``: re-feed recorded events through the current policy.
+"""``sheepdogai replay <run>``: re-feed recorded events through the current policy.
 
 Deterministic: no clock, no randomness, no model calls. If the run was recorded with a
 non-rules Decider, the *recorded* answers are replayed through the engine's clamp. Path

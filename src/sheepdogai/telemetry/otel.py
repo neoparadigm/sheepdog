@@ -3,7 +3,7 @@
 ``spans_from_records`` is a pure function (no OTel import, no network). ``emit`` is the only code
 that touches OpenTelemetry and it never runs unless the caller invokes it explicitly; the core
 never calls it. Attribute names follow semantic-conventions v1.37.0 (Development stability);
-everything Sheepdog-specific is under ``sheepdog.*`` (see ontology/mapping.md).
+everything Sheepdog-specific is under ``sheepdogai.*`` (see ontology/mapping.md).
 """
 
 from __future__ import annotations
@@ -28,18 +28,18 @@ def spans_from_records(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
             "gen_ai.tool.name": ev["tool"]["name"],
             "gen_ai.tool.call.id": ev["event_id"],
             "gen_ai.agent.id": ev["agent_id"],
-            "sheepdog.verdict": v["action"],
-            "sheepdog.verdict.reason": v.get("reason", ""),
-            "sheepdog.rule.id": v.get("rule_id") or "",
-            "sheepdog.decider": v.get("decided_by", "rules"),
-            "sheepdog.policy.hash": phash,
-            "sheepdog.adapter": d.get("adapter", ev["source"]),
-            "sheepdog.run.id": run_id,
+            "sheepdogai.verdict": v["action"],
+            "sheepdogai.verdict.reason": v.get("reason", ""),
+            "sheepdogai.rule.id": v.get("rule_id") or "",
+            "sheepdogai.decider": v.get("decided_by", "rules"),
+            "sheepdogai.policy.hash": phash,
+            "sheepdogai.adapter": d.get("adapter", ev["source"]),
+            "sheepdogai.run.id": run_id,
         }
         b = d.get("budget") or {}
         if b:
-            attrs["sheepdog.budget.steps"] = b.get("steps", 0)
-            attrs["sheepdog.budget.cost_usd"] = b.get("cost_usd", 0.0)
+            attrs["sheepdogai.budget.steps"] = b.get("steps", 0)
+            attrs["sheepdogai.budget.cost_usd"] = b.get("cost_usd", 0.0)
         spans.append(
             {
                 "name": f"execute_tool {ev['tool']['name']}",

@@ -2,27 +2,27 @@
 @prefix rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
 @prefix prov:     <http://www.w3.org/ns/prov#> .
-@prefix sheepdog: <https://example.org/sheepdog#> .
-@prefix shp:      <https://example.org/sheepdog/shapes#> .
+@prefix sheepdogai: <https://example.org/sheepdogai#> .
+@prefix shp:      <https://example.org/sheepdogai/shapes#> .
 
 # Every exported run graph must satisfy these shapes.
 
 shp:Declare a sh:NodeShape ;
-    sh:declare [ sh:prefix "sheepdog" ; sh:namespace "https://example.org/sheepdog#"^^xsd:anyURI ] ,
+    sh:declare [ sh:prefix "sheepdogai" ; sh:namespace "https://example.org/sheepdogai#"^^xsd:anyURI ] ,
                [ sh:prefix "prov" ; sh:namespace "http://www.w3.org/ns/prov#"^^xsd:anyURI ] .
 
 shp:RunShape a sh:NodeShape ;
-    sh:targetClass sheepdog:Run ;
-    sh:property [ sh:path sheepdog:policyHash ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] .
+    sh:targetClass sheepdogai:Run ;
+    sh:property [ sh:path sheepdogai:policyHash ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] .
 
 shp:ToolCallShape a sh:NodeShape ;
-    sh:targetClass sheepdog:ToolCall ;
-    sh:property [ sh:path prov:wasAssociatedWith ; sh:minCount 1 ; sh:class sheepdog:Agent ] ;
-    sh:property [ sh:path sheepdog:governedBy ; sh:minCount 1 ; sh:maxCount 1 ; sh:class sheepdog:Policy ] ;
-    sh:property [ sh:path sheepdog:matchedRule ; sh:maxCount 1 ; sh:class sheepdog:Rule ] ;
-    sh:property [ sh:path sheepdog:approvedBy ; sh:maxCount 1 ; sh:class sheepdog:HumanApproval ] ;
+    sh:targetClass sheepdogai:ToolCall ;
+    sh:property [ sh:path prov:wasAssociatedWith ; sh:minCount 1 ; sh:class sheepdogai:Agent ] ;
+    sh:property [ sh:path sheepdogai:governedBy ; sh:minCount 1 ; sh:maxCount 1 ; sh:class sheepdogai:Policy ] ;
+    sh:property [ sh:path sheepdogai:matchedRule ; sh:maxCount 1 ; sh:class sheepdogai:Rule ] ;
+    sh:property [ sh:path sheepdogai:approvedBy ; sh:maxCount 1 ; sh:class sheepdogai:HumanApproval ] ;
     sh:property [ sh:path [ sh:inversePath prov:wasGeneratedBy ] ; sh:minCount 1 ; sh:maxCount 1 ;
-                  sh:class sheepdog:Verdict ;
+                  sh:class sheepdogai:Verdict ;
                   sh:message "every ToolCall has exactly one Verdict" ] ;
     sh:sparql [
         a sh:SPARQLConstraint ;
@@ -30,25 +30,25 @@ shp:ToolCallShape a sh:NodeShape ;
         sh:message "an ask verdict needs a HumanApproval (approval, delegation or timeout deny)" ;
         sh:select """
             SELECT $this WHERE {
-              ?v prov:wasGeneratedBy $this ; sheepdog:verdictValue "ask" .
-              FILTER NOT EXISTS { $this sheepdog:approvedBy ?a }
+              ?v prov:wasGeneratedBy $this ; sheepdogai:verdictValue "ask" .
+              FILTER NOT EXISTS { $this sheepdogai:approvedBy ?a }
             }""" ] .
 
 shp:VerdictShape a sh:NodeShape ;
-    sh:targetClass sheepdog:Verdict ;
-    sh:property [ sh:path sheepdog:verdictValue ; sh:minCount 1 ; sh:maxCount 1 ;
+    sh:targetClass sheepdogai:Verdict ;
+    sh:property [ sh:path sheepdogai:verdictValue ; sh:minCount 1 ; sh:maxCount 1 ;
                   sh:in ( "allow" "ask" "deny" ) ] ;
-    sh:property [ sh:path sheepdog:strictness ; sh:minCount 1 ; sh:maxCount 1 ;
+    sh:property [ sh:path sheepdogai:strictness ; sh:minCount 1 ; sh:maxCount 1 ;
                   sh:datatype xsd:integer ; sh:in ( 0 1 2 ) ] ;
-    sh:property [ sh:path sheepdog:decidedBy ; sh:minCount 1 ; sh:maxCount 1 ; sh:class sheepdog:Decider ] ;
+    sh:property [ sh:path sheepdogai:decidedBy ; sh:minCount 1 ; sh:maxCount 1 ; sh:class sheepdogai:Decider ] ;
     sh:sparql [
         a sh:SPARQLConstraint ;
         sh:prefixes shp:Declare ;
         sh:message "strictness does not match verdictValue" ;
         sh:select """
             SELECT $this WHERE {
-              $this sheepdog:verdictValue ?v ; sheepdog:strictness ?s .
-              FILTER NOT EXISTS { ?lvl sheepdog:verdictValue ?v ; sheepdog:strictness ?s . }
+              $this sheepdogai:verdictValue ?v ; sheepdogai:strictness ?s .
+              FILTER NOT EXISTS { ?lvl sheepdogai:verdictValue ?v ; sheepdogai:strictness ?s . }
               FILTER (!( (?v = "allow" && ?s = 0) || (?v = "ask" && ?s = 1) || (?v = "deny" && ?s = 2) ))
             }""" ] ;
     sh:sparql [
@@ -57,41 +57,41 @@ shp:VerdictShape a sh:NodeShape ;
         sh:message "Decider verdict is less strict than the rules verdict it received (a Decider may only tighten)" ;
         sh:select """
             SELECT $this ?prior WHERE {
-              $this sheepdog:priorVerdict ?prior ; sheepdog:strictness ?s .
-              ?prior sheepdog:strictness ?p .
+              $this sheepdogai:priorVerdict ?prior ; sheepdogai:strictness ?s .
+              ?prior sheepdogai:strictness ?p .
               FILTER (?s < ?p)
             }""" ] .
 
 shp:HumanApprovalShape a sh:NodeShape ;
-    sh:targetClass sheepdog:HumanApproval ;
-    sh:property [ sh:path sheepdog:outcome ; sh:minCount 1 ; sh:maxCount 1 ;
+    sh:targetClass sheepdogai:HumanApproval ;
+    sh:property [ sh:path sheepdogai:outcome ; sh:minCount 1 ; sh:maxCount 1 ;
                   sh:in ( "approved" "denied" "timeout_deny" "delegated" "allow_once" "allow_run" ) ] ;
-    sh:property [ sh:path sheepdog:channel ; sh:minCount 1 ; sh:maxCount 1 ] ;
+    sh:property [ sh:path sheepdogai:channel ; sh:minCount 1 ; sh:maxCount 1 ] ;
     sh:property [ sh:path prov:wasAssociatedWith ; sh:minCount 1 ; sh:class prov:Person ] .
 
 shp:RuleShape a sh:NodeShape ;
-    sh:targetClass sheepdog:Rule ;
-    sh:property [ sh:path sheepdog:ruleId ; sh:minCount 1 ; sh:maxCount 1 ] ;
-    sh:property [ sh:path sheepdog:memberOf ; sh:minCount 1 ; sh:class sheepdog:Policy ] .
+    sh:targetClass sheepdogai:Rule ;
+    sh:property [ sh:path sheepdogai:ruleId ; sh:minCount 1 ; sh:maxCount 1 ] ;
+    sh:property [ sh:path sheepdogai:memberOf ; sh:minCount 1 ; sh:class sheepdogai:Policy ] .
 
 shp:PolicyShape a sh:NodeShape ;
-    sh:targetClass sheepdog:Policy ;
-    sh:property [ sh:path sheepdog:policyHash ; sh:minCount 1 ; sh:maxCount 1 ;
+    sh:targetClass sheepdogai:Policy ;
+    sh:property [ sh:path sheepdogai:policyHash ; sh:minCount 1 ; sh:maxCount 1 ;
                   sh:pattern "^[0-9a-f]{64}$" ] .
 
 shp:LogRecordShape a sh:NodeShape ;
-    sh:targetClass sheepdog:LogRecord ;
-    sh:property [ sh:path sheepdog:hash ; sh:minCount 1 ; sh:maxCount 1 ; sh:pattern "^[0-9a-f]{64}$" ] ;
-    sh:property [ sh:path sheepdog:prevHash ; sh:minCount 1 ; sh:maxCount 1 ; sh:pattern "^[0-9a-f]{64}$" ] .
+    sh:targetClass sheepdogai:LogRecord ;
+    sh:property [ sh:path sheepdogai:hash ; sh:minCount 1 ; sh:maxCount 1 ; sh:pattern "^[0-9a-f]{64}$" ] ;
+    sh:property [ sh:path sheepdogai:prevHash ; sh:minCount 1 ; sh:maxCount 1 ; sh:pattern "^[0-9a-f]{64}$" ] .
 
 shp:BudgetShape a sh:NodeShape ;
-    sh:targetClass sheepdog:Budget ;
+    sh:targetClass sheepdogai:Budget ;
     sh:sparql [
         a sh:SPARQLConstraint ;
         sh:prefixes shp:Declare ;
         sh:message "a Budget may only be linked (exceeded) to a deny verdict" ;
         sh:select """
             SELECT $this WHERE {
-              $this sheepdog:exceeded ?v .
-              FILTER NOT EXISTS { ?v sheepdog:verdictValue "deny" }
+              $this sheepdogai:exceeded ?v .
+              FILTER NOT EXISTS { ?v sheepdogai:verdictValue "deny" }
             }""" ] .

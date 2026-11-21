@@ -1,4 +1,4 @@
-"""Pydantic schema for sheepdog.yaml and rule packs. Unknown keys are rejected."""
+"""Pydantic schema for sheepdogai.yaml and rule packs. Unknown keys are rejected."""
 
 from __future__ import annotations
 
@@ -92,7 +92,7 @@ class ApprovalsConfig(_Strict):
 class LogConfig(_Strict):
     """Log settings. Hash chaining and redaction cannot be turned off in v0.1."""
 
-    path: str = ".sheepdog/runs"
+    path: str = ".sheepdogai/runs"
     hash_chain: Literal[True] = True
     redact_secrets: Literal[True] = True
 
@@ -124,7 +124,7 @@ class PackSettings(_Strict):
 
 
 class Config(_Strict):
-    """Top-level sheepdog.yaml."""
+    """Top-level sheepdogai.yaml."""
 
     version: Literal[1]
     mode: Literal["strict", "balanced", "relaxed"] = "strict"
@@ -168,7 +168,7 @@ class PackFile(_Strict):
 
 
 class SharedConfig(_Strict):
-    """Committed .sheepdog/shared.yaml. Untrusted; it can only tighten the user's own config."""
+    """Committed .sheepdogai/shared.yaml. Untrusted; it can only tighten the user's own config."""
 
     version: Literal[1]
     mode: Literal["strict", "balanced", "relaxed"] | None = None

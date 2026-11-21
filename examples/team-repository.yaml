@@ -5,7 +5,7 @@ fail: closed
 packs: [self_protect, machine, secrets, repo, network, injection]
 budget: {max_steps: 200, max_cost_usd: 5, max_repeats: 3}
 approvals: {ask_timeout_s: 60, remember: session}
-log: {path: .sheepdog/runs, hash_chain: true, redact_secrets: true}
+log: {path: .sheepdogai/runs, hash_chain: true, redact_secrets: true}
 rules:
   - id: no-force-push
     match: {tool: Bash, command: ["git push --force*", "git push -f*"]}

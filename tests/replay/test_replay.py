@@ -36,12 +36,12 @@ CMDS = [
 
 
 def record(tmp_path: Path, cfg: str = "version: 1\n") -> Path:
-    (tmp_path / "sheepdog.yaml").write_text(cfg)
+    (tmp_path / "sheepdogai.yaml").write_text(cfg)
     gw = Gateway(tmp_path)
     for c in CMDS:
         gw.handle("claude", ev(c))
     gw.close()
-    return tmp_path / ".sheepdog/runs/g1.jsonl"
+    return tmp_path / ".sheepdogai/runs/g1.jsonl"
 
 
 def test_golden_run_replays_identically(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
@@ -53,7 +53,7 @@ def test_golden_run_replays_identically(tmp_path: Path, capsys: pytest.CaptureFi
 
 def test_replay_is_deterministic(tmp_path: Path) -> None:
     p = record(tmp_path)
-    pol = load_policy(tmp_path / "sheepdog.yaml", project_root=tmp_path)
+    pol = load_policy(tmp_path / "sheepdogai.yaml", project_root=tmp_path)
     a = replay_records(read_records(p), pol)
     b = replay_records(read_records(p), pol)
     assert a == b
@@ -63,7 +63,7 @@ def test_changing_a_rule_shows_exactly_the_diff(
     tmp_path: Path, capsys: pytest.CaptureFixture[str]
 ) -> None:
     record(tmp_path)
-    (tmp_path / "sheepdog.yaml").write_text(
+    (tmp_path / "sheepdogai.yaml").write_text(
         "version: 1\nrules:\n  - id: allow-echo\n    match: {command: 'echo *'}\n    action: allow\n"
         "  - id: no-ls\n    match: {command: ls}\n    action: deny\n    reason: nope\n"
     )
@@ -112,7 +112,7 @@ def test_recorded_model_decider_answers_are_replayed_not_called(tmp_path: Path) 
             return orig(self, e, pr)
 
         judge.Judge.decide = counting
-        pol = load_policy(tmp_path / "sheepdog.yaml", project_root=tmp_path)
+        pol = load_policy(tmp_path / "sheepdogai.yaml", project_root=tmp_path)
         diffs, n = replay_records(read_records(p), pol)
         assert diffs == [] and n == 7 and calls["n"] == 0
         recs = read_records(p)

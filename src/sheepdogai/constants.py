@@ -10,13 +10,13 @@ from __future__ import annotations
 __version__ = "0.1.0"
 
 PACKAGE_NAME = "sheepdogai"
-CLI_NAME = "sheepdog"
-CONFIG_FILE = "sheepdog.yaml"
-STATE_DIR = ".sheepdog"
+CLI_NAME = "sheepdogai"
+CONFIG_FILE = "sheepdogai.yaml"
+STATE_DIR = ".sheepdogai"
 SCHEMA_VERSION = "1"
 
 # Placeholder namespace; replace with a stable URL once the project has one.
-ONTOLOGY_NS = "https://example.org/sheepdog#"
+ONTOLOGY_NS = "https://example.org/sheepdogai#"
 
 # OpenTelemetry gen_ai semantic conventions are in Development stability.
 # Only attributes checked against this version are mapped.

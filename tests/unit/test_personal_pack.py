@@ -240,13 +240,13 @@ def test_cap_is_configurable(tmp_path: Path) -> None:
 def test_personal_pack_is_opt_in_and_lowers_budget(tmp_path: Path) -> None:
     default = load_policy(None, project_root=tmp_path)
     assert all(lr.origin != "personal" for lr in default.rules)
-    (tmp_path / "sheepdog.yaml").write_text("version: 1\npacks: [personal]\n")
-    pol = load_policy(tmp_path / "sheepdog.yaml", project_root=tmp_path)
+    (tmp_path / "sheepdogai.yaml").write_text("version: 1\npacks: [personal]\n")
+    pol = load_policy(tmp_path / "sheepdogai.yaml", project_root=tmp_path)
     assert (pol.budget.max_steps, pol.budget.max_repeats) == (
         60,
         2,
     ) and pol.budget.max_cost_usd == 2.0
-    (tmp_path / "sheepdog.yaml").write_text(
+    (tmp_path / "sheepdogai.yaml").write_text(
         "version: 1\npacks: [personal]\nbudget: {max_steps: 500}\n"
     )
-    assert load_policy(tmp_path / "sheepdog.yaml", project_root=tmp_path).budget.max_steps == 500
+    assert load_policy(tmp_path / "sheepdogai.yaml", project_root=tmp_path).budget.max_steps == 500

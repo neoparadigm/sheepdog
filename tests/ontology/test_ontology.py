@@ -18,7 +18,7 @@ PROV = "http://www.w3.org/ns/prov#"
 
 
 def run_log(tmp_path: Path, cmds: list[str], cfg: str = "version: 1\n") -> Path:
-    (tmp_path / "sheepdog.yaml").write_text(cfg)
+    (tmp_path / "sheepdogai.yaml").write_text(cfg)
     gw = Gateway(tmp_path)
     for c in cmds:
         gw.handle(
@@ -34,7 +34,7 @@ def run_log(tmp_path: Path, cmds: list[str], cfg: str = "version: 1\n") -> Path:
             ).encode(),
         )
     gw.close()
-    return tmp_path / ".sheepdog/runs/o1.jsonl"
+    return tmp_path / ".sheepdogai/runs/o1.jsonl"
 
 
 def records(p: Path) -> list[dict[str, object]]:
@@ -42,9 +42,9 @@ def records(p: Path) -> list[dict[str, object]]:
 
 
 def test_namespace_constant_matches_files() -> None:
-    assert f"@prefix sheepdog: <{SD}>" in read_text("sheepdog.ttl")
-    assert f"@prefix sheepdog: <{SD}>" in read_text("shapes.ttl")
-    assert json.loads(read_text("context.jsonld"))["@context"]["sheepdog"] == SD
+    assert f"@prefix sheepdogai: <{SD}>" in read_text("sheepdogai.ttl")
+    assert f"@prefix sheepdogai: <{SD}>" in read_text("shapes.ttl")
+    assert json.loads(read_text("context.jsonld"))["@context"]["sheepdogai"] == SD
 
 
 def test_mapping_table_matches_code_and_doc() -> None:
@@ -52,21 +52,21 @@ def test_mapping_table_matches_code_and_doc() -> None:
     assert render_mapping_table() in md
     concepts = {row[0].split(":")[1] for row in MAPPING}
     assert concepts == set(PROV_TYPE) - {"Person"}
-    ttl = read_text("sheepdog.ttl")
+    ttl = read_text("sheepdogai.ttl")
     for name, prov_cls, _otel, _n in MAPPING:
         local = name.split(":")[1]
         base = prov_cls.split()[0]
-        assert f"sheepdog:{local} " in ttl and base in ttl
+        assert f"sheepdogai:{local} " in ttl and base in ttl
 
 
 def test_every_term_in_context_is_declared_in_ttl() -> None:
     import re
 
-    ttl = read_text("sheepdog.ttl")
+    ttl = read_text("sheepdogai.ttl")
     ctx = json.loads(read_text("context.jsonld"))["@context"]
     for _term, d in ctx.items():
         iri = d if isinstance(d, str) else d.get("@id", "") if isinstance(d, dict) else ""
-        if isinstance(iri, str) and iri.startswith("sheepdog:"):
+        if isinstance(iri, str) and iri.startswith("sheepdogai:"):
             assert re.search(rf"^{re.escape(iri)}\s", ttl, re.M), f"{iri} not declared"
 
 
@@ -91,7 +91,7 @@ def test_denied_call_exports_expected_triples(tmp_path: Path) -> None:
     rule = next(rdf.objects(call, URIRef(SD + "matchedRule")))
     assert str(rule).endswith(":machine-recursive-delete-outside")
     assert next(rdf.objects(call, URIRef(SD + "governedBy"))) is not None
-    assert str(call).startswith("urn:sheepdog:event:")
+    assert str(call).startswith("urn:sheepdogai:event:")
 
 
 def test_exported_graph_conforms_to_shapes(tmp_path: Path) -> None:
@@ -159,7 +159,7 @@ def test_strictness_individuals_are_ordered_in_ttl() -> None:
     from rdflib import Graph, URIRef
 
     t = Graph()
-    t.parse(data=read_text("sheepdog.ttl"), format="turtle")
+    t.parse(data=read_text("sheepdogai.ttl"), format="turtle")
     s = lambda n: URIRef(SD + n)  # noqa: E731
     assert (s("Deny"), s("stricterThan"), s("Ask")) in t and (
         s("Ask"),
@@ -171,5 +171,5 @@ def test_strictness_individuals_are_ordered_in_ttl() -> None:
 def test_stable_iris_merge_across_runs(tmp_path: Path) -> None:
     a = jsonld_dict(graph_from_log(run_log(tmp_path, ["rm -rf /"])))
     ids = {n["id"] for n in a["@graph"]}  # type: ignore[attr-defined]
-    assert all(i.startswith("urn:sheepdog:") for i in ids)
+    assert all(i.startswith("urn:sheepdogai:") for i in ids)
     assert Verdict(action=Action.DENY).action.label == "deny"

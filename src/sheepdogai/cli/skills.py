@@ -1,4 +1,4 @@
-"""The ``/sheepdog`` chat command for Claude Code (a skill) and Gemini CLI (a custom command).
+"""The ``/sheepdogai`` chat command for Claude Code (a skill) and Gemini CLI (a custom command).
 
 Formats verified 2026-11-21: Claude skills are ``~/.claude/skills/<name>/SKILL.md`` with YAML
 frontmatter (https://code.claude.com/docs/en/skills); Gemini custom commands are
@@ -37,7 +37,7 @@ Pick the matching action. Run commands with your shell tool.
 - **Nothing specific** -> run `{CLI_NAME} doctor`, then `{CLI_NAME} recent -n 10`, and summarise both.
 
 Rules for you:
-- Never edit {CLI_NAME} config files, the hook settings or the `.sheepdog` folder yourself; use the commands
+- Never edit {CLI_NAME} config files, the hook settings or the `.sheepdogai` folder yourself; use the commands
   above only. Never run `{CLI_NAME} setup`, `install`, `uninstall`, `approve-shared` or `init`.
 - If {CLI_NAME} blocks something you were doing, do not look for a workaround. Tell the user what was
   blocked and why, and let them decide.
@@ -45,47 +45,63 @@ Rules for you:
   `{CLI_NAME} setup`.
 """
 
-CLAUDE_SKILL = f"""---
-name: {CLI_NAME}
+ALIASES = (CLI_NAME, "sheepdog")  # /sheepdogai and the short /sheepdog
+
+
+def claude_skill(name: str) -> str:
+    """SKILL.md text for the slash command ``/<name>``."""
+    return f"""---
+name: {name}
 description: Check, explain and tune the {CLI_NAME} safety guard that screens this agent's tool calls. Use when the user asks whether {CLI_NAME} is working, what was blocked and why, or wants it stricter, looser, or to allow or block a specific command.
 argument-hint: "[what you want, for example: what was blocked?]"
 ---
 
 {BODY}"""
 
-GEMINI_COMMAND = (
-    f'description = "Check, explain and tune the {CLI_NAME} safety guard"\n'
-    'prompt = """\n' + BODY.replace("$ARGUMENTS", "{{args}}").replace('"""', "'''") + '"""\n'
-)
+
+def gemini_command() -> str:
+    """TOML text for a Gemini CLI custom command."""
+    return (
+        f'description = "Check, explain and tune the {CLI_NAME} safety guard"\n'
+        'prompt = """\n' + BODY.replace("$ARGUMENTS", "{{args}}").replace('"""', "'''") + '"""\n'
+    )
 
 
-def skill_targets(home: Path) -> dict[str, tuple[Path, str]]:
-    """cli -> (file, content) for each supported chat command."""
+CLAUDE_SKILL = claude_skill(CLI_NAME)
+GEMINI_COMMAND = gemini_command()
+
+
+def skill_targets(home: Path) -> dict[str, list[tuple[Path, str]]]:
+    """cli -> [(file, content)] for each chat command name we install."""
     return {
-        "claude": (home / ".claude" / "skills" / CLI_NAME / "SKILL.md", CLAUDE_SKILL),
-        "gemini": (home / ".gemini" / "commands" / f"{CLI_NAME}.toml", GEMINI_COMMAND),
+        "claude": [
+            (home / ".claude" / "skills" / n / "SKILL.md", claude_skill(n)) for n in ALIASES
+        ],
+        "gemini": [
+            (home / ".gemini" / "commands" / f"{n}.toml", gemini_command()) for n in ALIASES
+        ],
     }
 
 
-def install_skill(cli: str, home: Path) -> Path | None:
-    """Write the chat command (never overwrites a different file the user made)."""
-    t = skill_targets(home).get(cli)
-    if t is None:
-        return None
-    path, content = t
-    if path.exists() and path.read_text() != content:
-        return None
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(content)
-    return path
+def install_skill(cli: str, home: Path) -> list[Path]:
+    """Write the chat commands (never overwrites a different file the user made)."""
+    done: list[Path] = []
+    for path, content in skill_targets(home).get(cli, []):
+        if path.exists() and path.read_text() != content:
+            continue
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content)
+        done.append(path)
+    return done
 
 
 def remove_skill(cli: str, home: Path) -> bool:
-    """Remove our chat command if it is unchanged."""
-    t = skill_targets(home).get(cli)
-    if t is None or not t[0].exists() or t[0].read_text() != t[1]:
-        return False
-    t[0].unlink()
-    with contextlib.suppress(OSError):
-        t[0].parent.rmdir()
-    return True
+    """Remove our chat commands if unchanged. True if any was removed."""
+    removed = False
+    for path, content in skill_targets(home).get(cli, []):
+        if path.exists() and path.read_text() == content:
+            path.unlink()
+            removed = True
+            with contextlib.suppress(OSError):
+                path.parent.rmdir()
+    return removed

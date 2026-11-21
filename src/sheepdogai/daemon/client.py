@@ -21,19 +21,19 @@ FAIL = 2
 
 def fail_closed(reason: str) -> tuple[int, str, str]:
     """The universal fail-closed response: exit 2, non-empty stderr."""
-    return FAIL, "", f"sheepdog: {reason} (fail closed)"
+    return FAIL, "", f"sheepdogai: {reason} (fail closed)"
 
 
 def find_project(start: str | None = None) -> str:
-    """Nearest ancestor holding sheepdog.yaml or .sheepdog, else CLAUDE_PROJECT_DIR/cwd."""
-    env = os.environ.get("SHEEPDOG_PROJECT") or os.environ.get("CLAUDE_PROJECT_DIR")
+    """Nearest ancestor holding sheepdogai.yaml or .sheepdogai, else CLAUDE_PROJECT_DIR/cwd."""
+    env = os.environ.get("SHEEPDOGAI_PROJECT") or os.environ.get("CLAUDE_PROJECT_DIR")
     if env:
         return os.path.realpath(env)
     cur = os.path.realpath(start or os.getcwd())
     probe = cur
     while True:
-        if os.path.exists(os.path.join(probe, "sheepdog.yaml")) or os.path.isdir(
-            os.path.join(probe, ".sheepdog")
+        if os.path.exists(os.path.join(probe, "sheepdogai.yaml")) or os.path.isdir(
+            os.path.join(probe, ".sheepdogai")
         ):
             return probe
         parent = os.path.dirname(probe)
@@ -44,7 +44,7 @@ def find_project(start: str | None = None) -> str:
 
 def sock_for(project: str) -> str:
     """Socket path (mirrors daemon.server.socket_path without importing it)."""
-    base = os.environ.get("SHEEPDOG_RUNTIME_DIR") or f"/tmp/sheepdog-{os.getuid()}"
+    base = os.environ.get("SHEEPDOGAI_RUNTIME_DIR") or f"/tmp/sheepdogai-{os.getuid()}"
     return os.path.join(base, hashlib.sha256(project.encode()).hexdigest()[:16] + ".sock")
 
 
@@ -95,7 +95,7 @@ def _start_daemon(project: str) -> None:
 
 def _daemon_error(project: str) -> str:
     try:
-        with open(os.path.join(project, ".sheepdog", "daemon.err"), encoding="utf-8") as f:
+        with open(os.path.join(project, ".sheepdogai", "daemon.err"), encoding="utf-8") as f:
             return f.read(300)
     except OSError:
         return ""
@@ -114,10 +114,10 @@ def request(
     """Ask the daemon for a verdict. Returns (exit_code, stdout, stderr); never raises."""
     try:
         timeout = (
-            timeout if timeout is not None else float(os.environ.get("SHEEPDOG_TIMEOUT_S", "5"))
+            timeout if timeout is not None else float(os.environ.get("SHEEPDOGAI_TIMEOUT_S", "5"))
         )
         if autostart is None:
-            autostart = os.environ.get("SHEEPDOG_NO_AUTOSTART") != "1"
+            autostart = os.environ.get("SHEEPDOGAI_NO_AUTOSTART") != "1"
         project = project or find_project()
         path = sock or sock_for(project)
         deadline = time.monotonic() + timeout

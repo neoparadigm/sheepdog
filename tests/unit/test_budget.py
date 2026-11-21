@@ -70,7 +70,7 @@ def test_budget_beats_allow_rule_but_not_self_protect_reason(tmp_path: Path) -> 
     d = eng.decide(event("b", cwd=str(tmp_path)), st)
     assert d.verdict.rule_id == "budget_exceeded"
     d = eng.decide(
-        event(kind="file_write", name="Write", file_path="sheepdog.yaml", cwd=str(tmp_path)), st
+        event(kind="file_write", name="Write", file_path="sheepdogai.yaml", cwd=str(tmp_path)), st
     )
     assert (
         d.origin == "self_protect"

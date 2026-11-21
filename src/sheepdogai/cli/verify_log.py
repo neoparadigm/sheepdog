@@ -1,4 +1,4 @@
-"""``sheepdog verify-log <run>``."""
+"""``sheepdogai verify-log <run>``."""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ def resolve_run(run: str, project: Path) -> Path:
     p = Path(run)
     if p.exists():
         return p
-    return project / ".sheepdog" / "runs" / f"{run}.jsonl"
+    return project / ".sheepdogai" / "runs" / f"{run}.jsonl"
 
 
 def cmd_verify(run: str, project: Path) -> int:

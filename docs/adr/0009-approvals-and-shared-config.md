@@ -13,7 +13,7 @@ agent (or a hostile repository) could try to grant itself permission.
   `allow_run`. The token is never logged; the outcome and channel are.
 * The HMAC key, used-nonce file, approval directory and notifier credentials
   (`~/.config/<cli>/`) are denied to the agent by `self_protect`, as is running `approve`.
-* `.sheepdog/shared.yaml` is data, not code: it applies only when its sha256 equals a hash the human
+* `.sheepdogai/shared.yaml` is data, not code: it applies only when its sha256 equals a hash the human
   approved, it can only tighten (stricter mode, more packs, lower budgets, ask/deny rules), and a
   loosening file is rejected at approval time and again at load.
 * Network notifiers live outside the core (`approvals_net`), read credentials from a 0600 file, and

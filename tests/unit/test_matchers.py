@@ -133,10 +133,10 @@ def test_apply_patch_paths_and_mcp_mutation(tmp_path: Path) -> None:
     e = event(
         kind="other",
         name="apply_patch",
-        patch="*** Update File: sheepdog.yaml\n+x\n",
+        patch="*** Update File: sheepdogai.yaml\n+x\n",
         cwd=str(tmp_path),
     )
-    assert compute_facts(e, str(tmp_path), "/h").paths == [str(tmp_path / "sheepdog.yaml")]
+    assert compute_facts(e, str(tmp_path), "/h").paths == [str(tmp_path / "sheepdogai.yaml")]
     m = event(kind="mcp", name="mcp__fs__read_file", path="a", cwd=str(tmp_path))
     assert compute_facts(m, str(tmp_path), "/h").mutates is False
     m = event(kind="mcp", name="mcp__fs__delete", path="a", cwd=str(tmp_path))
@@ -148,7 +148,7 @@ def test_apply_patch_to_rules_file_is_asked(tmp_path: Path) -> None:
     e = event(
         kind="other",
         name="apply_patch",
-        patch="*** Update File: sheepdog.yaml\n",
+        patch="*** Update File: sheepdogai.yaml\n",
         cwd=str(tmp_path),
     )
     assert eng.decide(e).origin == "self_protect"

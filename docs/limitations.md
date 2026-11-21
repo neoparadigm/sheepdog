@@ -1,15 +1,15 @@
 # Limitations
 
-Read this before relying on sheepdog. **Hooks are guardrails, not isolation.**
+Read this before relying on sheepdogai. **Hooks are guardrails, not isolation.**
 
 ## What hooks cannot see
 
 * Anything the agent CLI does not route through its hook: some built-in tools, subagents, a CLI
   mode or flag that disables hooks, or a different execution path in a later CLI version. If the
-  hook never fires, sheepdog never decides.
+  hook never fires, sheepdogai never decides.
 * What happens *inside* an allowed command. `python script.py` is one tool call; the script may do
   anything. `make test` may run arbitrary code from the Makefile.
-* Tool results. A `PreToolUse` hook runs before the tool, so sheepdog cannot see output, cannot
+* Tool results. A `PreToolUse` hook runs before the tool, so sheepdogai cannot see output, cannot
   know whether a call failed, and cannot redact what the model reads. The repeat budget therefore
   counts identical consecutive calls rather than identical *failing* calls unless outcome feedback
   is supplied.
@@ -53,15 +53,15 @@ secrets split across several tool calls are not reassembled.
 * **Deleting the last record(s) cleanly is only detectable** through the `.head` sidecar (which a
   user with write access can also edit), a signed checkpoint, or an external anchor. The optional
   HMAC checkpoint is an extension point and is not on by default.
-* The log proves *what sheepdog decided*, not that the tool then did what the verdict said.
+* The log proves *what sheepdogai decided*, not that the tool then did what the verdict said.
 
 ## Platform notes
 
 * Unix sockets and `SO_PEERCRED`: Linux and macOS. Windows is not supported in v0.1.
-* **Claude Code under `bypassPermissions`:** sheepdog emits exit 2 (block) for a deny regardless of
+* **Claude Code under `bypassPermissions`:** sheepdogai emits exit 2 (block) for a deny regardless of
   `permission_mode`. The Claude Code hooks documentation we checked does not state whether a hook
   block is honoured in `bypassPermissions` mode, so that behaviour is *not verified* here. Run the
-  end-to-end smoke test (`SHEEPDOG_E2E=1`) against your Claude Code version before relying on it.
+  end-to-end smoke test (`SHEEPDOGAI_E2E=1`) against your Claude Code version before relying on it.
 * **Codex:** the verified part of the hook contract is in the adapter docstring; `apply_patch`
   argument shape, MCP tool naming, and the `hooks.json` layout are not verified, so the adapter is
   experimental.

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 
 class SheepdogError(Exception):
-    """Base class for all sheepdog errors."""
+    """Base class for all sheepdogai errors."""
 
 
 class RulesError(SheepdogError):

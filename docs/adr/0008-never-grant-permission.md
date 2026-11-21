@@ -1,4 +1,4 @@
-# 0008. sheepdog restricts; it never grants permission
+# 0008. sheepdogai restricts; it never grants permission
 
 Status: accepted
 
@@ -11,4 +11,4 @@ empty JSON object (Gemini). The user's normal permission flow still applies. Onl
 are expressed in a way that changes what happens.
 
 ## Consequences
-sheepdog can only make a CLI more cautious than its own settings, never less.
+sheepdogai can only make a CLI more cautious than its own settings, never less.

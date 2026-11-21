@@ -64,7 +64,7 @@ def run_proxy(tmp: Path, lines: list[bytes], decide: Any) -> list[dict[str, Any]
 
 
 def gateway_decide(tmp: Path, cfg: str = "version: 1\nmode: relaxed\n") -> Any:
-    (tmp / "sheepdog.yaml").write_text(cfg)
+    (tmp / "sheepdogai.yaml").write_text(cfg)
     gw = Gateway(tmp)
 
     def decide(payload: bytes) -> tuple[int, str, str]:
@@ -129,7 +129,7 @@ def test_denied_call_is_never_forwarded(tmp_path: Path) -> None:
 
     def decide(payload: bytes) -> tuple[int, str, str]:
         seen.append(json.loads(payload)["request"]["params"]["name"])
-        return 2, "", "sheepdog: blocked [r1]: nope"
+        return 2, "", "sheepdogai: blocked [r1]: nope"
 
     msgs = run_proxy(
         tmp_path, [rpc(7, "tools/call", name="echo", arguments={}), rpc(8, "tools/list")], decide
@@ -154,9 +154,9 @@ def test_fail_closed_when_decider_raises_or_daemon_stopped(
     # the real default decider with the daemon stopped and no autostart
     rt = tmp_path / "rt"
     rt.mkdir(mode=0o700)
-    monkeypatch.setenv("SHEEPDOG_RUNTIME_DIR", str(rt))
-    monkeypatch.setenv("SHEEPDOG_NO_AUTOSTART", "1")
-    monkeypatch.setenv("SHEEPDOG_PROJECT", str(tmp_path))
+    monkeypatch.setenv("SHEEPDOGAI_RUNTIME_DIR", str(rt))
+    monkeypatch.setenv("SHEEPDOGAI_NO_AUTOSTART", "1")
+    monkeypatch.setenv("SHEEPDOGAI_PROJECT", str(tmp_path))
     msgs = run_proxy(tmp_path, [rpc(1, "tools/call", name="echo", arguments={})], default_decide)
     assert (
         msgs[0]["result"]["isError"] is True
@@ -210,7 +210,7 @@ def test_event_from_proxy_uses_mcp_naming_and_graph(tmp_path: Path) -> None:
     d = gateway_decide(tmp_path)
     run_proxy(tmp_path, [rpc(1, "tools/call", name="echo", arguments={"path": "a"})], d)
     d.gw.close()
-    log = next((tmp_path / ".sheepdog/runs").glob("sess.jsonl")).read_text()
+    log = next((tmp_path / ".sheepdogai/runs").glob("sess.jsonl")).read_text()
     assert "mcp__fake__echo" in log and "mcp_proxy:fake" in log
 
 
@@ -218,7 +218,7 @@ def test_event_from_proxy_uses_mcp_naming_and_graph(tmp_path: Path) -> None:
 
 
 def test_wrap_allows_blocks_and_fails_closed(tmp_path: Path) -> None:
-    (tmp_path / "sheepdog.yaml").write_text(
+    (tmp_path / "sheepdogai.yaml").write_text(
         "version: 1\nmode: relaxed\nrules:\n  - id: no-rm\n    match: {command: 'rm *'}\n    action: deny\n    reason: no rm\n"
     )
     gw = Gateway(tmp_path)
@@ -249,9 +249,9 @@ def test_wrap_allows_blocks_and_fails_closed(tmp_path: Path) -> None:
 def test_wrap_without_daemon_fails_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     rt = tmp_path / "rt"
     rt.mkdir(mode=0o700)
-    monkeypatch.setenv("SHEEPDOG_RUNTIME_DIR", str(rt))
-    monkeypatch.setenv("SHEEPDOG_NO_AUTOSTART", "1")
-    monkeypatch.setenv("SHEEPDOG_PROJECT", str(tmp_path))
+    monkeypatch.setenv("SHEEPDOGAI_RUNTIME_DIR", str(rt))
+    monkeypatch.setenv("SHEEPDOGAI_NO_AUTOSTART", "1")
+    monkeypatch.setenv("SHEEPDOGAI_PROJECT", str(tmp_path))
     ran: list[int] = []
     t = wrap(lambda: ran.append(1), name="t")
     with pytest.raises(ToolBlocked):
@@ -262,7 +262,7 @@ def test_wrap_without_daemon_fails_closed(tmp_path: Path, monkeypatch: pytest.Mo
 def test_top_level_wrap_is_lazy_and_works(tmp_path: Path) -> None:
     import sheepdogai
 
-    (tmp_path / "sheepdog.yaml").write_text("version: 1\nmode: relaxed\npacks: []\n")
+    (tmp_path / "sheepdogai.yaml").write_text("version: 1\nmode: relaxed\npacks: []\n")
     gw = Gateway(tmp_path)
     f = sheepdogai.wrap(lambda x: x * 2, name="double", gateway=gw)
     assert f(21) == 42

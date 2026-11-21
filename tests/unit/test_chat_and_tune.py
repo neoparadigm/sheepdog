@@ -35,7 +35,7 @@ def verdict(cfg: Path, project: Path, cmd: str) -> Action:
 
 
 def test_mode_edit_keeps_comments_and_validates(tmp_path: Path, home: Path) -> None:
-    f = tmp_path / "sheepdog.yaml"
+    f = tmp_path / "sheepdogai.yaml"
     f.write_text("# my note\nversion: 1\nmode: strict   # careful\npacks: [machine]\n")
     assert "balanced" in set_mode(tmp_path, home, "balanced")
     assert f.read_text() == "# my note\nversion: 1\nmode: balanced\npacks: [machine]\n"
@@ -51,7 +51,7 @@ def test_allow_and_block_add_valid_rules_in_any_layout(tmp_path: Path, home: Pat
         "version: 1\nrules:\n  - id: a\n    match: {tool: Bash, command: 'x*'}\n    action: ask\nmode: strict\n",
         "version: 1\nmode: strict\nrules:\n  - id: a\n    match: {tool: Bash, command: 'x*'}\n    action: ask\n# end\n",
     ):
-        f = tmp_path / "sheepdog.yaml"
+        f = tmp_path / "sheepdogai.yaml"
         f.write_text(layout)
         add_rule(tmp_path, home, "npm test*", "allow")
         add_rule(tmp_path, home, "npm publish*", "deny")
@@ -66,7 +66,7 @@ def test_allow_and_block_add_valid_rules_in_any_layout(tmp_path: Path, home: Pat
 
 
 def test_bad_or_overbroad_rules_are_refused_and_file_unchanged(tmp_path: Path, home: Path) -> None:
-    f = tmp_path / "sheepdog.yaml"
+    f = tmp_path / "sheepdogai.yaml"
     f.write_text(
         "version: 1\nrules:\n  - id: a\n    match: {tool: [Bash, run_shell_command]}\n    action: ask\n"
     )
@@ -92,14 +92,19 @@ def test_cli_and_bare_invocation(
     base = ["--project", str(tmp_path)]
     assert main([*base, "mode", "strict"]) == 0 and "Mode is now strict" in capsys.readouterr().out
     assert main([*base, "allow", "make test"]) == 0 and "user-allow-1" in capsys.readouterr().out
-    assert main([*base]) in (0, 1)  # bare `sheepdog` runs the health check
+    assert main([*base]) in (0, 1)  # bare `sheepdogai` runs the health check
     assert "[" in capsys.readouterr().out
 
 
 def test_skill_formats_are_valid(home: Path) -> None:
     claude = sk.CLAUDE_SKILL
     fm = yaml.safe_load(claude.split("---")[1])
-    assert fm["name"] == "sheepdog" and "description" in fm and "$ARGUMENTS" in claude
+    assert (
+        fm["name"] == "sheepdogai"
+        and yaml.safe_load(sk.claude_skill("sheepdog").split("---")[1])["name"] == "sheepdog"
+        and "description" in fm
+        and "$ARGUMENTS" in claude
+    )
     g = tomllib.loads(sk.GEMINI_COMMAND)
     assert (
         set(g) == {"description", "prompt"}
@@ -107,24 +112,31 @@ def test_skill_formats_are_valid(home: Path) -> None:
         and "$ARGUMENTS" not in g["prompt"]
     )
     for must in (
-        "sheepdog doctor",
-        "sheepdog recent",
-        "sheepdog mode",
-        "sheepdog allow",
+        "sheepdogai doctor",
+        "sheepdogai recent",
+        "sheepdogai mode",
+        "sheepdogai allow",
         "workaround",
     ):
         assert must in claude
 
 
 def test_skill_install_does_not_clobber_and_remove_only_ours(home: Path) -> None:
-    p = sk.install_skill("claude", home)
-    assert p is not None and p == home / ".claude/skills/sheepdog/SKILL.md"
-    assert sk.remove_skill("claude", home) and not p.exists()
-    p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text("my own skill")
-    assert sk.install_skill("claude", home) is None and p.read_text() == "my own skill"
-    assert sk.remove_skill("claude", home) is False and p.exists()
-    assert sk.install_skill("codex", home) is None
+    done = sk.install_skill("claude", home)
+    assert {p.parent.name for p in done} == {
+        "sheepdogai",
+        "sheepdog",
+    }  # /sheepdogai and the short /sheepdog
+    assert sk.remove_skill("claude", home) and not any(p.exists() for p in done)
+    alias = home / ".claude/skills/sheepdog/SKILL.md"
+    alias.parent.mkdir(parents=True, exist_ok=True)
+    alias.write_text("someone else's /sheepdog skill")
+    done = sk.install_skill("claude", home)
+    assert [p.parent.name for p in done] == [
+        "sheepdogai"
+    ] and alias.read_text() == "someone else's /sheepdog skill"
+    assert sk.remove_skill("claude", home) and alias.exists()  # only ours is removed
+    assert sk.install_skill("codex", home) == []
 
 
 def test_setup_installs_chat_command_and_undo_removes_it(
@@ -135,13 +147,14 @@ def test_setup_installs_chat_command_and_undo_removes_it(
     assert main(["setup", "--yes"]) == 0
     out = capsys.readouterr().out
     assert "type /sheepdog" in out
-    assert (home / ".claude/skills/sheepdog/SKILL.md").exists() and (
-        home / ".gemini/commands/sheepdog.toml"
-    ).exists()
+    for n in ("sheepdog", "sheepdogai"):
+        assert (home / f".claude/skills/{n}/SKILL.md").exists() and (
+            home / f".gemini/commands/{n}.toml"
+        ).exists()
     assert main(["setup", "--undo"]) == 0
     assert (
         not (home / ".claude/skills/sheepdog").exists()
-        and not (home / ".gemini/commands/sheepdog.toml").exists()
+        and not (home / ".gemini/commands/sheepdogai.toml").exists()
     )
 
 
@@ -149,10 +162,10 @@ def test_agent_cannot_loosen_or_reinstall_unattended(tmp_path: Path) -> None:
     from tests.helpers import make_engine
 
     eng = make_engine(tmp_path, mode="relaxed", packs=[])
-    for cmd in ("sheepdog mode relaxed", "sheepdog allow 'rm *'", "sheepdog block 'x*'"):
+    for cmd in ("sheepdogai mode relaxed", "sheepdogai allow 'rm *'", "sheepdogai block 'x*'"):
         assert eng.decide(event(cmd, cwd=str(tmp_path))).verdict.action is Action.ASK, cmd
-    for cmd in ("sheepdog setup --yes", "sheepdog setup --undo", "sheepdog uninstall claude"):
+    for cmd in ("sheepdogai setup --yes", "sheepdogai setup --undo", "sheepdogai uninstall claude"):
         v = eng.decide(event(cmd, cwd=str(tmp_path))).verdict
         assert v.action is Action.DENY, cmd
-    for cmd in ("sheepdog doctor", "sheepdog recent -n 5", "sheepdog status"):
+    for cmd in ("sheepdogai doctor", "sheepdogai recent -n 5", "sheepdogai status"):
         assert eng.decide(event(cmd, cwd=str(tmp_path))).verdict.action is Action.ALLOW, cmd

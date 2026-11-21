@@ -14,7 +14,7 @@ would be treated as a failed hook, i.e. fail open), and every failure path exits
 
 UNVERIFIED: the ``tool_input`` shape of ``apply_patch`` (handled as a string under
 ``command``/``input``/``patch``), the MCP tool naming (assumed ``mcp__<server>__<tool>``), the
-hooks.json/config.toml layout written by ``sheepdog install codex``, and the developers.openai.com
+hooks.json/config.toml layout written by ``sheepdogai install codex``, and the developers.openai.com
 documentation, which was not reachable when this adapter was written.
 """
 
@@ -86,11 +86,11 @@ class CodexAdapter:
         """Deny/ask exit 2 with a non-empty stderr; allow is silent."""
         if v.action in (Action.DENY, Action.ASK):
             rid = f" [{v.rule_id}]" if v.rule_id else ""
-            return AdapterResponse(stderr=f"sheepdog: {v.reason or 'denied'}{rid}", exit_code=2)
+            return AdapterResponse(stderr=f"sheepdogai: {v.reason or 'denied'}{rid}", exit_code=2)
         return AdapterResponse(exit_code=0)
 
     def fail_closed(self, reason: str) -> AdapterResponse:
         """Exit 2 with a non-empty reason."""
         return AdapterResponse(
-            stderr=f"sheepdog: {reason or 'failing closed'} (fail closed)", exit_code=2
+            stderr=f"sheepdogai: {reason or 'failing closed'} (fail closed)", exit_code=2
         )

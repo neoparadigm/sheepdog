@@ -71,14 +71,14 @@ class FrameworkAdapter:
         if v.action in (Action.DENY, Action.ASK):
             rid = f" [{v.rule_id}]" if v.rule_id else ""
             return AdapterResponse(
-                stderr=f"sheepdog: blocked{rid}: {v.reason or 'denied'}", exit_code=2
+                stderr=f"sheepdogai: blocked{rid}: {v.reason or 'denied'}", exit_code=2
             )
         return AdapterResponse(exit_code=0)
 
     def fail_closed(self, reason: str) -> AdapterResponse:
         """Exit 2 with a non-empty reason."""
         return AdapterResponse(
-            stderr=f"sheepdog: {reason or 'failing closed'} (fail closed)", exit_code=2
+            stderr=f"sheepdogai: {reason or 'failing closed'} (fail closed)", exit_code=2
         )
 
 
@@ -91,7 +91,7 @@ def wrap(
     gateway: Any = None,
     framework: str | None = None,
 ) -> F:
-    """Return ``tool`` guarded by sheepdog. ``gateway`` is an in-process Gateway, else the daemon."""
+    """Return ``tool`` guarded by sheepdogai. ``gateway`` is an in-process Gateway, else the daemon."""
     tool_name = name or getattr(tool, "__name__", "tool")
     sig = inspect.signature(tool)
     sid = session_id or f"wrap-{os.getpid()}"
@@ -121,10 +121,10 @@ def wrap(
                 code, _out, err = request("framework", payload, experimental=True)
         except BaseException as e:  # never call the tool if the decision path failed
             raise ToolBlocked(
-                f"sheepdog: could not obtain a decision ({type(e).__name__}); not calling the tool"
+                f"sheepdogai: could not obtain a decision ({type(e).__name__}); not calling the tool"
             ) from e
         if code != 0:
-            raise ToolBlocked(err.strip() or "sheepdog: blocked")
+            raise ToolBlocked(err.strip() or "sheepdogai: blocked")
         return tool(*a, **kw)
 
     return guarded  # type: ignore[return-value]

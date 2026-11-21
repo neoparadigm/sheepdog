@@ -1,4 +1,4 @@
-"""``sheepdog setup``: detect agent CLIs, show the changes, confirm, install globally, self-test."""
+"""``sheepdogai setup``: detect agent CLIs, show the changes, confirm, install globally, self-test."""
 
 from __future__ import annotations
 
@@ -37,13 +37,13 @@ def detect(home: Path) -> list[str]:
 
 def self_test(home: Path) -> tuple[bool, str]:
     """Send a dangerous call through the real hook entry point; it must be blocked."""
-    proj = Path(tempfile.mkdtemp(prefix="sheepdog-selftest-"))
+    proj = Path(tempfile.mkdtemp(prefix="sheepdogai-selftest-"))
     rt = Path(tempfile.mkdtemp(prefix="sd", dir="/tmp"))
     os.chmod(rt, 0o700)
     env = {
         **os.environ,
-        "SHEEPDOG_PROJECT": str(proj),
-        "SHEEPDOG_RUNTIME_DIR": str(rt),
+        "SHEEPDOGAI_PROJECT": str(proj),
+        "SHEEPDOGAI_RUNTIME_DIR": str(rt),
         "HOME": str(home),
     }
     payload = json.dumps(
@@ -110,17 +110,16 @@ def cmd_setup(home: Path, yes: bool, mode: str, undo: bool) -> int:
         for line in p.diff.splitlines():
             print("    " + line)
     for cli in targets:
-        t = skill_targets(home).get(cli)
-        if t and not t[0].exists():
-            print(
-                f"\n  {t[0]}  (new: lets you type /{CLI_NAME} in {cli} to check or tune it by chatting)"
-            )
+        for path, _c in skill_targets(home).get(cli, []):
+            if not path.exists():
+                cmd = path.parent.name if cli == "claude" else path.stem
+                print(f"\n  {path}  (new: lets you type /{cmd} in {cli} to chat with it)")
     if not cfg.exists():
         print(f"\n  {cfg}  (new, mode={mode})")
     if (
         all(not p.changed for p in plans)
         and cfg.exists()
-        and all((t := skill_targets(home).get(c)) is None or t[0].exists() for c in targets)
+        and all(path.exists() for c in targets for path, _c in skill_targets(home).get(c, []))
     ):
         print("\nNothing to do: already set up.")
         return 0

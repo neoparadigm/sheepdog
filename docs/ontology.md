@@ -2,12 +2,12 @@
 
 Source: `src/sheepdogai/ontology/`. Mapping table: see `mapping.md` in that folder.
 
-A small vocabulary (`sheepdog.ttl`) for what PROV-O and OpenTelemetry do not cover: policy
+A small vocabulary (`sheepdogai.ttl`) for what PROV-O and OpenTelemetry do not cover: policy
 verdicts, approvals, budgets and adapter capabilities. Everything else reuses W3C PROV-O.
 
 | File | Purpose |
 |---|---|
-| `sheepdog.ttl` | OWL vocabulary. Namespace `https://example.org/sheepdog#` is a **placeholder** (`constants.ONTOLOGY_NS`). |
+| `sheepdogai.ttl` | OWL vocabulary. Namespace `https://example.org/sheepdogai#` is a **placeholder** (`constants.ONTOLOGY_NS`). |
 | `context.jsonld` | JSON-LD context: any exported event or decision reads as RDF. |
 | `shapes.ttl` | SHACL shapes every exported graph must satisfy (incl. "a Decider may only tighten"). |
 | `mapping.md` | Sheepdog / PROV-O / OTel table, checked by a test. |
@@ -24,35 +24,35 @@ The agent runs `rm -rf /`. The adapter normalises it to one event:
  "tool": {"name": "Bash", "kind": "shell"}, "args": {"command": "rm -rf /"}}
 ```
 
-`sheepdog graph abc123 --format jsonld` exports (abridged):
+`sheepdogai graph abc123 --format jsonld` exports (abridged):
 
 ```json
 {"@context": "…inlined from context.jsonld…",
  "@graph": [
-  {"id": "urn:sheepdog:event:0197c8a2-6f0e-7b3a-9c1d-2d6f4a5b7c10", "type": ["ToolCall", "prov:Activity"],
+  {"id": "urn:sheepdogai:event:0197c8a2-6f0e-7b3a-9c1d-2d6f4a5b7c10", "type": ["ToolCall", "prov:Activity"],
    "toolName": "Bash", "summary": "rm -rf /", "seq": 1,
-   "wasAssociatedWith": {"id": "urn:sheepdog:agent:claude_code"},
-   "governedBy": {"id": "urn:sheepdog:policy:03f6…"},
-   "matchedRule": {"id": "urn:sheepdog:rule:03f6…:machine-recursive-delete-outside"}},
-  {"id": "urn:sheepdog:verdict:0197c8a2-…", "type": ["Verdict", "prov:Entity"],
+   "wasAssociatedWith": {"id": "urn:sheepdogai:agent:claude_code"},
+   "governedBy": {"id": "urn:sheepdogai:policy:03f6…"},
+   "matchedRule": {"id": "urn:sheepdogai:rule:03f6…:machine-recursive-delete-outside"}},
+  {"id": "urn:sheepdogai:verdict:0197c8a2-…", "type": ["Verdict", "prov:Entity"],
    "verdictValue": "deny", "strictness": 2,
-   "wasGeneratedBy": {"id": "urn:sheepdog:event:0197c8a2-…"},
-   "decidedBy": {"id": "urn:sheepdog:decider:rules"}}]}
+   "wasGeneratedBy": {"id": "urn:sheepdogai:event:0197c8a2-…"},
+   "decidedBy": {"id": "urn:sheepdogai:decider:rules"}}]}
 ```
 
 The same facts as Turtle:
 
 ```turtle
-<urn:sheepdog:event:0197c8a2-…> a sheepdog:ToolCall, prov:Activity ;
-    sheepdog:toolName "Bash" ;
-    prov:wasAssociatedWith <urn:sheepdog:agent:claude_code> ;
-    sheepdog:governedBy <urn:sheepdog:policy:03f6…> ;
-    sheepdog:matchedRule <urn:sheepdog:rule:03f6…:machine-recursive-delete-outside> .
-<urn:sheepdog:verdict:0197c8a2-…> a sheepdog:Verdict, prov:Entity ;
-    sheepdog:verdictValue "deny" ; sheepdog:strictness 2 ;
-    prov:wasGeneratedBy <urn:sheepdog:event:0197c8a2-…> ;
-    sheepdog:decidedBy <urn:sheepdog:decider:rules> .
+<urn:sheepdogai:event:0197c8a2-…> a sheepdogai:ToolCall, prov:Activity ;
+    sheepdogai:toolName "Bash" ;
+    prov:wasAssociatedWith <urn:sheepdogai:agent:claude_code> ;
+    sheepdogai:governedBy <urn:sheepdogai:policy:03f6…> ;
+    sheepdogai:matchedRule <urn:sheepdogai:rule:03f6…:machine-recursive-delete-outside> .
+<urn:sheepdogai:verdict:0197c8a2-…> a sheepdogai:Verdict, prov:Entity ;
+    sheepdogai:verdictValue "deny" ; sheepdogai:strictness 2 ;
+    prov:wasGeneratedBy <urn:sheepdogai:event:0197c8a2-…> ;
+    sheepdogai:decidedBy <urn:sheepdogai:decider:rules> .
 ```
 
-IRIs are stable per event (`urn:sheepdog:event:<uuid7>`), so graphs from different runs merge.
+IRIs are stable per event (`urn:sheepdogai:event:<uuid7>`), so graphs from different runs merge.
 `tests/ontology/test_ontology.py` builds this exact scenario and asserts the triples.

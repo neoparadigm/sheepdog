@@ -148,11 +148,11 @@ def test_deny_roundtrip_and_bypass_mode_payload(daemon: _Server, project: Path) 
 
 
 def test_invalid_rules_file_at_startup_and_autostart(runtime: Path, project: Path) -> None:
-    (project / "sheepdog.yaml").write_text("version: 1\nbogus_key: 1\n")
+    (project / "sheepdogai.yaml").write_text("version: 1\nbogus_key: 1\n")
     srv = make_server(project)
     assert srv == 3
-    err = (project / ".sheepdog" / "daemon.err").read_text()
-    assert "bogus_key" in err and "sheepdog.yaml:2" in err
+    err = (project / ".sheepdogai" / "daemon.err").read_text()
+    assert "bogus_key" in err and "sheepdogai.yaml:2" in err
     code, _, msg = client.request(
         "claude", payload("claude", "bash_npm_test"), project=str(project), timeout=4
     )
@@ -160,18 +160,18 @@ def test_invalid_rules_file_at_startup_and_autostart(runtime: Path, project: Pat
 
 
 def test_rules_broken_while_running_denies_everything(daemon: _Server, project: Path) -> None:
-    (project / "sheepdog.yaml").write_text("version: 1\nmode: relaxed\npacks: []\n")
+    (project / "sheepdogai.yaml").write_text("version: 1\nmode: relaxed\npacks: []\n")
     code, out, _ = client.request(
         "claude", payload("claude", "bash_npm_test"), project=str(project), autostart=False
     )
     assert code == 0 and out == ""  # valid relaxed policy: allowed
     time.sleep(0.05)
-    (project / "sheepdog.yaml").write_text("version: 1\nmode: relaxed\nbogus: 1\n")
+    (project / "sheepdogai.yaml").write_text("version: 1\nmode: relaxed\nbogus: 1\n")
     code, _, err = client.request(
         "claude", payload("claude", "bash_npm_test"), project=str(project), autostart=False
     )
     assert code == 2 and "invalid rules" in err
-    (project / "sheepdog.yaml").write_text("version: 1\nmode: relaxed\npacks: []\n# fixed\n")
+    (project / "sheepdogai.yaml").write_text("version: 1\nmode: relaxed\npacks: []\n# fixed\n")
     code, _, _ = client.request(
         "claude", payload("claude", "bash_npm_test"), project=str(project), autostart=False
     )

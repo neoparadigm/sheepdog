@@ -2,7 +2,7 @@
 
 ```mermaid
 flowchart LR
-  A[Agent CLI<br/>Claude Code / Codex / Gemini] -- hook payload JSON --> H[sheepdog hook<br/>thin client, stdlib only]
+  A[Agent CLI<br/>Claude Code / Codex / Gemini] -- hook payload JSON --> H[sheepdogai hook<br/>thin client, stdlib only]
   H -- Unix socket, owner-only --> D[Daemon: Gateway]
   D --> AD[Adapter.parse<br/>ToolCallEvent]
   AD --> E[Policy engine<br/>self_protect, budget, user rules, packs]
@@ -12,12 +12,12 @@ flowchart LR
   R --> H --> A
   L -.-> G[run graph<br/>Mermaid / JSON / JSON-LD]
   L -.-> RP[replay + report]
-  G -.-> O[ontology<br/>PROV-O + sheepdog + SHACL]
+  G -.-> O[ontology<br/>PROV-O + sheepdogai + SHACL]
 ```
 
 ## Data flow of one tool call
 
-1. The agent CLI is about to run a tool and starts `sheepdog hook <cli>`, writing the payload on
+1. The agent CLI is about to run a tool and starts `sheepdogai hook <cli>`, writing the payload on
    stdin. The client imports only the standard library.
 2. The client finds the project, checks the socket is owner-only, and sends
    `{adapter, len}\n<payload>` to the daemon. If no daemon is running it starts one once. Any
@@ -42,10 +42,10 @@ flowchart TB
     P[payload, tool args, file contents]
   end
   subgraph user[User-owned, trusted]
-    C[sheepdog.yaml, shared.yaml after approval]
-    LG[.sheepdog/ log directory]
+    C[sheepdogai.yaml, shared.yaml after approval]
+    LG[.sheepdogai/ log directory]
   end
-  subgraph proc[sheepdog processes]
+  subgraph proc[sheepdogai processes]
     H2[hook client] --- D2[daemon]
   end
   P --> H2

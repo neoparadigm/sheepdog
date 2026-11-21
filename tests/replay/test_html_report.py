@@ -123,7 +123,8 @@ def test_report_contains_no_unredacted_secret_from_the_corpus(tmp_path: Path) ->
     assert "REDACTED" in page
     assert out.stat().st_mode & 0o077 == 0
     assert (
-        out.read_bytes() == render_html(read_records(tmp_path / ".sheepdog/runs/rt.jsonl")).encode()
+        out.read_bytes()
+        == render_html(read_records(tmp_path / ".sheepdogai/runs/rt.jsonl")).encode()
     )
 
 
@@ -145,7 +146,7 @@ def test_hostile_content_is_escaped(tmp_path: Path) -> None:
         ).encode(),
     )
     gw.close()
-    page = render_html(read_records(tmp_path / ".sheepdog/runs/x.jsonl"))
+    page = render_html(read_records(tmp_path / ".sheepdogai/runs/x.jsonl"))
     assert "<script" not in page.lower() and "<img" not in page.lower() and "<b>Bash" not in page
     assert "&lt;script&gt;" in page
 

@@ -128,7 +128,7 @@ def test_daemon_socket_roundtrip_and_memory_ceiling(tmp_path: Path, monkeypatch)
 
     rt = Path(tempfile.mkdtemp(prefix="sdp", dir="/tmp"))
     os.chmod(rt, 0o700)
-    monkeypatch.setenv("SHEEPDOG_RUNTIME_DIR", str(rt))
+    monkeypatch.setenv("SHEEPDOGAI_RUNTIME_DIR", str(rt))
     proj = tmp_path / "proj"
     proj.mkdir()
     pay = json.dumps(

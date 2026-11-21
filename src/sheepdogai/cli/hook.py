@@ -1,4 +1,4 @@
-"""``sheepdog hook <cli>``: read the payload on stdin, ask the daemon, print the response."""
+"""``sheepdogai hook <cli>``: read the payload on stdin, ask the daemon, print the response."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ def run_hook(cli: str, experimental: bool) -> int:
     try:
         payload = sys.stdin.buffer.read(21 * 1024 * 1024)
     except BaseException as e:
-        sys.stderr.write(f"sheepdog: cannot read payload ({type(e).__name__}) (fail closed)\n")
+        sys.stderr.write(f"sheepdogai: cannot read payload ({type(e).__name__}) (fail closed)\n")
         return 2
     from sheepdogai.daemon.client import request
 

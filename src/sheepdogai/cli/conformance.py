@@ -1,4 +1,4 @@
-"""``sheepdog conformance <adapter>``: run the bundled fixtures through an adapter."""
+"""``sheepdogai conformance <adapter>``: run the bundled fixtures through an adapter."""
 
 from __future__ import annotations
 

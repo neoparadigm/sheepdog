@@ -29,15 +29,15 @@ SHARED = (
 
 
 def setup(tmp: Path, user: str = USER, shared: str | None = SHARED) -> Path:
-    (tmp / "sheepdog.yaml").write_text(user)
+    (tmp / "sheepdogai.yaml").write_text(user)
     if shared is not None:
-        (tmp / ".sheepdog").mkdir(exist_ok=True)
+        (tmp / ".sheepdogai").mkdir(exist_ok=True)
         (tmp / SHARED_REL).write_text(shared)
-    return tmp / "sheepdog.yaml"
+    return tmp / "sheepdogai.yaml"
 
 
 def pol(tmp: Path):  # type: ignore[no-untyped-def]
-    return load_policy(tmp / "sheepdog.yaml", project_root=tmp)
+    return load_policy(tmp / "sheepdogai.yaml", project_root=tmp)
 
 
 def test_unapproved_shared_config_is_ignored(tmp_path: Path) -> None:
@@ -112,7 +112,7 @@ def test_shared_config_that_loosens_is_rejected(tmp_path: Path, shared: str, nee
         approve_shared(tmp_path)
     assert needle in str(e1.value)
     # ...and even if the approval file is forged, loading stops with a precise error
-    (tmp_path / ".sheepdog/approved").mkdir(parents=True, exist_ok=True)
+    (tmp_path / ".sheepdogai/approved").mkdir(parents=True, exist_ok=True)
     from sheepdogai.core.canonical import sha256_hex
 
     (tmp_path / APPROVED_REL).write_text(sha256_hex((tmp_path / SHARED_REL).read_bytes()))
@@ -136,7 +136,7 @@ def test_cli_approve_and_revoke_and_agent_cannot_approve(
     # the agent may not run the approve command, nor write the approval file
     eng = PolicyEngine(pol(tmp_path))
     for e in (
-        event("sheepdog approve-shared --yes", cwd=str(tmp_path)),
+        event("sheepdogai approve-shared --yes", cwd=str(tmp_path)),
         event(f"echo abc > {APPROVED_REL}", cwd=str(tmp_path)),
         event(f"cat {APPROVED_REL}", cwd=str(tmp_path)),
         event(kind="file_write", file_path=SHARED_REL, cwd=str(tmp_path)),

@@ -5,7 +5,7 @@
   "permission_mode": "default",
   "session_id": "019a",
   "tool_input": {
-    "command": "*** Begin Patch\n*** Update File: sheepdog.yaml\n@@\n-a\n+b\n*** End Patch"
+    "command": "*** Begin Patch\n*** Update File: sheepdogai.yaml\n@@\n-a\n+b\n*** End Patch"
   },
   "tool_name": "apply_patch",
   "tool_use_id": "call-1",

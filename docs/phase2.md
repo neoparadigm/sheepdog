@@ -33,8 +33,8 @@ has one), `terminal`, `ntfy`, `telegram` or `webhook`.
   expired token, a token for a different event, a forged token, or an allow without a valid token is a
   deny. A **timeout is a deny**, and a late answer is useless.
 * The agent can never read or answer one: tokens live in daemon memory and the channel to the
-  human; the HMAC key is `0600`; `self_protect` denies any access to `.sheepdog/approval*`,
-  `.sheepdog/approved/` and `~/.config/<cli>/`, and denies running `sheepdog approve*`.
+  human; the HMAC key is `0600`; `self_protect` denies any access to `.sheepdogai/approval*`,
+  `.sheepdogai/approved/` and `~/.config/<cli>/`, and denies running `sheepdogai approve*`.
 * Every approval is logged as a `HumanApproval` (`outcome`: `allow_once`, `allow_run`, `denied`,
   `timeout_deny`; `channel`). The token itself is never logged.
 * With a human channel configured, Gemini CLI and Codex (which cannot ask) can still get approvals:
@@ -42,13 +42,13 @@ has one), `terminal`, `ntfy`, `telegram` or `webhook`.
 * Network notifiers read credentials from `~/.config/<cli>/notify.json` (must be mode 0600), not from
   the environment. They are experimental and tested only against local mock servers; the ntfy and
   Telegram wire formats are not verified against the live services.
-* **Timeout budget:** the hook client waits `SHEEPDOG_TIMEOUT_S` (default 5 s) for the daemon. For a
+* **Timeout budget:** the hook client waits `SHEEPDOGAI_TIMEOUT_S` (default 5 s) for the daemon. For a
   remote channel set it above `approvals.ask_timeout_s`, otherwise the hook times out first and
-  denies (safe, but you never get to answer). `sheepdog status` warns about this.
+  denies (safe, but you never get to answer). `sheepdogai status` warns about this.
 
 ## MCP proxy and `wrap()` (experimental)
 
-`sheepdog mcp-proxy --name github -- <server command>` sits between an agent and any MCP server
+`sheepdogai mcp-proxy --name github -- <server command>` sits between an agent and any MCP server
 over stdio. `tools/list` and everything else pass through; each `tools/call` becomes one event
 (`mcp__<name>__<tool>`), goes through the same engine, and is forwarded or answered with an
 `isError` tool result that names the rule. Daemon unreachable: refused. Results are never rewritten
@@ -58,17 +58,17 @@ Both pass the shared conformance suite and stay marked experimental in v0.1.
 
 ## Shareable replay report
 
-`sheepdog replay <run> --html report.html` writes one static file: verdict timeline, denied and
+`sheepdogai replay <run> --html report.html` writes one static file: verdict timeline, denied and
 asked calls, all calls, and the run graph as Mermaid source. No scripts, no external resources,
 a `default-src 'none'` Content-Security-Policy, secrets re-redacted, HTML-escaped, mode 0600; the
 same log gives the same bytes (tested in-process and across processes).
 
 ## Shared repo config
 
-A committed `.sheepdog/shared.yaml` is merged **under** your own config and can only tighten: a
+A committed `.sheepdogai/shared.yaml` is merged **under** your own config and can only tighten: a
 stricter `mode`, extra packs, lower budgets, and `ask`/`deny` rules (prefixed `shared.`, after
 yours, before packs). It is untrusted: it takes effect only after you approve its sha256
-(`sheepdog approve-shared`; the agent cannot run that command or write the approval), and any
-change to the file needs approval again. `sheepdog approve-shared` refuses to approve a file that
+(`sheepdogai approve-shared`; the agent cannot run that command or write the approval), and any
+change to the file needs approval again. `sheepdogai approve-shared` refuses to approve a file that
 tries to loosen anything (allow rules, a looser mode, higher budgets, or the keys `fail`,
-`decider`, `log`, `approvals`, `settings`). `sheepdog status` shows its state.
+`decider`, `log`, `approvals`, `settings`). `sheepdogai status` shows its state.

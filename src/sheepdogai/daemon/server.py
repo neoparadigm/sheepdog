@@ -48,7 +48,7 @@ def safe_run_id(session_id: str) -> str:
 
 def runtime_dir() -> Path:
     """Per-user directory for sockets (0700, owned by us, not a symlink)."""
-    base = os.environ.get("SHEEPDOG_RUNTIME_DIR") or f"/tmp/sheepdog-{os.getuid()}"
+    base = os.environ.get("SHEEPDOGAI_RUNTIME_DIR") or f"/tmp/sheepdogai-{os.getuid()}"
     p = Path(base)
     p.mkdir(mode=0o700, parents=True, exist_ok=True)
     st = os.lstat(p)
@@ -179,12 +179,12 @@ class Gateway:
                     return adapter.fail_closed(f"malformed payload: {e}")
                 return self._decide(adapter, event)
         except ParseError as e:
-            return AdapterResponse(stderr=f"sheepdog: {e} (fail closed)", exit_code=2)
+            return AdapterResponse(stderr=f"sheepdogai: {e} (fail closed)", exit_code=2)
         except Exception as e:
             reason = f"internal error {type(e).__name__}"
             if adapter is not None:
                 return adapter.fail_closed(reason)
-            return AdapterResponse(stderr=f"sheepdog: {reason} (fail closed)", exit_code=2)
+            return AdapterResponse(stderr=f"sheepdogai: {reason} (fail closed)", exit_code=2)
 
     def _log_rejected(self, why: str, raw: bytes) -> None:
         import hashlib
@@ -220,7 +220,7 @@ class Gateway:
         """Resolve an ask through the notifier. Timeout means deny. Returns (verdict, log record)."""
         cfg = self.policy.config.approvals
         if self.broker is None:
-            self.broker = ApprovalBroker(self.project_root / ".sheepdog")
+            self.broker = ApprovalBroker(self.project_root / ".sheepdogai")
         key = (dec.verdict.rule_id, event.tool.name)
         if cfg.remember != "none" and key in self.broker.remembered and not dec.once_only:
             v = Verdict(
@@ -367,7 +367,7 @@ class _Handler(socketserver.StreamRequestHandler):
             )
         except Exception as e:  # malformed request: fail closed
             resp = AdapterResponse(
-                stderr=f"sheepdog: bad request ({type(e).__name__}) (fail closed)", exit_code=2
+                stderr=f"sheepdogai: bad request ({type(e).__name__}) (fail closed)", exit_code=2
             )
         self.server.touch()
         out = {"exit_code": resp.exit_code, "stdout": resp.stdout, "stderr": resp.stderr}
@@ -394,7 +394,7 @@ def make_server(project_root: Path, rules_path: Path | None = None) -> _Server |
 
     Returns 0 (as an int) when another daemon already holds the lock for this project.
     """
-    state_dir = project_root / ".sheepdog"
+    state_dir = project_root / ".sheepdogai"
     state_dir.mkdir(mode=0o700, exist_ok=True)
     err_file = state_dir / "daemon.err"
     sock_path = socket_path(project_root)
@@ -410,7 +410,7 @@ def make_server(project_root: Path, rules_path: Path | None = None) -> _Server |
         fd = os.open(err_file, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
         os.write(fd, str(e).encode()[:2000])
         os.close(fd)
-        print(f"sheepdog daemon: {e}", file=sys.stderr)
+        print(f"sheepdogai daemon: {e}", file=sys.stderr)
         os.close(lock_fd)
         return 3
     with contextlib.suppress(FileNotFoundError):

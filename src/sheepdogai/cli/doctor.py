@@ -1,4 +1,4 @@
-"""``sheepdog doctor`` and ``sheepdog recent``: plain-language answers to "is it working?"."""
+"""``sheepdogai doctor`` and ``sheepdogai recent``: plain-language answers to "is it working?"."""
 
 from __future__ import annotations
 
@@ -63,11 +63,11 @@ def cmd_doctor(project: Path, home: Path) -> int:
     from sheepdogai.cli.skills import skill_targets
 
     for cli in agents:
-        t = skill_targets(home).get(cli)
-        if t:
+        ts = skill_targets(home).get(cli)
+        if ts:
             line(
-                t[0].exists(),
-                f"{cli}: you can type /{CLI_NAME} to chat with it",
+                any(p.exists() for p, _c in ts),
+                f"{cli}: you can type /sheepdog to chat with it",
                 f"run: {CLI_NAME} setup",
             )
     rules = project / CONFIG_FILE
@@ -93,8 +93,8 @@ def cmd_doctor(project: Path, home: Path) -> int:
         f"run: {CLI_NAME} setup, then {CLI_NAME} doctor again",
     )
     runs = (
-        sorted((project / ".sheepdog" / "runs").glob("*.jsonl"))
-        if (project / ".sheepdog" / "runs").exists()
+        sorted((project / ".sheepdogai" / "runs").glob("*.jsonl"))
+        if (project / ".sheepdogai" / "runs").exists()
         else []
     )
     if runs:
@@ -119,7 +119,7 @@ def cmd_doctor(project: Path, home: Path) -> int:
 
 def cmd_recent(project: Path, n: int) -> int:
     """Show the last ``n`` decisions in this folder in plain language."""
-    runs = project / ".sheepdog" / "runs"
+    runs = project / ".sheepdogai" / "runs"
     rows: list[tuple[str, str, str, str]] = []
     for f in sorted(runs.glob("*.jsonl")) if runs.exists() else []:
         for ln in f.read_text().splitlines():

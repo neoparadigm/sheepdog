@@ -1,4 +1,4 @@
-"""``sheepdog graph <run> --format mermaid|json|jsonld [--only-denied]``."""
+"""``sheepdogai graph <run> --format mermaid|json|jsonld [--only-denied]``."""
 
 from __future__ import annotations
 

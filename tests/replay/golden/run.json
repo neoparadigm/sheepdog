@@ -1,639 +1,639 @@
 {
   "edges": [
     {
-      "dst": "urn:sheepdog:approval:00000000-0000-7000-8000-000000000002",
+      "dst": "urn:sheepdogai:approval:00000000-0000-7000-8000-000000000002",
       "kind": "approvedBy",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000002"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000002"
     },
     {
-      "dst": "urn:sheepdog:approval:00000000-0000-7000-8000-000000000007",
+      "dst": "urn:sheepdogai:approval:00000000-0000-7000-8000-000000000007",
       "kind": "approvedBy",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000007"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000007"
     },
     {
-      "dst": "urn:sheepdog:approval:00000000-0000-7000-8000-000000000008",
+      "dst": "urn:sheepdogai:approval:00000000-0000-7000-8000-000000000008",
       "kind": "approvedBy",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000008"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000008"
     },
     {
-      "dst": "urn:sheepdog:approval:00000000-0000-7000-8000-000000000009",
+      "dst": "urn:sheepdogai:approval:00000000-0000-7000-8000-000000000009",
       "kind": "approvedBy",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000009"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000009"
     },
     {
-      "dst": "urn:sheepdog:person:claude_code_prompt",
+      "dst": "urn:sheepdogai:person:claude_code_prompt",
       "kind": "associatedWith",
-      "src": "urn:sheepdog:approval:00000000-0000-7000-8000-000000000002"
+      "src": "urn:sheepdogai:approval:00000000-0000-7000-8000-000000000002"
     },
     {
-      "dst": "urn:sheepdog:person:claude_code_prompt",
+      "dst": "urn:sheepdogai:person:claude_code_prompt",
       "kind": "associatedWith",
-      "src": "urn:sheepdog:approval:00000000-0000-7000-8000-000000000007"
+      "src": "urn:sheepdogai:approval:00000000-0000-7000-8000-000000000007"
     },
     {
-      "dst": "urn:sheepdog:person:claude_code_prompt",
+      "dst": "urn:sheepdogai:person:claude_code_prompt",
       "kind": "associatedWith",
-      "src": "urn:sheepdog:approval:00000000-0000-7000-8000-000000000008"
+      "src": "urn:sheepdogai:approval:00000000-0000-7000-8000-000000000008"
     },
     {
-      "dst": "urn:sheepdog:person:claude_code_prompt",
+      "dst": "urn:sheepdogai:person:claude_code_prompt",
       "kind": "associatedWith",
-      "src": "urn:sheepdog:approval:00000000-0000-7000-8000-000000000009"
+      "src": "urn:sheepdogai:approval:00000000-0000-7000-8000-000000000009"
     },
     {
-      "dst": "urn:sheepdog:agent:claude_code",
+      "dst": "urn:sheepdogai:agent:claude_code",
       "kind": "associatedWith",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000001"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000001"
     },
     {
-      "dst": "urn:sheepdog:agent:claude_code",
+      "dst": "urn:sheepdogai:agent:claude_code",
       "kind": "associatedWith",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000002"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000002"
     },
     {
-      "dst": "urn:sheepdog:agent:claude_code",
+      "dst": "urn:sheepdogai:agent:claude_code",
       "kind": "associatedWith",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000003"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000003"
     },
     {
-      "dst": "urn:sheepdog:agent:claude_code",
+      "dst": "urn:sheepdogai:agent:claude_code",
       "kind": "associatedWith",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000004"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000004"
     },
     {
-      "dst": "urn:sheepdog:agent:claude_code",
+      "dst": "urn:sheepdogai:agent:claude_code",
       "kind": "associatedWith",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000005"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000005"
     },
     {
-      "dst": "urn:sheepdog:agent:claude_code",
+      "dst": "urn:sheepdogai:agent:claude_code",
       "kind": "associatedWith",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000006"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000006"
     },
     {
-      "dst": "urn:sheepdog:agent:claude_code",
+      "dst": "urn:sheepdogai:agent:claude_code",
       "kind": "associatedWith",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000007"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000007"
     },
     {
-      "dst": "urn:sheepdog:agent:claude_code",
+      "dst": "urn:sheepdogai:agent:claude_code",
       "kind": "associatedWith",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000008"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000008"
     },
     {
-      "dst": "urn:sheepdog:agent:claude_code",
+      "dst": "urn:sheepdogai:agent:claude_code",
       "kind": "associatedWith",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000009"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000009"
     },
     {
-      "dst": "urn:sheepdog:agent:claude_code",
+      "dst": "urn:sheepdogai:agent:claude_code",
       "kind": "associatedWith",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000010"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000010"
     },
     {
-      "dst": "urn:sheepdog:decider:rules",
+      "dst": "urn:sheepdogai:decider:rules",
       "kind": "decidedBy",
-      "src": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000001"
+      "src": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000001"
     },
     {
-      "dst": "urn:sheepdog:decider:rules",
+      "dst": "urn:sheepdogai:decider:rules",
       "kind": "decidedBy",
-      "src": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000002"
+      "src": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000002"
     },
     {
-      "dst": "urn:sheepdog:decider:rules",
+      "dst": "urn:sheepdogai:decider:rules",
       "kind": "decidedBy",
-      "src": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000003"
+      "src": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000003"
     },
     {
-      "dst": "urn:sheepdog:decider:rules",
+      "dst": "urn:sheepdogai:decider:rules",
       "kind": "decidedBy",
-      "src": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000004"
+      "src": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000004"
     },
     {
-      "dst": "urn:sheepdog:decider:rules",
+      "dst": "urn:sheepdogai:decider:rules",
       "kind": "decidedBy",
-      "src": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000005"
+      "src": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000005"
     },
     {
-      "dst": "urn:sheepdog:decider:rules",
+      "dst": "urn:sheepdogai:decider:rules",
       "kind": "decidedBy",
-      "src": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000006"
+      "src": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000006"
     },
     {
-      "dst": "urn:sheepdog:decider:rules",
+      "dst": "urn:sheepdogai:decider:rules",
       "kind": "decidedBy",
-      "src": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000007"
+      "src": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000007"
     },
     {
-      "dst": "urn:sheepdog:decider:rules",
+      "dst": "urn:sheepdogai:decider:rules",
       "kind": "decidedBy",
-      "src": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000008"
+      "src": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000008"
     },
     {
-      "dst": "urn:sheepdog:decider:rules",
+      "dst": "urn:sheepdogai:decider:rules",
       "kind": "decidedBy",
-      "src": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000009"
+      "src": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000009"
     },
     {
-      "dst": "urn:sheepdog:decider:rules",
+      "dst": "urn:sheepdogai:decider:rules",
       "kind": "decidedBy",
-      "src": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000010"
+      "src": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000010"
     },
     {
-      "dst": "urn:sheepdog:log:golden:0",
+      "dst": "urn:sheepdogai:log:golden:0",
       "kind": "follows",
-      "src": "urn:sheepdog:log:golden:1"
+      "src": "urn:sheepdogai:log:golden:1"
     },
     {
-      "dst": "urn:sheepdog:log:golden:9",
+      "dst": "urn:sheepdogai:log:golden:9",
       "kind": "follows",
-      "src": "urn:sheepdog:log:golden:10"
+      "src": "urn:sheepdogai:log:golden:10"
     },
     {
-      "dst": "urn:sheepdog:log:golden:10",
+      "dst": "urn:sheepdogai:log:golden:10",
       "kind": "follows",
-      "src": "urn:sheepdog:log:golden:11"
+      "src": "urn:sheepdogai:log:golden:11"
     },
     {
-      "dst": "urn:sheepdog:log:golden:11",
+      "dst": "urn:sheepdogai:log:golden:11",
       "kind": "follows",
-      "src": "urn:sheepdog:log:golden:12"
+      "src": "urn:sheepdogai:log:golden:12"
     },
     {
-      "dst": "urn:sheepdog:log:golden:12",
+      "dst": "urn:sheepdogai:log:golden:12",
       "kind": "follows",
-      "src": "urn:sheepdog:log:golden:13"
+      "src": "urn:sheepdogai:log:golden:13"
     },
     {
-      "dst": "urn:sheepdog:log:golden:13",
+      "dst": "urn:sheepdogai:log:golden:13",
       "kind": "follows",
-      "src": "urn:sheepdog:log:golden:14"
+      "src": "urn:sheepdogai:log:golden:14"
     },
     {
-      "dst": "urn:sheepdog:log:golden:1",
+      "dst": "urn:sheepdogai:log:golden:1",
       "kind": "follows",
-      "src": "urn:sheepdog:log:golden:2"
+      "src": "urn:sheepdogai:log:golden:2"
     },
     {
-      "dst": "urn:sheepdog:log:golden:2",
+      "dst": "urn:sheepdogai:log:golden:2",
       "kind": "follows",
-      "src": "urn:sheepdog:log:golden:3"
+      "src": "urn:sheepdogai:log:golden:3"
     },
     {
-      "dst": "urn:sheepdog:log:golden:3",
+      "dst": "urn:sheepdogai:log:golden:3",
       "kind": "follows",
-      "src": "urn:sheepdog:log:golden:4"
+      "src": "urn:sheepdogai:log:golden:4"
     },
     {
-      "dst": "urn:sheepdog:log:golden:4",
+      "dst": "urn:sheepdogai:log:golden:4",
       "kind": "follows",
-      "src": "urn:sheepdog:log:golden:5"
+      "src": "urn:sheepdogai:log:golden:5"
     },
     {
-      "dst": "urn:sheepdog:log:golden:5",
+      "dst": "urn:sheepdogai:log:golden:5",
       "kind": "follows",
-      "src": "urn:sheepdog:log:golden:6"
+      "src": "urn:sheepdogai:log:golden:6"
     },
     {
-      "dst": "urn:sheepdog:log:golden:6",
+      "dst": "urn:sheepdogai:log:golden:6",
       "kind": "follows",
-      "src": "urn:sheepdog:log:golden:7"
+      "src": "urn:sheepdogai:log:golden:7"
     },
     {
-      "dst": "urn:sheepdog:log:golden:7",
+      "dst": "urn:sheepdogai:log:golden:7",
       "kind": "follows",
-      "src": "urn:sheepdog:log:golden:8"
+      "src": "urn:sheepdogai:log:golden:8"
     },
     {
-      "dst": "urn:sheepdog:log:golden:8",
+      "dst": "urn:sheepdogai:log:golden:8",
       "kind": "follows",
-      "src": "urn:sheepdog:log:golden:9"
+      "src": "urn:sheepdogai:log:golden:9"
     },
     {
-      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
+      "dst": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0",
       "kind": "governedBy",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000001"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000001"
     },
     {
-      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
+      "dst": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0",
       "kind": "governedBy",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000002"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000002"
     },
     {
-      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
+      "dst": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0",
       "kind": "governedBy",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000003"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000003"
     },
     {
-      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
+      "dst": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0",
       "kind": "governedBy",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000004"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000004"
     },
     {
-      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
+      "dst": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0",
       "kind": "governedBy",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000005"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000005"
     },
     {
-      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
+      "dst": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0",
       "kind": "governedBy",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000006"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000006"
     },
     {
-      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
+      "dst": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0",
       "kind": "governedBy",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000007"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000007"
     },
     {
-      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
+      "dst": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0",
       "kind": "governedBy",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000008"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000008"
     },
     {
-      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
+      "dst": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0",
       "kind": "governedBy",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000009"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000009"
     },
     {
-      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
+      "dst": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0",
       "kind": "governedBy",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000010"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000010"
     },
     {
-      "dst": "urn:sheepdog:event:00000000-0000-7000-8000-000000000001",
+      "dst": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000001",
       "kind": "issues",
-      "src": "urn:sheepdog:agent:claude_code"
+      "src": "urn:sheepdogai:agent:claude_code"
     },
     {
-      "dst": "urn:sheepdog:event:00000000-0000-7000-8000-000000000002",
+      "dst": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000002",
       "kind": "issues",
-      "src": "urn:sheepdog:agent:claude_code"
+      "src": "urn:sheepdogai:agent:claude_code"
     },
     {
-      "dst": "urn:sheepdog:event:00000000-0000-7000-8000-000000000003",
+      "dst": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000003",
       "kind": "issues",
-      "src": "urn:sheepdog:agent:claude_code"
+      "src": "urn:sheepdogai:agent:claude_code"
     },
     {
-      "dst": "urn:sheepdog:event:00000000-0000-7000-8000-000000000004",
+      "dst": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000004",
       "kind": "issues",
-      "src": "urn:sheepdog:agent:claude_code"
+      "src": "urn:sheepdogai:agent:claude_code"
     },
     {
-      "dst": "urn:sheepdog:event:00000000-0000-7000-8000-000000000005",
+      "dst": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000005",
       "kind": "issues",
-      "src": "urn:sheepdog:agent:claude_code"
+      "src": "urn:sheepdogai:agent:claude_code"
     },
     {
-      "dst": "urn:sheepdog:event:00000000-0000-7000-8000-000000000006",
+      "dst": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000006",
       "kind": "issues",
-      "src": "urn:sheepdog:agent:claude_code"
+      "src": "urn:sheepdogai:agent:claude_code"
     },
     {
-      "dst": "urn:sheepdog:event:00000000-0000-7000-8000-000000000007",
+      "dst": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000007",
       "kind": "issues",
-      "src": "urn:sheepdog:agent:claude_code"
+      "src": "urn:sheepdogai:agent:claude_code"
     },
     {
-      "dst": "urn:sheepdog:event:00000000-0000-7000-8000-000000000008",
+      "dst": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000008",
       "kind": "issues",
-      "src": "urn:sheepdog:agent:claude_code"
+      "src": "urn:sheepdogai:agent:claude_code"
     },
     {
-      "dst": "urn:sheepdog:event:00000000-0000-7000-8000-000000000009",
+      "dst": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000009",
       "kind": "issues",
-      "src": "urn:sheepdog:agent:claude_code"
+      "src": "urn:sheepdogai:agent:claude_code"
     },
     {
-      "dst": "urn:sheepdog:event:00000000-0000-7000-8000-000000000010",
+      "dst": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000010",
       "kind": "issues",
-      "src": "urn:sheepdog:agent:claude_code"
+      "src": "urn:sheepdogai:agent:claude_code"
     },
     {
-      "dst": "urn:sheepdog:rule:7d2b27ff7099c151:allow-echo",
+      "dst": "urn:sheepdogai:rule:fbb82e93f83ef3e1:allow-echo",
       "kind": "matchedRule",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000001"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000001"
     },
     {
-      "dst": "urn:sheepdog:rule:7d2b27ff7099c151:default.strict",
+      "dst": "urn:sheepdogai:rule:fbb82e93f83ef3e1:default.strict",
       "kind": "matchedRule",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000002"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000002"
     },
     {
-      "dst": "urn:sheepdog:rule:7d2b27ff7099c151:no-force-push",
+      "dst": "urn:sheepdogai:rule:fbb82e93f83ef3e1:no-force-push",
       "kind": "matchedRule",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000003"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000003"
     },
     {
-      "dst": "urn:sheepdog:rule:7d2b27ff7099c151:machine-recursive-delete-outside",
+      "dst": "urn:sheepdogai:rule:fbb82e93f83ef3e1:machine-recursive-delete-outside",
       "kind": "matchedRule",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000004"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000004"
     },
     {
-      "dst": "urn:sheepdog:rule:7d2b27ff7099c151:secrets-exfil",
+      "dst": "urn:sheepdogai:rule:fbb82e93f83ef3e1:secrets-exfil",
       "kind": "matchedRule",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000005"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000005"
     },
     {
-      "dst": "urn:sheepdog:rule:7d2b27ff7099c151:repo-write-outside",
+      "dst": "urn:sheepdogai:rule:fbb82e93f83ef3e1:repo-write-outside",
       "kind": "matchedRule",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000006"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000006"
     },
     {
-      "dst": "urn:sheepdog:rule:7d2b27ff7099c151:sp-rules-and-hooks",
+      "dst": "urn:sheepdogai:rule:fbb82e93f83ef3e1:sp-rules-and-hooks",
       "kind": "matchedRule",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000007"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000007"
     },
     {
-      "dst": "urn:sheepdog:rule:7d2b27ff7099c151:default.strict",
+      "dst": "urn:sheepdogai:rule:fbb82e93f83ef3e1:default.strict",
       "kind": "matchedRule",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000008"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000008"
     },
     {
-      "dst": "urn:sheepdog:rule:7d2b27ff7099c151:inj-risky-after-untrusted-shell",
+      "dst": "urn:sheepdogai:rule:fbb82e93f83ef3e1:inj-risky-after-untrusted-shell",
       "kind": "matchedRule",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000009"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000009"
     },
     {
-      "dst": "urn:sheepdog:rule:7d2b27ff7099c151:machine-pipe-to-shell",
+      "dst": "urn:sheepdogai:rule:fbb82e93f83ef3e1:machine-pipe-to-shell",
       "kind": "matchedRule",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000010"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000010"
     },
     {
-      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
+      "dst": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0",
       "kind": "memberOf",
-      "src": "urn:sheepdog:rule:7d2b27ff7099c151:allow-echo"
+      "src": "urn:sheepdogai:rule:fbb82e93f83ef3e1:allow-echo"
     },
     {
-      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
+      "dst": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0",
       "kind": "memberOf",
-      "src": "urn:sheepdog:rule:7d2b27ff7099c151:default.strict"
+      "src": "urn:sheepdogai:rule:fbb82e93f83ef3e1:default.strict"
     },
     {
-      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
+      "dst": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0",
       "kind": "memberOf",
-      "src": "urn:sheepdog:rule:7d2b27ff7099c151:inj-risky-after-untrusted-shell"
+      "src": "urn:sheepdogai:rule:fbb82e93f83ef3e1:inj-risky-after-untrusted-shell"
     },
     {
-      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
+      "dst": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0",
       "kind": "memberOf",
-      "src": "urn:sheepdog:rule:7d2b27ff7099c151:machine-pipe-to-shell"
+      "src": "urn:sheepdogai:rule:fbb82e93f83ef3e1:machine-pipe-to-shell"
     },
     {
-      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
+      "dst": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0",
       "kind": "memberOf",
-      "src": "urn:sheepdog:rule:7d2b27ff7099c151:machine-recursive-delete-outside"
+      "src": "urn:sheepdogai:rule:fbb82e93f83ef3e1:machine-recursive-delete-outside"
     },
     {
-      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
+      "dst": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0",
       "kind": "memberOf",
-      "src": "urn:sheepdog:rule:7d2b27ff7099c151:no-force-push"
+      "src": "urn:sheepdogai:rule:fbb82e93f83ef3e1:no-force-push"
     },
     {
-      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
+      "dst": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0",
       "kind": "memberOf",
-      "src": "urn:sheepdog:rule:7d2b27ff7099c151:repo-write-outside"
+      "src": "urn:sheepdogai:rule:fbb82e93f83ef3e1:repo-write-outside"
     },
     {
-      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
+      "dst": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0",
       "kind": "memberOf",
-      "src": "urn:sheepdog:rule:7d2b27ff7099c151:secrets-exfil"
+      "src": "urn:sheepdogai:rule:fbb82e93f83ef3e1:secrets-exfil"
     },
     {
-      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
+      "dst": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0",
       "kind": "memberOf",
-      "src": "urn:sheepdog:rule:7d2b27ff7099c151:sp-rules-and-hooks"
+      "src": "urn:sheepdogai:rule:fbb82e93f83ef3e1:sp-rules-and-hooks"
     },
     {
-      "dst": "urn:sheepdog:adapter:claude_code",
+      "dst": "urn:sheepdogai:adapter:claude_code",
       "kind": "observedBy",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000001"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000001"
     },
     {
-      "dst": "urn:sheepdog:adapter:claude_code",
+      "dst": "urn:sheepdogai:adapter:claude_code",
       "kind": "observedBy",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000002"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000002"
     },
     {
-      "dst": "urn:sheepdog:adapter:claude_code",
+      "dst": "urn:sheepdogai:adapter:claude_code",
       "kind": "observedBy",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000003"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000003"
     },
     {
-      "dst": "urn:sheepdog:adapter:claude_code",
+      "dst": "urn:sheepdogai:adapter:claude_code",
       "kind": "observedBy",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000004"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000004"
     },
     {
-      "dst": "urn:sheepdog:adapter:claude_code",
+      "dst": "urn:sheepdogai:adapter:claude_code",
       "kind": "observedBy",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000005"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000005"
     },
     {
-      "dst": "urn:sheepdog:adapter:claude_code",
+      "dst": "urn:sheepdogai:adapter:claude_code",
       "kind": "observedBy",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000006"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000006"
     },
     {
-      "dst": "urn:sheepdog:adapter:claude_code",
+      "dst": "urn:sheepdogai:adapter:claude_code",
       "kind": "observedBy",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000007"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000007"
     },
     {
-      "dst": "urn:sheepdog:adapter:claude_code",
+      "dst": "urn:sheepdogai:adapter:claude_code",
       "kind": "observedBy",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000008"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000008"
     },
     {
-      "dst": "urn:sheepdog:adapter:claude_code",
+      "dst": "urn:sheepdogai:adapter:claude_code",
       "kind": "observedBy",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000009"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000009"
     },
     {
-      "dst": "urn:sheepdog:adapter:claude_code",
+      "dst": "urn:sheepdogai:adapter:claude_code",
       "kind": "observedBy",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000010"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000010"
     },
     {
-      "dst": "urn:sheepdog:run:golden",
+      "dst": "urn:sheepdogai:run:golden",
       "kind": "partOf",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000001"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000001"
     },
     {
-      "dst": "urn:sheepdog:run:golden",
+      "dst": "urn:sheepdogai:run:golden",
       "kind": "partOf",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000002"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000002"
     },
     {
-      "dst": "urn:sheepdog:run:golden",
+      "dst": "urn:sheepdogai:run:golden",
       "kind": "partOf",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000003"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000003"
     },
     {
-      "dst": "urn:sheepdog:run:golden",
+      "dst": "urn:sheepdogai:run:golden",
       "kind": "partOf",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000004"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000004"
     },
     {
-      "dst": "urn:sheepdog:run:golden",
+      "dst": "urn:sheepdogai:run:golden",
       "kind": "partOf",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000005"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000005"
     },
     {
-      "dst": "urn:sheepdog:run:golden",
+      "dst": "urn:sheepdogai:run:golden",
       "kind": "partOf",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000006"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000006"
     },
     {
-      "dst": "urn:sheepdog:run:golden",
+      "dst": "urn:sheepdogai:run:golden",
       "kind": "partOf",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000007"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000007"
     },
     {
-      "dst": "urn:sheepdog:run:golden",
+      "dst": "urn:sheepdogai:run:golden",
       "kind": "partOf",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000008"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000008"
     },
     {
-      "dst": "urn:sheepdog:run:golden",
+      "dst": "urn:sheepdogai:run:golden",
       "kind": "partOf",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000009"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000009"
     },
     {
-      "dst": "urn:sheepdog:run:golden",
+      "dst": "urn:sheepdogai:run:golden",
       "kind": "partOf",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000010"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000010"
     },
     {
-      "dst": "urn:sheepdog:run:golden",
+      "dst": "urn:sheepdogai:run:golden",
       "kind": "partOf",
-      "src": "urn:sheepdog:log:golden:0"
+      "src": "urn:sheepdogai:log:golden:0"
     },
     {
-      "dst": "urn:sheepdog:run:golden",
+      "dst": "urn:sheepdogai:run:golden",
       "kind": "partOf",
-      "src": "urn:sheepdog:log:golden:1"
+      "src": "urn:sheepdogai:log:golden:1"
     },
     {
-      "dst": "urn:sheepdog:run:golden",
+      "dst": "urn:sheepdogai:run:golden",
       "kind": "partOf",
-      "src": "urn:sheepdog:log:golden:10"
+      "src": "urn:sheepdogai:log:golden:10"
     },
     {
-      "dst": "urn:sheepdog:run:golden",
+      "dst": "urn:sheepdogai:run:golden",
       "kind": "partOf",
-      "src": "urn:sheepdog:log:golden:11"
+      "src": "urn:sheepdogai:log:golden:11"
     },
     {
-      "dst": "urn:sheepdog:run:golden",
+      "dst": "urn:sheepdogai:run:golden",
       "kind": "partOf",
-      "src": "urn:sheepdog:log:golden:12"
+      "src": "urn:sheepdogai:log:golden:12"
     },
     {
-      "dst": "urn:sheepdog:run:golden",
+      "dst": "urn:sheepdogai:run:golden",
       "kind": "partOf",
-      "src": "urn:sheepdog:log:golden:13"
+      "src": "urn:sheepdogai:log:golden:13"
     },
     {
-      "dst": "urn:sheepdog:run:golden",
+      "dst": "urn:sheepdogai:run:golden",
       "kind": "partOf",
-      "src": "urn:sheepdog:log:golden:14"
+      "src": "urn:sheepdogai:log:golden:14"
     },
     {
-      "dst": "urn:sheepdog:run:golden",
+      "dst": "urn:sheepdogai:run:golden",
       "kind": "partOf",
-      "src": "urn:sheepdog:log:golden:2"
+      "src": "urn:sheepdogai:log:golden:2"
     },
     {
-      "dst": "urn:sheepdog:run:golden",
+      "dst": "urn:sheepdogai:run:golden",
       "kind": "partOf",
-      "src": "urn:sheepdog:log:golden:3"
+      "src": "urn:sheepdogai:log:golden:3"
     },
     {
-      "dst": "urn:sheepdog:run:golden",
+      "dst": "urn:sheepdogai:run:golden",
       "kind": "partOf",
-      "src": "urn:sheepdog:log:golden:4"
+      "src": "urn:sheepdogai:log:golden:4"
     },
     {
-      "dst": "urn:sheepdog:run:golden",
+      "dst": "urn:sheepdogai:run:golden",
       "kind": "partOf",
-      "src": "urn:sheepdog:log:golden:5"
+      "src": "urn:sheepdogai:log:golden:5"
     },
     {
-      "dst": "urn:sheepdog:run:golden",
+      "dst": "urn:sheepdogai:run:golden",
       "kind": "partOf",
-      "src": "urn:sheepdog:log:golden:6"
+      "src": "urn:sheepdogai:log:golden:6"
     },
     {
-      "dst": "urn:sheepdog:run:golden",
+      "dst": "urn:sheepdogai:run:golden",
       "kind": "partOf",
-      "src": "urn:sheepdog:log:golden:7"
+      "src": "urn:sheepdogai:log:golden:7"
     },
     {
-      "dst": "urn:sheepdog:run:golden",
+      "dst": "urn:sheepdogai:run:golden",
       "kind": "partOf",
-      "src": "urn:sheepdog:log:golden:8"
+      "src": "urn:sheepdogai:log:golden:8"
     },
     {
-      "dst": "urn:sheepdog:run:golden",
+      "dst": "urn:sheepdogai:run:golden",
       "kind": "partOf",
-      "src": "urn:sheepdog:log:golden:9"
+      "src": "urn:sheepdogai:log:golden:9"
     },
     {
-      "dst": "urn:sheepdog:run:golden",
+      "dst": "urn:sheepdogai:run:golden",
       "kind": "partOf",
-      "src": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201"
+      "src": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0"
     },
     {
-      "dst": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000001",
+      "dst": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000001",
       "kind": "produced",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000001"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000001"
     },
     {
-      "dst": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000002",
+      "dst": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000002",
       "kind": "produced",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000002"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000002"
     },
     {
-      "dst": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000003",
+      "dst": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000003",
       "kind": "produced",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000003"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000003"
     },
     {
-      "dst": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000004",
+      "dst": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000004",
       "kind": "produced",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000004"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000004"
     },
     {
-      "dst": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000005",
+      "dst": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000005",
       "kind": "produced",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000005"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000005"
     },
     {
-      "dst": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000006",
+      "dst": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000006",
       "kind": "produced",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000006"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000006"
     },
     {
-      "dst": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000007",
+      "dst": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000007",
       "kind": "produced",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000007"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000007"
     },
     {
-      "dst": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000008",
+      "dst": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000008",
       "kind": "produced",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000008"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000008"
     },
     {
-      "dst": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000009",
+      "dst": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000009",
       "kind": "produced",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000009"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000009"
     },
     {
-      "dst": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000010",
+      "dst": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000010",
       "kind": "produced",
-      "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000010"
+      "src": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000010"
     }
   ],
   "nodes": [
@@ -641,7 +641,7 @@
       "attrs": {
         "adapter": "claude_code"
       },
-      "id": "urn:sheepdog:adapter:claude_code",
+      "id": "urn:sheepdogai:adapter:claude_code",
       "kind": "Adapter",
       "label": "claude_code"
     },
@@ -649,7 +649,7 @@
       "attrs": {
         "agent_id": "claude_code"
       },
-      "id": "urn:sheepdog:agent:claude_code",
+      "id": "urn:sheepdogai:agent:claude_code",
       "kind": "Agent",
       "label": "claude_code"
     },
@@ -658,7 +658,7 @@
         "channel": "claude_code_prompt",
         "outcome": "delegated"
       },
-      "id": "urn:sheepdog:approval:00000000-0000-7000-8000-000000000002",
+      "id": "urn:sheepdogai:approval:00000000-0000-7000-8000-000000000002",
       "kind": "HumanApproval",
       "label": "approval: delegated"
     },
@@ -667,7 +667,7 @@
         "channel": "claude_code_prompt",
         "outcome": "delegated"
       },
-      "id": "urn:sheepdog:approval:00000000-0000-7000-8000-000000000007",
+      "id": "urn:sheepdogai:approval:00000000-0000-7000-8000-000000000007",
       "kind": "HumanApproval",
       "label": "approval: delegated"
     },
@@ -676,7 +676,7 @@
         "channel": "claude_code_prompt",
         "outcome": "delegated"
       },
-      "id": "urn:sheepdog:approval:00000000-0000-7000-8000-000000000008",
+      "id": "urn:sheepdogai:approval:00000000-0000-7000-8000-000000000008",
       "kind": "HumanApproval",
       "label": "approval: delegated"
     },
@@ -685,7 +685,7 @@
         "channel": "claude_code_prompt",
         "outcome": "delegated"
       },
-      "id": "urn:sheepdog:approval:00000000-0000-7000-8000-000000000009",
+      "id": "urn:sheepdogai:approval:00000000-0000-7000-8000-000000000009",
       "kind": "HumanApproval",
       "label": "approval: delegated"
     },
@@ -693,7 +693,7 @@
       "attrs": {
         "name": "rules"
       },
-      "id": "urn:sheepdog:decider:rules",
+      "id": "urn:sheepdogai:decider:rules",
       "kind": "Decider",
       "label": "rules"
     },
@@ -709,7 +709,7 @@
         "ts": "2026-01-01T00:00:01Z",
         "untrusted_content_seen": false
       },
-      "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000001",
+      "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000001",
       "kind": "ToolCall",
       "label": "Bash #1"
     },
@@ -725,7 +725,7 @@
         "ts": "2026-01-01T00:00:02Z",
         "untrusted_content_seen": false
       },
-      "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000002",
+      "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000002",
       "kind": "ToolCall",
       "label": "Bash #2"
     },
@@ -741,7 +741,7 @@
         "ts": "2026-01-01T00:00:03Z",
         "untrusted_content_seen": false
       },
-      "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000003",
+      "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000003",
       "kind": "ToolCall",
       "label": "Bash #3"
     },
@@ -757,7 +757,7 @@
         "ts": "2026-01-01T00:00:04Z",
         "untrusted_content_seen": false
       },
-      "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000004",
+      "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000004",
       "kind": "ToolCall",
       "label": "Bash #4"
     },
@@ -773,7 +773,7 @@
         "ts": "2026-01-01T00:00:05Z",
         "untrusted_content_seen": false
       },
-      "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000005",
+      "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000005",
       "kind": "ToolCall",
       "label": "Bash #5"
     },
@@ -789,7 +789,7 @@
         "ts": "2026-01-01T00:00:06Z",
         "untrusted_content_seen": false
       },
-      "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000006",
+      "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000006",
       "kind": "ToolCall",
       "label": "Write #6"
     },
@@ -799,13 +799,13 @@
         "log_index": 8,
         "seq": 7,
         "source": "claude_code",
-        "summary": "/work/proj/sheepdog.yaml",
+        "summary": "/work/proj/sheepdogai.yaml",
         "tool_kind": "file_write",
         "tool_name": "Write",
         "ts": "2026-01-01T00:00:07Z",
         "untrusted_content_seen": false
       },
-      "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000007",
+      "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000007",
       "kind": "ToolCall",
       "label": "Write #7"
     },
@@ -821,7 +821,7 @@
         "ts": "2026-01-01T00:00:08Z",
         "untrusted_content_seen": false
       },
-      "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000008",
+      "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000008",
       "kind": "ToolCall",
       "label": "WebFetch #8"
     },
@@ -837,7 +837,7 @@
         "ts": "2026-01-01T00:00:09Z",
         "untrusted_content_seen": true
       },
-      "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000009",
+      "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000009",
       "kind": "ToolCall",
       "label": "Bash #9"
     },
@@ -853,172 +853,172 @@
         "ts": "2026-01-01T00:00:10Z",
         "untrusted_content_seen": true
       },
-      "id": "urn:sheepdog:event:00000000-0000-7000-8000-000000000010",
+      "id": "urn:sheepdogai:event:00000000-0000-7000-8000-000000000010",
       "kind": "ToolCall",
       "label": "Bash #10"
     },
     {
       "attrs": {
-        "hash": "1c8e17a780a22f1e3cde593688dbb77759a36157686eeb44142a53d131edc537",
+        "hash": "ae5d8f7cb08576b01a197b75e9d9201c2904df57e7a65645dd99a3a1bb04c889",
         "index": 0,
         "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
         "record_kind": "anchor"
       },
-      "id": "urn:sheepdog:log:golden:0",
+      "id": "urn:sheepdogai:log:golden:0",
       "kind": "LogRecord",
       "label": "#0 anchor"
     },
     {
       "attrs": {
-        "hash": "909f785f7506955e7ded4fe477bfe4fbdb56e1fc362e455120d62656fccf6ef4",
+        "hash": "e77292c558f461683ab073443de6de34038d862cdff270d889a0a958c270eba3",
         "index": 1,
-        "prev_hash": "1c8e17a780a22f1e3cde593688dbb77759a36157686eeb44142a53d131edc537",
+        "prev_hash": "ae5d8f7cb08576b01a197b75e9d9201c2904df57e7a65645dd99a3a1bb04c889",
         "record_kind": "decision"
       },
-      "id": "urn:sheepdog:log:golden:1",
+      "id": "urn:sheepdogai:log:golden:1",
       "kind": "LogRecord",
       "label": "#1 decision"
     },
     {
       "attrs": {
-        "hash": "ae24aeee52deb735795400257e5f22e8fec82fef1a6f88340a0d586ae2b1a13c",
+        "hash": "3795374b8b17e86c086ca119697a62bbcbb4b1e97d16be2e224c1ab02548c14a",
         "index": 10,
-        "prev_hash": "611a0d80b7ba082fb2ec7eb4f14cbbd1944e62825a33a4652beaa9e77525462f",
+        "prev_hash": "5be572a7228cf375cd10562b57a149d0e7747872371f89a6c7d65e5da475f31f",
         "record_kind": "decision"
       },
-      "id": "urn:sheepdog:log:golden:10",
+      "id": "urn:sheepdogai:log:golden:10",
       "kind": "LogRecord",
       "label": "#10 decision"
     },
     {
       "attrs": {
-        "hash": "290ee5cdd79248f8afd1c54b72de73c74650223df5a66596a52aaea3650d261f",
+        "hash": "940819ad754c82acaa4486944472bbcde42b8337a9a32fe663c61bdb7d367667",
         "index": 11,
-        "prev_hash": "ae24aeee52deb735795400257e5f22e8fec82fef1a6f88340a0d586ae2b1a13c",
+        "prev_hash": "3795374b8b17e86c086ca119697a62bbcbb4b1e97d16be2e224c1ab02548c14a",
         "record_kind": "approval"
       },
-      "id": "urn:sheepdog:log:golden:11",
+      "id": "urn:sheepdogai:log:golden:11",
       "kind": "LogRecord",
       "label": "#11 approval"
     },
     {
       "attrs": {
-        "hash": "fb15e2e751e89d8ede541bcd7c4d3dc1061059a7f8757ec0711aa515514936c8",
+        "hash": "724338c680eee90dab4efaf4628027104830619b24e14af7ace998cfeb426ade",
         "index": 12,
-        "prev_hash": "290ee5cdd79248f8afd1c54b72de73c74650223df5a66596a52aaea3650d261f",
+        "prev_hash": "940819ad754c82acaa4486944472bbcde42b8337a9a32fe663c61bdb7d367667",
         "record_kind": "decision"
       },
-      "id": "urn:sheepdog:log:golden:12",
+      "id": "urn:sheepdogai:log:golden:12",
       "kind": "LogRecord",
       "label": "#12 decision"
     },
     {
       "attrs": {
-        "hash": "b7019c7720a5a421139f6a78cf73f6be17bfc5a211f202b7ebbbd9f2e97f2ca7",
+        "hash": "d446c0f7ebcf908b8623e802b8fbcfea95f67ed395db3f76cec0643dea121920",
         "index": 13,
-        "prev_hash": "fb15e2e751e89d8ede541bcd7c4d3dc1061059a7f8757ec0711aa515514936c8",
+        "prev_hash": "724338c680eee90dab4efaf4628027104830619b24e14af7ace998cfeb426ade",
         "record_kind": "approval"
       },
-      "id": "urn:sheepdog:log:golden:13",
+      "id": "urn:sheepdogai:log:golden:13",
       "kind": "LogRecord",
       "label": "#13 approval"
     },
     {
       "attrs": {
-        "hash": "3a9f9c074e0fd57672f3af2f7d392d67e584de751635b13a69f64d469ca546d8",
+        "hash": "4fafabb53f619ee6bff25e5f1c36cc7c4d731a1b7df18485381ffb66f7b47728",
         "index": 14,
-        "prev_hash": "b7019c7720a5a421139f6a78cf73f6be17bfc5a211f202b7ebbbd9f2e97f2ca7",
+        "prev_hash": "d446c0f7ebcf908b8623e802b8fbcfea95f67ed395db3f76cec0643dea121920",
         "record_kind": "decision"
       },
-      "id": "urn:sheepdog:log:golden:14",
+      "id": "urn:sheepdogai:log:golden:14",
       "kind": "LogRecord",
       "label": "#14 decision"
     },
     {
       "attrs": {
-        "hash": "4fb3b0265ccf3bdcf12287dd222b964ad6031231fa530ee60bd6f4aaf67f28cc",
+        "hash": "899f2694931201dfb25e195550fb3d12390228bb6fb6a91a8d4dd3230b1b0355",
         "index": 2,
-        "prev_hash": "909f785f7506955e7ded4fe477bfe4fbdb56e1fc362e455120d62656fccf6ef4",
+        "prev_hash": "e77292c558f461683ab073443de6de34038d862cdff270d889a0a958c270eba3",
         "record_kind": "decision"
       },
-      "id": "urn:sheepdog:log:golden:2",
+      "id": "urn:sheepdogai:log:golden:2",
       "kind": "LogRecord",
       "label": "#2 decision"
     },
     {
       "attrs": {
-        "hash": "2199dd65a24cf31d8ab1b74263ad7c8803293705aa9ea66508d3cba1b41e43ff",
+        "hash": "a17cea84cd523d5b680823892acbb8f1e1497313d8fd581c9bb6140cb6d78aa5",
         "index": 3,
-        "prev_hash": "4fb3b0265ccf3bdcf12287dd222b964ad6031231fa530ee60bd6f4aaf67f28cc",
+        "prev_hash": "899f2694931201dfb25e195550fb3d12390228bb6fb6a91a8d4dd3230b1b0355",
         "record_kind": "approval"
       },
-      "id": "urn:sheepdog:log:golden:3",
+      "id": "urn:sheepdogai:log:golden:3",
       "kind": "LogRecord",
       "label": "#3 approval"
     },
     {
       "attrs": {
-        "hash": "3a65e4dfa674cba282298d1f6d51f0e5abd5bb2f8662c188d9d3e9997b7d2ab7",
+        "hash": "071d4a020d3f2086f1ea6a97dc1081d15a40715b278342c899fd583a9f4db9ba",
         "index": 4,
-        "prev_hash": "2199dd65a24cf31d8ab1b74263ad7c8803293705aa9ea66508d3cba1b41e43ff",
+        "prev_hash": "a17cea84cd523d5b680823892acbb8f1e1497313d8fd581c9bb6140cb6d78aa5",
         "record_kind": "decision"
       },
-      "id": "urn:sheepdog:log:golden:4",
+      "id": "urn:sheepdogai:log:golden:4",
       "kind": "LogRecord",
       "label": "#4 decision"
     },
     {
       "attrs": {
-        "hash": "bc0a0d73ff5becaa91d2891b0f2ece7f9138bcacb7e76d07274f063b53f42137",
+        "hash": "793f63f1f0e5e61123c67e31cf8be9b8af09c792b25312c0c7805f4516c4d95f",
         "index": 5,
-        "prev_hash": "3a65e4dfa674cba282298d1f6d51f0e5abd5bb2f8662c188d9d3e9997b7d2ab7",
+        "prev_hash": "071d4a020d3f2086f1ea6a97dc1081d15a40715b278342c899fd583a9f4db9ba",
         "record_kind": "decision"
       },
-      "id": "urn:sheepdog:log:golden:5",
+      "id": "urn:sheepdogai:log:golden:5",
       "kind": "LogRecord",
       "label": "#5 decision"
     },
     {
       "attrs": {
-        "hash": "42f71ce3812bb8f1f2b41c9cd81472ab7b6f831f943cbf654722a96e0299e84e",
+        "hash": "d3bf6893fe254f063349dff7a63d1627109a559306121789109a0da9ec2fc721",
         "index": 6,
-        "prev_hash": "bc0a0d73ff5becaa91d2891b0f2ece7f9138bcacb7e76d07274f063b53f42137",
+        "prev_hash": "793f63f1f0e5e61123c67e31cf8be9b8af09c792b25312c0c7805f4516c4d95f",
         "record_kind": "decision"
       },
-      "id": "urn:sheepdog:log:golden:6",
+      "id": "urn:sheepdogai:log:golden:6",
       "kind": "LogRecord",
       "label": "#6 decision"
     },
     {
       "attrs": {
-        "hash": "ec6c38c1ce0306bd086fcc1e254d2cebcc27159501849b6432be713d72229391",
+        "hash": "85108535d889454f3b9db7858f9bf50444c26ae92abd4d855e1bc8a7276a1098",
         "index": 7,
-        "prev_hash": "42f71ce3812bb8f1f2b41c9cd81472ab7b6f831f943cbf654722a96e0299e84e",
+        "prev_hash": "d3bf6893fe254f063349dff7a63d1627109a559306121789109a0da9ec2fc721",
         "record_kind": "decision"
       },
-      "id": "urn:sheepdog:log:golden:7",
+      "id": "urn:sheepdogai:log:golden:7",
       "kind": "LogRecord",
       "label": "#7 decision"
     },
     {
       "attrs": {
-        "hash": "274b071837ca2d69d3091f43b8a21c27141b35e79c600e640a4fcc371bc8f640",
+        "hash": "be211fe667affecca0ff27ed14e9f15e06f686ed55d2cbc415330a0da9e697a6",
         "index": 8,
-        "prev_hash": "ec6c38c1ce0306bd086fcc1e254d2cebcc27159501849b6432be713d72229391",
+        "prev_hash": "85108535d889454f3b9db7858f9bf50444c26ae92abd4d855e1bc8a7276a1098",
         "record_kind": "decision"
       },
-      "id": "urn:sheepdog:log:golden:8",
+      "id": "urn:sheepdogai:log:golden:8",
       "kind": "LogRecord",
       "label": "#8 decision"
     },
     {
       "attrs": {
-        "hash": "611a0d80b7ba082fb2ec7eb4f14cbbd1944e62825a33a4652beaa9e77525462f",
+        "hash": "5be572a7228cf375cd10562b57a149d0e7747872371f89a6c7d65e5da475f31f",
         "index": 9,
-        "prev_hash": "274b071837ca2d69d3091f43b8a21c27141b35e79c600e640a4fcc371bc8f640",
+        "prev_hash": "be211fe667affecca0ff27ed14e9f15e06f686ed55d2cbc415330a0da9e697a6",
         "record_kind": "approval"
       },
-      "id": "urn:sheepdog:log:golden:9",
+      "id": "urn:sheepdogai:log:golden:9",
       "kind": "LogRecord",
       "label": "#9 approval"
     },
@@ -1026,24 +1026,24 @@
       "attrs": {
         "channel": "claude_code_prompt"
       },
-      "id": "urn:sheepdog:person:claude_code_prompt",
+      "id": "urn:sheepdogai:person:claude_code_prompt",
       "kind": "Person",
       "label": "human via claude_code_prompt"
     },
     {
       "attrs": {
-        "policy_hash": "7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201"
+        "policy_hash": "fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0"
       },
-      "id": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
+      "id": "urn:sheepdogai:policy:fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0",
       "kind": "Policy",
-      "label": "policy 7d2b27ff7099"
+      "label": "policy fbb82e93f83e"
     },
     {
       "attrs": {
         "origin": "user",
         "rule_id": "allow-echo"
       },
-      "id": "urn:sheepdog:rule:7d2b27ff7099c151:allow-echo",
+      "id": "urn:sheepdogai:rule:fbb82e93f83ef3e1:allow-echo",
       "kind": "Rule",
       "label": "allow-echo"
     },
@@ -1052,7 +1052,7 @@
         "origin": "default",
         "rule_id": "default.strict"
       },
-      "id": "urn:sheepdog:rule:7d2b27ff7099c151:default.strict",
+      "id": "urn:sheepdogai:rule:fbb82e93f83ef3e1:default.strict",
       "kind": "Rule",
       "label": "default.strict"
     },
@@ -1061,7 +1061,7 @@
         "origin": "injection",
         "rule_id": "inj-risky-after-untrusted-shell"
       },
-      "id": "urn:sheepdog:rule:7d2b27ff7099c151:inj-risky-after-untrusted-shell",
+      "id": "urn:sheepdogai:rule:fbb82e93f83ef3e1:inj-risky-after-untrusted-shell",
       "kind": "Rule",
       "label": "inj-risky-after-untrusted-shell"
     },
@@ -1070,7 +1070,7 @@
         "origin": "machine",
         "rule_id": "machine-pipe-to-shell"
       },
-      "id": "urn:sheepdog:rule:7d2b27ff7099c151:machine-pipe-to-shell",
+      "id": "urn:sheepdogai:rule:fbb82e93f83ef3e1:machine-pipe-to-shell",
       "kind": "Rule",
       "label": "machine-pipe-to-shell"
     },
@@ -1079,7 +1079,7 @@
         "origin": "machine",
         "rule_id": "machine-recursive-delete-outside"
       },
-      "id": "urn:sheepdog:rule:7d2b27ff7099c151:machine-recursive-delete-outside",
+      "id": "urn:sheepdogai:rule:fbb82e93f83ef3e1:machine-recursive-delete-outside",
       "kind": "Rule",
       "label": "machine-recursive-delete-outside"
     },
@@ -1088,7 +1088,7 @@
         "origin": "user",
         "rule_id": "no-force-push"
       },
-      "id": "urn:sheepdog:rule:7d2b27ff7099c151:no-force-push",
+      "id": "urn:sheepdogai:rule:fbb82e93f83ef3e1:no-force-push",
       "kind": "Rule",
       "label": "no-force-push"
     },
@@ -1097,7 +1097,7 @@
         "origin": "repo",
         "rule_id": "repo-write-outside"
       },
-      "id": "urn:sheepdog:rule:7d2b27ff7099c151:repo-write-outside",
+      "id": "urn:sheepdogai:rule:fbb82e93f83ef3e1:repo-write-outside",
       "kind": "Rule",
       "label": "repo-write-outside"
     },
@@ -1106,7 +1106,7 @@
         "origin": "secrets",
         "rule_id": "secrets-exfil"
       },
-      "id": "urn:sheepdog:rule:7d2b27ff7099c151:secrets-exfil",
+      "id": "urn:sheepdogai:rule:fbb82e93f83ef3e1:secrets-exfil",
       "kind": "Rule",
       "label": "secrets-exfil"
     },
@@ -1115,17 +1115,17 @@
         "origin": "self_protect",
         "rule_id": "sp-rules-and-hooks"
       },
-      "id": "urn:sheepdog:rule:7d2b27ff7099c151:sp-rules-and-hooks",
+      "id": "urn:sheepdogai:rule:fbb82e93f83ef3e1:sp-rules-and-hooks",
       "kind": "Rule",
       "label": "sp-rules-and-hooks"
     },
     {
       "attrs": {
-        "policy_hash": "7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
+        "policy_hash": "fbb82e93f83ef3e114935f724d2c1b7c33529bb3d63a82e3638da54f00bee0a0",
         "run_id": "golden",
         "schema_version": "1"
       },
-      "id": "urn:sheepdog:run:golden",
+      "id": "urn:sheepdogai:run:golden",
       "kind": "Run",
       "label": "run golden"
     },
@@ -1135,7 +1135,7 @@
         "strictness": 0,
         "verdict": "allow"
       },
-      "id": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000001",
+      "id": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000001",
       "kind": "Verdict",
       "label": "allow"
     },
@@ -1146,7 +1146,7 @@
         "strictness": 1,
         "verdict": "ask"
       },
-      "id": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000002",
+      "id": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000002",
       "kind": "Verdict",
       "label": "ask"
     },
@@ -1157,7 +1157,7 @@
         "strictness": 2,
         "verdict": "deny"
       },
-      "id": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000003",
+      "id": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000003",
       "kind": "Verdict",
       "label": "deny"
     },
@@ -1168,7 +1168,7 @@
         "strictness": 2,
         "verdict": "deny"
       },
-      "id": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000004",
+      "id": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000004",
       "kind": "Verdict",
       "label": "deny"
     },
@@ -1179,7 +1179,7 @@
         "strictness": 2,
         "verdict": "deny"
       },
-      "id": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000005",
+      "id": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000005",
       "kind": "Verdict",
       "label": "deny"
     },
@@ -1190,7 +1190,7 @@
         "strictness": 2,
         "verdict": "deny"
       },
-      "id": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000006",
+      "id": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000006",
       "kind": "Verdict",
       "label": "deny"
     },
@@ -1201,7 +1201,7 @@
         "strictness": 1,
         "verdict": "ask"
       },
-      "id": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000007",
+      "id": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000007",
       "kind": "Verdict",
       "label": "ask"
     },
@@ -1212,7 +1212,7 @@
         "strictness": 1,
         "verdict": "ask"
       },
-      "id": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000008",
+      "id": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000008",
       "kind": "Verdict",
       "label": "ask"
     },
@@ -1223,7 +1223,7 @@
         "strictness": 1,
         "verdict": "ask"
       },
-      "id": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000009",
+      "id": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000009",
       "kind": "Verdict",
       "label": "ask"
     },
@@ -1234,7 +1234,7 @@
         "strictness": 2,
         "verdict": "deny"
       },
-      "id": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000010",
+      "id": "urn:sheepdogai:verdict:00000000-0000-7000-8000-000000000010",
       "kind": "Verdict",
       "label": "deny"
     }

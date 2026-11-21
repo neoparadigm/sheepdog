@@ -78,8 +78,8 @@ def test_every_log_link_verifies_and_chain_is_in_graph() -> None:
     assert len(follows) == len(recs) - 1
     for r in recs[1:]:
         assert (
-            f"urn:sheepdog:log:golden:{r['index']}",
-            f"urn:sheepdog:log:golden:{r['index'] - 1}",
+            f"urn:sheepdogai:log:golden:{r['index']}",
+            f"urn:sheepdogai:log:golden:{r['index'] - 1}",
         ) in follows
 
 

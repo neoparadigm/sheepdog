@@ -25,7 +25,7 @@ def test_doctor_fails_with_fix_hints_before_setup(
     out = capsys.readouterr().out
     assert (
         "protection is switched on" in out
-        and "fix: run: sheepdog setup" in out
+        and "fix: run: sheepdogai setup" in out
         and "problem(s) found" in out
     )
 
@@ -43,7 +43,7 @@ def test_doctor_passes_after_setup_and_catches_breakage(
     assert main(["--project", str(proj), "doctor"]) == 0
     out = capsys.readouterr().out
     assert "[FAIL]" not in out and "Everything looks good" in out and "sudo whoami" in out
-    (home / ".config/sheepdog/sheepdog.yaml").write_text("version: 1\nbogus: 1\n")
+    (home / ".config/sheepdogai/sheepdogai.yaml").write_text("version: 1\nbogus: 1\n")
     assert main(["--project", str(proj), "doctor"]) == 1
     assert "has a mistake" in capsys.readouterr().out
 
@@ -65,7 +65,7 @@ def test_doctor_detects_tampered_log(
         ).encode(),
     )
     gw.close()
-    log = tmp_path / ".sheepdog/runs/s.jsonl"
+    log = tmp_path / ".sheepdogai/runs/s.jsonl"
     log.write_bytes(log.read_bytes().replace(b'"ls"', b'"lz"'))
     main(["--project", str(tmp_path), "doctor"])
     assert "changed or damaged" in capsys.readouterr().out

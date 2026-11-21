@@ -9,6 +9,6 @@
 * **Releases** follow semantic versioning. Policy-affecting changes (new default deny/ask rules,
   new packs on by default) are listed under *Changed* in `CHANGELOG.md` because they change the
   policy hash.
-* **The name** `sheepdogai`/`sheepdog` is a placeholder (see README); a rename is a maintainer
+* **The name** `sheepdogai`/`sheepdogai` is a placeholder (see README); a rename is a maintainer
   decision recorded in an ADR.
 * **Conflicts of interest and conduct** follow `CODE_OF_CONDUCT.md`.

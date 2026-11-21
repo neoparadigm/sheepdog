@@ -1,0 +1,78 @@
+@prefix owl:      <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:     <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov:     <http://www.w3.org/ns/prov#> .
+@prefix sheepdogai: <https://example.org/sheepdogai#> .
+
+# Placeholder namespace (sheepdogai.constants.ONTOLOGY_NS). Replace with a stable URL.
+
+<https://example.org/sheepdogai> a owl:Ontology ;
+    rdfs:label "Sheepdog vocabulary" ;
+    rdfs:comment "Policy verdicts, approvals, budgets and adapter capabilities for agent tool calls. Reuses W3C PROV-O for provenance." ;
+    owl:imports <http://www.w3.org/ns/prov-o#> .
+
+# ---- classes -------------------------------------------------------------
+sheepdogai:Run           a owl:Class ; rdfs:subClassOf prov:Bundle ;        rdfs:label "Run" ;           rdfs:comment "One agent run; carries the policy hash." .
+sheepdogai:ToolCall      a owl:Class ; rdfs:subClassOf prov:Activity ;      rdfs:label "Tool call" ;     rdfs:comment "One normalised tool call. OTel: span with gen_ai.operation.name=execute_tool." .
+sheepdogai:Agent         a owl:Class ; rdfs:subClassOf prov:SoftwareAgent ; rdfs:label "Agent" ;         rdfs:comment "The agent under control." .
+sheepdogai:Policy        a owl:Class ; rdfs:subClassOf prov:Plan ;          rdfs:label "Policy" ;        rdfs:comment "A versioned rules file plus packs." .
+sheepdogai:Rule          a owl:Class ; rdfs:subClassOf prov:Entity ;        rdfs:label "Rule" ;          rdfs:comment "A rule, member of a policy." .
+sheepdogai:Verdict       a owl:Class ; rdfs:subClassOf prov:Entity ;        rdfs:label "Verdict" ;       rdfs:comment "allow, ask or deny for one tool call." .
+sheepdogai:Decider       a owl:Class ; rdfs:subClassOf prov:SoftwareAgent ; rdfs:label "Decider" ;       rdfs:comment "Rules engine, model or judge." .
+sheepdogai:HumanApproval a owl:Class ; rdfs:subClassOf prov:Activity ;      rdfs:label "Human approval" ; rdfs:comment "Present only when the verdict was ask; associated with a prov:Person." .
+sheepdogai:Budget        a owl:Class ; rdfs:subClassOf prov:Entity ;        rdfs:label "Budget" ;        rdfs:comment "A constraint on a run." .
+sheepdogai:Adapter       a owl:Class ; rdfs:subClassOf prov:SoftwareAgent ; rdfs:label "Adapter" ;       rdfs:comment "Carries declared capabilities." .
+sheepdogai:LogRecord     a owl:Class ; rdfs:subClassOf prov:Entity ;        rdfs:label "Log record" ;    rdfs:comment "Holds prev_hash and hash." .
+sheepdogai:Capability    a owl:Class ; rdfs:label "Adapter capability" .
+sheepdogai:StrictnessLevel a owl:Class ; rdfs:label "Strictness level" .
+
+# ---- object properties ---------------------------------------------------
+sheepdogai:governedBy   a owl:ObjectProperty ; rdfs:domain sheepdogai:ToolCall ; rdfs:range sheepdogai:Policy .
+sheepdogai:matchedRule  a owl:ObjectProperty ; rdfs:domain sheepdogai:ToolCall ; rdfs:range sheepdogai:Rule .
+sheepdogai:decidedBy    a owl:ObjectProperty ; rdfs:domain sheepdogai:Verdict  ; rdfs:range sheepdogai:Decider .
+sheepdogai:approvedBy   a owl:ObjectProperty ; rdfs:domain sheepdogai:ToolCall ; rdfs:range sheepdogai:HumanApproval .
+sheepdogai:exceeded     a owl:ObjectProperty ; rdfs:domain sheepdogai:Budget   ; rdfs:range sheepdogai:Verdict ;
+    rdfs:comment "Links a budget to the stopping verdict." .
+sheepdogai:hasCapability a owl:ObjectProperty ; rdfs:domain sheepdogai:Adapter ; rdfs:range sheepdogai:Capability .
+sheepdogai:priorVerdict a owl:ObjectProperty ; rdfs:domain sheepdogai:Verdict ; rdfs:range sheepdogai:Verdict ;
+    rdfs:comment "The rules verdict that a Decider verdict received as input." .
+sheepdogai:observedBy   a owl:ObjectProperty ; rdfs:domain sheepdogai:ToolCall ; rdfs:range sheepdogai:Adapter .
+sheepdogai:follows      a owl:ObjectProperty ; rdfs:domain sheepdogai:LogRecord ; rdfs:range sheepdogai:LogRecord ;
+    rdfs:comment "Hash-chain link to the previous record." .
+sheepdogai:memberOf     a owl:ObjectProperty ; rdfs:domain sheepdogai:Rule ; rdfs:range sheepdogai:Policy .
+sheepdogai:partOf       a owl:ObjectProperty ; rdfs:range sheepdogai:Run ; rdfs:comment "Membership in a run bundle." .
+sheepdogai:stricterThan a owl:ObjectProperty , owl:TransitiveProperty ; rdfs:domain sheepdogai:StrictnessLevel ; rdfs:range sheepdogai:StrictnessLevel .
+
+# ---- datatype properties -------------------------------------------------
+sheepdogai:verdictValue a owl:DatatypeProperty ; rdfs:range xsd:string ;
+    rdfs:comment "One of allow, ask, deny." .
+sheepdogai:strictness   a owl:DatatypeProperty ; rdfs:range xsd:integer ;
+    rdfs:comment "0 allow, 1 ask, 2 deny." .
+sheepdogai:policyHash   a owl:DatatypeProperty ; rdfs:range xsd:string .
+sheepdogai:hash         a owl:DatatypeProperty ; rdfs:range xsd:string .
+sheepdogai:prevHash     a owl:DatatypeProperty ; rdfs:range xsd:string .
+sheepdogai:reason       a owl:DatatypeProperty ; rdfs:range xsd:string .
+sheepdogai:ruleId       a owl:DatatypeProperty ; rdfs:range xsd:string .
+sheepdogai:outcome      a owl:DatatypeProperty ; rdfs:range xsd:string .
+sheepdogai:channel      a owl:DatatypeProperty ; rdfs:range xsd:string .
+sheepdogai:seq          a owl:DatatypeProperty ; rdfs:range xsd:integer .
+sheepdogai:toolName     a owl:DatatypeProperty ; rdfs:range xsd:string .
+sheepdogai:toolKind     a owl:DatatypeProperty ; rdfs:range xsd:string .
+sheepdogai:summary      a owl:DatatypeProperty ; rdfs:range xsd:string .
+sheepdogai:untrustedContentSeen a owl:DatatypeProperty ; rdfs:range xsd:boolean .
+sheepdogai:name         a owl:DatatypeProperty ; rdfs:range xsd:string .
+sheepdogai:index        a owl:DatatypeProperty ; rdfs:range xsd:integer .
+
+# ---- ordered individuals: Deny is stricter than Ask is stricter than Allow ---
+sheepdogai:Allow a sheepdogai:StrictnessLevel ; sheepdogai:verdictValue "allow" ; sheepdogai:strictness 0 .
+sheepdogai:Ask   a sheepdogai:StrictnessLevel ; sheepdogai:verdictValue "ask"   ; sheepdogai:strictness 1 ;
+    sheepdogai:stricterThan sheepdogai:Allow .
+sheepdogai:Deny  a sheepdogai:StrictnessLevel ; sheepdogai:verdictValue "deny"  ; sheepdogai:strictness 2 ;
+    sheepdogai:stricterThan sheepdogai:Ask , sheepdogai:Allow .
+
+# ---- adapter capability individuals ---------------------------------------
+sheepdogai:CanBlock        a sheepdogai:Capability ; rdfs:label "can_block" .
+sheepdogai:CanAsk          a sheepdogai:Capability ; rdfs:label "can_ask" .
+sheepdogai:SeesMcp         a sheepdogai:Capability ; rdfs:label "sees_mcp" .
+sheepdogai:SeesFileEdits   a sheepdogai:Capability ; rdfs:label "sees_file_edits" .

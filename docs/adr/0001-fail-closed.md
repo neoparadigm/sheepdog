@@ -13,7 +13,7 @@ call proceed (https://code.claude.com/docs/en/hooks). Codex does the same for ex
 Every failure path produces **exit 2 with a non-empty reason on stderr**, which all three CLIs
 treat as a block. This includes client exceptions (even `KeyboardInterrupt`), daemon timeouts,
 unsafe socket permissions, malformed payloads, internal engine errors and log write failures.
-`fail:` in `sheepdog.yaml` accepts only `closed`; an `unsafe_` prefix is reserved and not implemented.
+`fail:` in `sheepdogai.yaml` accepts only `closed`; an `unsafe_` prefix is reserved and not implemented.
 An invalid rules file stops daemon startup (error with file and line); if it becomes invalid while
 running, every call is denied until it is fixed.
 

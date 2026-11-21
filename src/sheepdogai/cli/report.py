@@ -1,4 +1,4 @@
-"""Static, self-contained HTML replay report: ``sheepdog replay <run> --html FILE``.
+"""Static, self-contained HTML replay report: ``sheepdogai replay <run> --html FILE``.
 
 One file; inline CSS only; no scripts, no external resources, no network; a strict Content-Security-
 Policy forbids anything else. All text is redacted again and HTML-escaped. The same log always gives
@@ -78,7 +78,7 @@ def render_html(records: list[dict[str, Any]]) -> str:
         f"<h1>Replay report: run {_h(anchor['run_id'], 80)}</h1>",
         f'<p class="mut">policy hash <code>{_h(anchor["policy_hash"], 64)}</code> · schema {_h(anchor.get("schema_version", ""))} '
         f"· log head <code>{_h(head, 64)}</code> · {len(decisions)} decisions. Verify the chain with "
-        f"<code>sheepdog verify-log</code>. Secrets are redacted.</p>",
+        f"<code>sheepdogai verify-log</code>. Secrets are redacted.</p>",
         "<p>"
         + "".join(
             f'<span class="chip"><b style="color:{COLORS[k]}">{counts[k]}</b> {k}</span>'

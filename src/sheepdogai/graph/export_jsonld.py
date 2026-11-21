@@ -10,10 +10,10 @@ from sheepdogai.graph.builder import Graph
 from sheepdogai.ontology import PROV_TYPE, read_text
 
 CAP_IRI = {
-    "can_block": "sheepdog:CanBlock",
-    "can_ask": "sheepdog:CanAsk",
-    "sees_mcp": "sheepdog:SeesMcp",
-    "sees_file_edits": "sheepdog:SeesFileEdits",
+    "can_block": "sheepdogai:CanBlock",
+    "can_ask": "sheepdogai:CanAsk",
+    "sees_mcp": "sheepdogai:SeesMcp",
+    "sees_file_edits": "sheepdogai:SeesFileEdits",
 }
 # graph edge kind -> (JSON-LD term, invert?)
 EDGE_TERM = {

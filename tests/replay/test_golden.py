@@ -9,7 +9,7 @@ GOLD = Path(__file__).resolve().parent / "golden"
 
 
 def test_golden_run_replays_to_identical_verdicts() -> None:
-    pol = load_policy(GOLD / "sheepdog.yaml", project_root=Path("/work/proj"))
+    pol = load_policy(GOLD / "sheepdogai.yaml", project_root=Path("/work/proj"))
     recs = read_records(GOLD / "run.jsonl")
     assert recs[0]["data"]["policy_hash"] == pol.policy_hash
     diffs, n = replay_records(recs, pol)
@@ -17,7 +17,7 @@ def test_golden_run_replays_to_identical_verdicts() -> None:
 
 
 def test_rule_change_shows_exactly_the_diff() -> None:
-    text = (GOLD / "sheepdog.yaml").read_text().replace("action: allow", "action: deny")
+    text = (GOLD / "sheepdogai.yaml").read_text().replace("action: allow", "action: deny")
     alt = GOLD.parent / "_alt.yaml"
     alt.write_text(text)
     try:

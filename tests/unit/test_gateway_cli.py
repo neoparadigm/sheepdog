@@ -37,9 +37,9 @@ def test_secret_exfil_denied_and_key_text_never_logged(tmp_path: Path) -> None:
     r = gw.handle("claude", claude_event(cmd))
     assert r.exit_code == 2 and "secrets-exfil" in r.stderr
     gw.close()
-    log = (tmp_path / ".sheepdog/runs/sess1.jsonl").read_text()
+    log = (tmp_path / ".sheepdogai/runs/sess1.jsonl").read_text()
     assert "b3BlbnNzaC1rZXktdjE" not in log and "AKIAIOSFODNN7EXAMPLE" not in log
-    assert "secrets-exfil" in log and verify_log(tmp_path / ".sheepdog/runs/sess1.jsonl").ok
+    assert "secrets-exfil" in log and verify_log(tmp_path / ".sheepdogai/runs/sess1.jsonl").ok
 
 
 def test_log_records_shape_and_approval_for_ask(tmp_path: Path) -> None:
@@ -48,7 +48,7 @@ def test_log_records_shape_and_approval_for_ask(tmp_path: Path) -> None:
     gw.handle("claude", claude_event("rm -rf /"))
     gw.close()
     recs = [
-        json.loads(x) for x in (tmp_path / ".sheepdog/runs/sess1.jsonl").read_text().splitlines()
+        json.loads(x) for x in (tmp_path / ".sheepdogai/runs/sess1.jsonl").read_text().splitlines()
     ]
     kinds = [r["kind"] for r in recs]
     assert kinds == ["anchor", "decision", "approval", "decision"]
@@ -64,12 +64,12 @@ def test_malformed_payload_logged_without_raw_content(tmp_path: Path) -> None:
     r = gw.handle("claude", b"SECRET_TOKEN=abc not json")
     gw.close()
     assert r.exit_code == 2
-    log = (tmp_path / ".sheepdog/runs/_rejected.jsonl").read_text()
+    log = (tmp_path / ".sheepdogai/runs/_rejected.jsonl").read_text()
     assert "SECRET_TOKEN" not in log and "parse_error" in log
 
 
 def test_untrusted_flag_set_after_network_call(tmp_path: Path) -> None:
-    (tmp_path / "sheepdog.yaml").write_text("version: 1\nmode: balanced\npacks: [injection]\n")
+    (tmp_path / "sheepdogai.yaml").write_text("version: 1\nmode: balanced\npacks: [injection]\n")
     gw = Gateway(tmp_path)
     web = json.dumps(
         {
@@ -89,7 +89,7 @@ def test_untrusted_flag_set_after_network_call(tmp_path: Path) -> None:
 
 
 def test_budget_enforced_through_gateway(tmp_path: Path) -> None:
-    (tmp_path / "sheepdog.yaml").write_text(
+    (tmp_path / "sheepdogai.yaml").write_text(
         "version: 1\nmode: relaxed\npacks: []\nbudget: {max_steps: 3, max_repeats: 99}\n"
     )
     gw = Gateway(tmp_path)
@@ -129,9 +129,9 @@ def test_install_dry_run_changes_nothing(tmp_path: Path, cli: str) -> None:
     home.mkdir()
     before = {p: p.read_bytes() for p in tmp_path.rglob("*") if p.is_file()}
     plan = inst.install(cli, "project", proj, home, dry_run=True)
-    assert plan.changed and "sheepdog hook" in plan.diff
+    assert plan.changed and "sheepdogai hook" in plan.diff
     assert {p: p.read_bytes() for p in tmp_path.rglob("*") if p.is_file()} == before
-    assert not (proj / ".sheepdog").exists()
+    assert not (proj / ".sheepdogai").exists()
 
 
 @pytest.mark.parametrize("cli", ["claude", "gemini"])
@@ -156,7 +156,7 @@ def test_install_uninstall_restores_byte_for_byte(
     inst.install(cli, "project", proj, home)
     data = json.loads(path.read_text())
     ev = inst.SPECS[cli]["event"]
-    assert data["hooks"][ev][0]["hooks"][0]["command"] == f"sheepdog hook {cli}"
+    assert data["hooks"][ev][0]["hooks"][0]["command"] == f"sheepdogai hook {cli}"
     assert (path.stat().st_mode & 0o777) in (0o600, 0o644)
     again = inst.install(cli, "project", proj, home)  # idempotent
     assert not again.changed and json.loads(path.read_text()) == data
@@ -196,7 +196,7 @@ def test_cli_init_install_status_verify(
     (tmp_path / "home").mkdir()
     base = ["--project", str(tmp_path)]
     assert main([*base, "init"]) == 0
-    assert (tmp_path / "sheepdog.yaml").stat().st_mode & 0o777 == 0o600
+    assert (tmp_path / "sheepdogai.yaml").stat().st_mode & 0o777 == 0o600
     assert main([*base, "init"]) == 1
     assert main([*base, "install", "claude", "--dry-run"]) == 0
     assert not (tmp_path / ".claude").exists()
@@ -209,7 +209,7 @@ def test_cli_init_install_status_verify(
     gw.handle("claude", claude_event("ls"))
     gw.close()
     assert main([*base, "verify-log", "sess1"]) == 0
-    log = tmp_path / ".sheepdog/runs/sess1.jsonl"
+    log = tmp_path / ".sheepdogai/runs/sess1.jsonl"
     log.write_bytes(log.read_bytes().replace(b'"ls"', b'"lz"'))
     assert main([*base, "verify-log", "sess1"]) == 1
     assert "BROKEN" in capsys.readouterr().out
@@ -220,7 +220,7 @@ def test_cli_init_install_status_verify(
 
 
 def test_denied_network_call_does_not_mark_session_untrusted(tmp_path: Path) -> None:
-    (tmp_path / "sheepdog.yaml").write_text(
+    (tmp_path / "sheepdogai.yaml").write_text(
         "version: 1\nmode: balanced\npacks: [network, injection]\n"
     )
     gw = Gateway(tmp_path)

@@ -40,7 +40,7 @@ def validate_export(doc: dict[str, Any] | str) -> ValidationReport:
     shapes = Graph()
     shapes.parse(data=read_text("shapes.ttl"), format="turtle")
     ont = Graph()
-    ont.parse(data=read_text("sheepdog.ttl"), format="turtle")
+    ont.parse(data=read_text("sheepdogai.ttl"), format="turtle")
     conforms, _g, text = validate(
         data,
         shacl_graph=shapes,

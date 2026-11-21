@@ -1,4 +1,4 @@
-"""``sheepdog approve-shared``: the human approves the hash of the committed shared config."""
+"""``sheepdogai approve-shared``: the human approves the hash of the committed shared config."""
 
 from __future__ import annotations
 

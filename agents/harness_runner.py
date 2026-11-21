@@ -1,6 +1,6 @@
 """Push a scripted agent through adapter -> engine -> log -> graph, in process.
 
-Used by ``sheepdog bench`` and the red-team suite. A fresh temp project (with a real symlink and
+Used by ``sheepdogai bench`` and the red-team suite. A fresh temp project (with a real symlink and
 an "outside" directory) is created per harness so path-escape scenarios are real.
 """
 
@@ -55,7 +55,7 @@ class Harness:
         for d in (self.project / "src", self.home / ".ssh", self.home / ".aws", self.outside):
             d.mkdir(parents=True)
         (self.project / "link").symlink_to(self.outside)
-        (self.project / "sheepdog.yaml").write_text(self.config)
+        (self.project / "sheepdogai.yaml").write_text(self.config)
         self.gw = Gateway(self.project, home=str(self.home))
 
     def subst(self, v: Any) -> Any:
@@ -110,7 +110,7 @@ class Harness:
 
     def log_path(self, session: str) -> Path:
         """Path of the hash-chained log for a session."""
-        return self.project / ".sheepdog" / "runs" / f"{session}.jsonl"
+        return self.project / ".sheepdogai" / "runs" / f"{session}.jsonl"
 
     def graph_mermaid(self, session: str) -> str:
         """Run graph (Mermaid) for a session, from the log."""

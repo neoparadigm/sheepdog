@@ -1,4 +1,4 @@
-"""``sheepdog status``."""
+"""``sheepdogai status``."""
 
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ def cmd_status(project: Path, home: Path) -> int:
     print(f"project: {project}")
     try:
         pol = load_policy(rules if rules.exists() else None, project_root=project)
-        src = rules if rules.exists() else "built-in defaults (no sheepdog.yaml)"
+        src = rules if rules.exists() else "built-in defaults (no sheepdogai.yaml)"
         print(
             f"policy:  OK mode={pol.config.mode} hash={pol.policy_hash[:16]} rules={len(pol.rules)} from {src}"
         )
@@ -33,17 +33,17 @@ def cmd_status(project: Path, home: Path) -> int:
     if (
         ap is not None
         and ap.channel != "cli"
-        and float(os.environ.get("SHEEPDOG_TIMEOUT_S", "5")) <= ap.ask_timeout_s
+        and float(os.environ.get("SHEEPDOGAI_TIMEOUT_S", "5")) <= ap.ask_timeout_s
     ):
         print(
-            f"warning: approvals.channel={ap.channel} needs SHEEPDOG_TIMEOUT_S > {ap.ask_timeout_s} "
+            f"warning: approvals.channel={ap.channel} needs SHEEPDOGAI_TIMEOUT_S > {ap.ask_timeout_s} "
             "or the hook times out (and denies) before you can answer"
         )
 
     state, h = shared_state(project)
     if state != "absent":
         print(
-            f"shared:  .sheepdog/shared.yaml sha256 {str(h)[:16]} is {state}"
+            f"shared:  .sheepdogai/shared.yaml sha256 {str(h)[:16]} is {state}"
             + ("" if state == "approved" else f" (review it, then `{CLI_NAME} approve-shared`)")
         )
     s = sock_for(str(project))
@@ -55,8 +55,8 @@ def cmd_status(project: Path, home: Path) -> int:
             if (state_dir(scope, project, home) / f"{cli}-{scope}.json").exists():
                 print(f"hook:    {cli} installed ({scope})")
     runs = (
-        sorted((project / ".sheepdog" / "runs").glob("*.jsonl"))
-        if (project / ".sheepdog" / "runs").exists()
+        sorted((project / ".sheepdogai" / "runs").glob("*.jsonl"))
+        if (project / ".sheepdogai" / "runs").exists()
         else []
     )
     print(f"runs:    {len(runs)} recorded; verify with `{CLI_NAME} verify-log <run>`")

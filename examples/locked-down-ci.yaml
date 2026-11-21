@@ -5,7 +5,7 @@ fail: closed
 packs: [self_protect, machine, secrets, repo, network, injection]
 budget: {max_steps: 80, max_cost_usd: 2, max_repeats: 2}
 approvals: {ask_timeout_s: 1, remember: none}
-log: {path: .sheepdog/runs, hash_chain: true, redact_secrets: true}
+log: {path: .sheepdogai/runs, hash_chain: true, redact_secrets: true}
 rules:
   - id: allow-build-and-test
     match: {tool: Bash, command: ["make build", "make test", "uv run pytest*", "npm test", "npm run build"]}

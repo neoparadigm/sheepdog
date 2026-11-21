@@ -40,7 +40,7 @@ def test_non_interactive_needs_yes_and_changes_nothing(
     assert (
         "pass --yes" in out.err
         and "This will change" in out.out
-        and "sheepdog hook claude" in out.out
+        and "sheepdogai hook claude" in out.out
     )
     assert (
         not (home / ".claude" / "settings.json").exists() and not su.user_config_path(home).exists()
@@ -57,8 +57,8 @@ def test_setup_applies_selftests_is_idempotent_and_undoes(
     assert main(["setup", "--yes", "--mode", "balanced"]) == 0
     out = capsys.readouterr().out
     assert "blocked `rm -rf /` as expected" in out
-    assert "sheepdog hook claude" in (home / ".claude/settings.json").read_text()
-    assert "sheepdog hook gemini" in (home / ".gemini/settings.json").read_text()
+    assert "sheepdogai hook claude" in (home / ".claude/settings.json").read_text()
+    assert "sheepdogai hook gemini" in (home / ".gemini/settings.json").read_text()
     cfg = su.user_config_path(home)
     assert "mode: balanced" in cfg.read_text() and cfg.stat().st_mode & 0o077 == 0
     assert main(["setup", "--yes"]) == 0 and "already set up" in capsys.readouterr().out
@@ -91,9 +91,9 @@ def test_user_wide_policy_applies_in_projects_without_their_own(home: Path, tmp_
         ).exit_code
 
     assert call("echo hi") == 0 and call("rm -rf /") == 2
-    (proj / "sheepdog.yaml").write_text(
+    (proj / "sheepdogai.yaml").write_text(
         "version: 1\nmode: relaxed\npacks: []\n"
     )  # project policy wins
     assert call("rm -rf /") == 0  # packs: [] in the project file replaces the user-wide packs
-    assert gw.rules_path == proj / "sheepdog.yaml"
+    assert gw.rules_path == proj / "sheepdogai.yaml"
     gw.close()

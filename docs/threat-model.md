@@ -1,6 +1,6 @@
 # Threat model
 
-sheepdog is a **guardrail at the tool-call boundary**, not isolation. It reduces the chance that a
+sheepdogai is a **guardrail at the tool-call boundary**, not isolation. It reduces the chance that a
 confused, prompt-injected or careless-user agent does something destructive. It does not stop a
 determined adversary who controls the machine.
 
@@ -23,7 +23,7 @@ determined adversary who controls the machine.
 | **Tampered log** | yes | Someone edits, deletes or reorders log records afterwards. |
 | Malicious user with root | **out of scope** | They can change anything, including this tool. |
 | Compromised machine or kernel | **out of scope** | No integrity guarantee exists below the hook. |
-| A CLI that bypasses its own hooks | **out of scope** | If the agent CLI skips hooks (a bug, a flag, a different execution path) sheepdog never sees the call. |
+| A CLI that bypasses its own hooks | **out of scope** | If the agent CLI skips hooks (a bug, a flag, a different execution path) sheepdogai never sees the call. |
 | Another process owned by the same user | out of scope | The daemon socket is owner-only; the same user can already do anything the agent can. |
 
 ## Trust boundaries
@@ -56,7 +56,7 @@ determined adversary who controls the machine.
 | T13 | A CLI that cannot ask is asked to ask | Adapter capabilities; ask is downgraded to deny and logged | `tests/conformance`, `tests/unit/test_matchers.py` |
 | T14 | Core code phones home | No network imports in core packages; telemetry opt-in | `tests/unit/test_hygiene.py` |
 | T15 | Quadratic or catastrophic-backtracking input | Bounded parser, ReDoS check on rules, size limits | `tests/fuzz/test_fuzz.py` |
-| T17 | Agent approves its own action (reads a token, answers a prompt, runs `approve`) | Tokens in daemon memory and the human channel only; `self_protect` denies approval files, `~/.config/<cli>/` and `sheepdog approve*` | `tests/unit/test_approvals.py`, `tests/unit/test_shared_config.py` |
+| T17 | Agent approves its own action (reads a token, answers a prompt, runs `approve`) | Tokens in daemon memory and the human channel only; `self_protect` denies approval files, `~/.config/<cli>/` and `sheepdogai approve*` | `tests/unit/test_approvals.py`, `tests/unit/test_shared_config.py` |
 | T18 | Approval replayed, used late, or used for another call | Single-use token bound to event hash and expiry; timeout is deny | `tests/unit/test_approvals.py` |
 | T19 | A committed shared config loosens the user's policy | Applies only after the user approves its hash; can only tighten; loosening is rejected | `tests/unit/test_shared_config.py` |
 | T20 | MCP proxy forwards a call when the daemon is down, or rewrites results | Refuses on any decision failure; only secret redaction touches results | `tests/unit/test_mcp_proxy_wrap.py` |

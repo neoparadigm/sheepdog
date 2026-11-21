@@ -105,7 +105,7 @@ def test_workflows_pin_actions_by_sha_and_default_to_read_all() -> None:
 def test_name_lives_in_one_constant() -> None:
     from sheepdogai.constants import CLI_NAME, PACKAGE_NAME
 
-    assert (PACKAGE_NAME, CLI_NAME) == ("sheepdogai", "sheepdog")
+    assert (PACKAGE_NAME, CLI_NAME) == ("sheepdogai", "sheepdogai")
     hits = [
         p for p in SRC.rglob("*.py") if p.name != "constants.py" and '"sheepdogai"' in p.read_text()
     ]
