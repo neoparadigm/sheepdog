@@ -69,7 +69,8 @@ def _roundtrip(
         s.settimeout(timeout)
         s.connect(path)
         s.sendall(json.dumps(header).encode() + b"\n" + payload)
-        s.shutdown(socket.SHUT_WR)
+        # no shutdown(): the server reads an exact length, and on macOS shutdown() raises ENOTCONN
+        # when the daemon has already answered and closed, which would turn a fast reply into a block
         buf = b""
         while not buf.endswith(b"\n"):
             chunk = s.recv(65536)

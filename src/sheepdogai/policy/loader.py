@@ -220,7 +220,7 @@ def build_policy(
     shared_lines: list[int | None] | None = None,
 ) -> Policy:
     """Compile a validated config + packs (+ an approved shared config) into a Policy."""
-    home = home or os.path.expanduser("~")
+    home = canon(home or os.path.expanduser("~"))
     project_root = canon(os.path.realpath(project_root))
     user_config = config
     if shared is not None:

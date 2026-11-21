@@ -8,6 +8,7 @@ from sheepdogai.core.errors import RulesError
 from sheepdogai.core.verdict import Action, Verdict
 from sheepdogai.policy.engine import PolicyEngine, load_decider
 from sheepdogai.policy.matchers import (
+    canon,
     check_regex_safe,
     compute_facts,
     parse_shell,
@@ -111,7 +112,7 @@ def test_resolve_path(tmp_path: Path) -> None:
     (tmp_path / "t").mkdir()
     (tmp_path / "ln").symlink_to(tmp_path / "t")
     assert resolve_path("~/x", str(tmp_path), "/h") == "/h/x"
-    assert resolve_path("ln/../y", str(tmp_path), "/h") == str(tmp_path / "y")
+    assert resolve_path("ln/../y", str(tmp_path), "/h") == canon(str(tmp_path / "y"))
     assert resolve_path("a\x00b", str(tmp_path), "/h") is None
 
 
@@ -136,7 +137,7 @@ def test_apply_patch_paths_and_mcp_mutation(tmp_path: Path) -> None:
         patch="*** Update File: sheepdogai.yaml\n+x\n",
         cwd=str(tmp_path),
     )
-    assert compute_facts(e, str(tmp_path), "/h").paths == [str(tmp_path / "sheepdogai.yaml")]
+    assert compute_facts(e, str(tmp_path), "/h").paths == [canon(str(tmp_path / "sheepdogai.yaml"))]
     m = event(kind="mcp", name="mcp__fs__read_file", path="a", cwd=str(tmp_path))
     assert compute_facts(m, str(tmp_path), "/h").mutates is False
     m = event(kind="mcp", name="mcp__fs__delete", path="a", cwd=str(tmp_path))
