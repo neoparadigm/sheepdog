@@ -10,8 +10,14 @@ from sheepdogai.core.verdict import Action, Verdict
 
 def make_event(**kw: object) -> ToolCallEvent:
     base: dict[str, object] = dict(
-        event_id=uuid7(), run_id="r", session_id="s", seq=1, ts=datetime.now(UTC),
-        source="scripted", agent_id="a", tool=ToolRef(name="Bash", kind="shell"),
+        event_id=uuid7(),
+        run_id="r",
+        session_id="s",
+        seq=1,
+        ts=datetime.now(UTC),
+        source="scripted",
+        agent_id="a",
+        tool=ToolRef(name="Bash", kind="shell"),
         args={"command": "ls"},
     )
     base.update(kw)

@@ -1,4 +1,5 @@
 """Repo hygiene gate: forbidden constructs, network imports in core, UNVERIFIED placement."""
+
 from __future__ import annotations
 
 import re
@@ -10,10 +11,19 @@ FORBIDDEN = [r"\beval\(", r"\bexec\(", r"\bpickle\b", r"shell\s*=\s*True", r"yam
 NET_DIRS = ["core", "policy", "log", "redact"]
 NET_RE = re.compile(r"^\s*(import|from)\s+(socket|urllib|http)\b", re.M)
 # UNVERIFIED may appear only in experimental adapters, docs, tests and this tooling.
-UNVERIFIED_OK = ("src/sheepdogai/adapters/codex.py", "src/sheepdogai/adapters/mcp_proxy.py",
-                 "src/sheepdogai/adapters/wrap.py", "docs/", "tests/", "tools/",
-                 "src/sheepdogai/adapters/_fixtures/", "CHANGELOG.md", "README.md",
-                 ".pre-commit-config.yaml", "Makefile")
+UNVERIFIED_OK = (
+    "src/sheepdogai/adapters/codex.py",
+    "src/sheepdogai/adapters/mcp_proxy.py",
+    "src/sheepdogai/adapters/wrap.py",
+    "docs/",
+    "tests/",
+    "tools/",
+    "src/sheepdogai/adapters/_fixtures/",
+    "CHANGELOG.md",
+    "README.md",
+    ".pre-commit-config.yaml",
+    "Makefile",
+)
 
 
 def main() -> int:
