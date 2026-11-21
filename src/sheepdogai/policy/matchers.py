@@ -672,7 +672,10 @@ class _Parser:
         else:
             m = _NAME.match(s, i + 1)
             if not m:
-                if i + 1 < len(s) and s[i + 1] in "?!$@*#0123456789-":
+                if i + 1 < len(s) and s[i + 1] in "123456789@*":
+                    # positional parameters are empty in a fresh non-interactive shell
+                    return i + 2, "", False
+                if i + 1 < len(s) and s[i + 1] in "?!$#0-":
                     self.out.unresolved_vars.add(s[i + 1])
                     return i + 2, s[i : i + 2], False
                 return i + 1, "$", False

@@ -72,8 +72,8 @@ def ifs(cmd: str) -> str | None:
 
 
 def ifs_bare(cmd: str) -> str | None:
-    """rm$IFS-rf$IFS/"""
-    return cmd.replace(" ", "$IFS") if " " in cmd and "'" not in cmd and '"' not in cmd else None
+    """rm$IFS$9-rf$IFS$9/  ($9 is empty, so $IFS is not glued to the next word)"""
+    return cmd.replace(" ", "$IFS$9") if " " in cmd and "'" not in cmd and '"' not in cmd else None
 
 
 def subshell_bash_c(cmd: str) -> str | None:

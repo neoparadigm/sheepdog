@@ -58,3 +58,7 @@ branch = true
 fail_under = 90
 include = ["*/sheepdogai/core/*", "*/sheepdogai/policy/*", "*/sheepdogai/log/*",
            "*/sheepdogai/redact/*", "*/sheepdogai/budget/*"]
+
+[[tool.mypy.overrides]]
+module = ["opentelemetry", "opentelemetry.*"]
+ignore_missing_imports = true

@@ -35,7 +35,7 @@ CMDS = [
     "python -m pytest -q",
     "cp a b",
     "sed -i s/a/b/ f",
-    "find . -name '*.py' -exec grep x {} \;",
+    r"find . -name '*.py' -exec grep x {} \;",
     "npm install",
 ]
 
