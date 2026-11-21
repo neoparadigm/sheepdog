@@ -27,3 +27,13 @@ git tag v0.1.0 && git push origin v0.1.0
 
 Check the Actions run, then in a clean machine: `uv tool install sheepdogai && sheepdog setup && sheepdog doctor`.
 The `release` job's publish step fails (safely) until step 1 is done.
+
+## OpenSSF Scorecard findings (what is and is not fixable in code)
+
+| Check | Why it is open | What to do |
+|---|---|---|
+| Fuzzing | Scorecard does not count Python property-based testing (Hypothesis). It counts OSS-Fuzz, ClusterFuzzLite, Go fuzzing and a few other languages. | Done in code: `fuzz/fuzz_policy.py` + `.clusterfuzzlite/` + `cflite_pr.yml` (untested config). |
+| Maintained | Needs at least one commit per week for 90 days; the repo is new. | Nothing to do but keep committing; it improves by itself. |
+| Branch-Protection | A GitHub setting. | Settings > Rules > Rulesets: protect `main`: require a pull request, require status checks (`verify`, `docs`), block force pushes and deletion. |
+| Code-Review | Needs changes to land through pull requests that someone other than the author approved. A single maintainer cannot honestly satisfy this. | Add a second reviewer, then require 1 approval in the same ruleset. |
+| CII-Best-Practices | A badge you apply for. | Register at https://www.bestpractices.dev and answer the questionnaire (many answers are already true here: license, SECURITY.md, CI, tests). |
