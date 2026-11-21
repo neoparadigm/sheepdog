@@ -33,6 +33,22 @@ restored byte for byte). Use `--yes` to skip the prompt, `--mode strict` to ask 
 Want per-project rules instead? `sheepdog init` writes a commented `sheepdog.yaml`; a project's own file
 overrides the user-wide one. Codex support is experimental: `sheepdog install codex --experimental`.
 
+## Talk to it: `/sheepdog`
+
+After `sheepdog setup`, type **`/sheepdog`** in Claude Code (a skill) or Gemini CLI (a custom command) and just
+say what you want, in plain words:
+
+> `/sheepdog is it working?`
+> `/sheepdog what did you block today?`
+> `/sheepdog why was my npm install stopped?`
+> `/sheepdog be stricter` · `/sheepdog stop asking me about npm test`
+
+The agent runs the matching `sheepdog doctor`, `recent`, `mode`, `allow` or `block` command and explains
+the result in short plain sentences. Changing how cautious it is always asks **you** first (the agent cannot
+loosen its own guard), it will not look for workarounds when something is blocked, and it is told never to
+touch the config or run `setup`/`uninstall`. The same commands work in a terminal:
+`sheepdog mode strict`, `sheepdog allow 'npm test*'`, `sheepdog block 'npm publish*'`.
+
 ## How do I know it's working?
 
 Three ways, from easiest:

@@ -32,7 +32,7 @@ def _parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog=CLI_NAME, description="Safety gate for AI agent tool calls.")
     p.add_argument("--version", action="version", version=f"{CLI_NAME} {__version__}")
     p.add_argument("--project", default=None, help="project root (default: nearest sheepdog.yaml)")
-    sub = p.add_subparsers(dest="cmd", required=True)
+    sub = p.add_subparsers(dest="cmd", required=False)
     i = sub.add_parser("init", help="write a commented strict sheepdog.yaml")
     i.add_argument("--force", action="store_true")
     for name in ("install", "uninstall"):
@@ -58,6 +58,12 @@ def _parser() -> argparse.ArgumentParser:
     st.add_argument("--yes", action="store_true", help="apply without asking")
     st.add_argument("--mode", choices=["strict", "balanced", "relaxed"], default="balanced")
     st.add_argument("--undo", action="store_true", help="remove the hooks that setup installed")
+    md = sub.add_parser("mode", help="set how cautious it is: strict, balanced or relaxed")
+    md.add_argument("value", choices=["strict", "balanced", "relaxed"])
+    al = sub.add_parser("allow", help="stop asking about a command pattern, e.g. 'git status*'")
+    al.add_argument("pattern")
+    bl = sub.add_parser("block", help="always block a command pattern, e.g. 'npm publish*'")
+    bl.add_argument("pattern")
     sub.add_parser("doctor", help="check that protection is working, in plain language")
     rc = sub.add_parser("recent", help="show what was blocked, asked or allowed in this folder")
     rc.add_argument("-n", type=int, default=15)
@@ -107,6 +113,8 @@ def main(argv: list[str] | None = None) -> int:
 
         return run_hook(cli, "--experimental" in argv[2:])
     a = _parser().parse_args(argv)
+    if a.cmd is None:  # bare `sheepdog`: answer "is it working?"
+        a.cmd = "doctor"
     try:
         return _dispatch(a)
     except Exception as e:
@@ -151,6 +159,15 @@ def _dispatch(a: argparse.Namespace) -> int:  # noqa: C901
                 print(("would write " if a.dry_run else "wrote ") + str(plan.path))
         else:
             print(inst.uninstall(a.cli, scope, project, home, a.dry_run))
+        return 0
+    if a.cmd in {"mode", "allow", "block"}:
+        from sheepdogai.cli.tune import add_rule, set_mode
+
+        print(
+            set_mode(project, home, a.value)
+            if a.cmd == "mode"
+            else add_rule(project, home, a.pattern, "allow" if a.cmd == "allow" else "deny")
+        )
         return 0
     if a.cmd == "doctor":
         from sheepdogai.cli.doctor import cmd_doctor

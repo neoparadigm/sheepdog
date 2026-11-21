@@ -1,0 +1,158 @@
+from __future__ import annotations
+
+import tomllib
+from pathlib import Path
+
+import pytest
+import yaml
+from tests.helpers import event
+
+from sheepdogai.cli import skills as sk
+from sheepdogai.cli.main import main
+from sheepdogai.cli.setup import user_config_path
+from sheepdogai.cli.tune import add_rule, set_mode
+from sheepdogai.core.errors import SheepdogError
+from sheepdogai.core.verdict import Action
+from sheepdogai.policy.engine import PolicyEngine
+from sheepdogai.policy.loader import load_policy
+
+
+@pytest.fixture
+def home(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
+    h = tmp_path / "home"
+    h.mkdir()
+    monkeypatch.setenv("HOME", str(h))
+    monkeypatch.setenv("PATH", "/usr/bin:/bin")
+    return h
+
+
+def verdict(cfg: Path, project: Path, cmd: str) -> Action:
+    return (
+        PolicyEngine(load_policy(cfg, project_root=project))
+        .decide(event(cmd, cwd=str(project)))
+        .verdict.action
+    )
+
+
+def test_mode_edit_keeps_comments_and_validates(tmp_path: Path, home: Path) -> None:
+    f = tmp_path / "sheepdog.yaml"
+    f.write_text("# my note\nversion: 1\nmode: strict   # careful\npacks: [machine]\n")
+    assert "balanced" in set_mode(tmp_path, home, "balanced")
+    assert f.read_text() == "# my note\nversion: 1\nmode: balanced\npacks: [machine]\n"
+    f.write_text("version: 1\n")
+    set_mode(tmp_path, home, "relaxed")
+    assert yaml.safe_load(f.read_text())["mode"] == "relaxed"
+
+
+def test_allow_and_block_add_valid_rules_in_any_layout(tmp_path: Path, home: Path) -> None:
+    for layout in (
+        "version: 1\nmode: strict\n",
+        "version: 1\nrules: []\nmode: strict\n",
+        "version: 1\nrules:\n  - id: a\n    match: {tool: Bash, command: 'x*'}\n    action: ask\nmode: strict\n",
+        "version: 1\nmode: strict\nrules:\n  - id: a\n    match: {tool: Bash, command: 'x*'}\n    action: ask\n# end\n",
+    ):
+        f = tmp_path / "sheepdog.yaml"
+        f.write_text(layout)
+        add_rule(tmp_path, home, "npm test*", "allow")
+        add_rule(tmp_path, home, "npm publish*", "deny")
+        ids = [r["id"] for r in yaml.safe_load(f.read_text())["rules"]]
+        assert (
+            "user-allow-1" in ids
+            and "user-deny-1" in ids
+            and yaml.safe_load(f.read_text())["mode"] == "strict"
+        )
+        assert verdict(f, tmp_path, "npm test --watch") is Action.ALLOW
+        assert verdict(f, tmp_path, "npm publish") is Action.DENY
+
+
+def test_bad_or_overbroad_rules_are_refused_and_file_unchanged(tmp_path: Path, home: Path) -> None:
+    f = tmp_path / "sheepdog.yaml"
+    f.write_text(
+        "version: 1\nrules:\n  - id: a\n    match: {tool: [Bash, run_shell_command]}\n    action: ask\n"
+    )
+    before = f.read_text()
+    for pat in ("*", "  ", "* *", "?"):
+        with pytest.raises(SheepdogError, match="matches everything"):
+            add_rule(tmp_path, home, pat, "allow")
+    with pytest.raises(SheepdogError, match="unreachable"):  # shadowed by the broader earlier rule
+        add_rule(tmp_path, home, "ls*", "allow")
+    assert f.read_text() == before
+
+
+def test_falls_back_to_user_wide_config(tmp_path: Path, home: Path) -> None:
+    out = set_mode(tmp_path / "proj", home, "strict")
+    assert (
+        str(user_config_path(home)) in out and "mode: strict" in user_config_path(home).read_text()
+    )
+
+
+def test_cli_and_bare_invocation(
+    tmp_path: Path, home: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    base = ["--project", str(tmp_path)]
+    assert main([*base, "mode", "strict"]) == 0 and "Mode is now strict" in capsys.readouterr().out
+    assert main([*base, "allow", "make test"]) == 0 and "user-allow-1" in capsys.readouterr().out
+    assert main([*base]) in (0, 1)  # bare `sheepdog` runs the health check
+    assert "[" in capsys.readouterr().out
+
+
+def test_skill_formats_are_valid(home: Path) -> None:
+    claude = sk.CLAUDE_SKILL
+    fm = yaml.safe_load(claude.split("---")[1])
+    assert fm["name"] == "sheepdog" and "description" in fm and "$ARGUMENTS" in claude
+    g = tomllib.loads(sk.GEMINI_COMMAND)
+    assert (
+        set(g) == {"description", "prompt"}
+        and "{{args}}" in g["prompt"]
+        and "$ARGUMENTS" not in g["prompt"]
+    )
+    for must in (
+        "sheepdog doctor",
+        "sheepdog recent",
+        "sheepdog mode",
+        "sheepdog allow",
+        "workaround",
+    ):
+        assert must in claude
+
+
+def test_skill_install_does_not_clobber_and_remove_only_ours(home: Path) -> None:
+    p = sk.install_skill("claude", home)
+    assert p is not None and p == home / ".claude/skills/sheepdog/SKILL.md"
+    assert sk.remove_skill("claude", home) and not p.exists()
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text("my own skill")
+    assert sk.install_skill("claude", home) is None and p.read_text() == "my own skill"
+    assert sk.remove_skill("claude", home) is False and p.exists()
+    assert sk.install_skill("codex", home) is None
+
+
+def test_setup_installs_chat_command_and_undo_removes_it(
+    home: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    (home / ".claude").mkdir()
+    (home / ".gemini").mkdir()
+    assert main(["setup", "--yes"]) == 0
+    out = capsys.readouterr().out
+    assert "type /sheepdog" in out
+    assert (home / ".claude/skills/sheepdog/SKILL.md").exists() and (
+        home / ".gemini/commands/sheepdog.toml"
+    ).exists()
+    assert main(["setup", "--undo"]) == 0
+    assert (
+        not (home / ".claude/skills/sheepdog").exists()
+        and not (home / ".gemini/commands/sheepdog.toml").exists()
+    )
+
+
+def test_agent_cannot_loosen_or_reinstall_unattended(tmp_path: Path) -> None:
+    from tests.helpers import make_engine
+
+    eng = make_engine(tmp_path, mode="relaxed", packs=[])
+    for cmd in ("sheepdog mode relaxed", "sheepdog allow 'rm *'", "sheepdog block 'x*'"):
+        assert eng.decide(event(cmd, cwd=str(tmp_path))).verdict.action is Action.ASK, cmd
+    for cmd in ("sheepdog setup --yes", "sheepdog setup --undo", "sheepdog uninstall claude"):
+        v = eng.decide(event(cmd, cwd=str(tmp_path))).verdict
+        assert v.action is Action.DENY, cmd
+    for cmd in ("sheepdog doctor", "sheepdog recent -n 5", "sheepdog status"):
+        assert eng.decide(event(cmd, cwd=str(tmp_path))).verdict.action is Action.ALLOW, cmd

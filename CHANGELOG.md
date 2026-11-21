@@ -25,6 +25,9 @@ Version bumped to 0.1.0 (not yet published).
 
 - `sheepdog doctor` (plain-language health check with fix hints) and `sheepdog recent`.
 
+- `/sheepdog` chat command (Claude Code skill, Gemini CLI custom command) installed by `setup`; `sheepdog mode|allow|block`;
+  bare `sheepdog` runs the health check. Tuning commands always ask the human first.
+
 ### Fixed
 - The wheel no longer ships a top-level `agents` package (it collides with other libraries).
 

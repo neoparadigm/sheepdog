@@ -211,52 +211,52 @@
       "src": "urn:sheepdog:log:golden:9"
     },
     {
-      "dst": "urn:sheepdog:policy:a29ce2a3b3b824fdeadf44d76815aedc1ce4e56f8c153510148c386e282f37e8",
+      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
       "kind": "governedBy",
       "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000001"
     },
     {
-      "dst": "urn:sheepdog:policy:a29ce2a3b3b824fdeadf44d76815aedc1ce4e56f8c153510148c386e282f37e8",
+      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
       "kind": "governedBy",
       "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000002"
     },
     {
-      "dst": "urn:sheepdog:policy:a29ce2a3b3b824fdeadf44d76815aedc1ce4e56f8c153510148c386e282f37e8",
+      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
       "kind": "governedBy",
       "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000003"
     },
     {
-      "dst": "urn:sheepdog:policy:a29ce2a3b3b824fdeadf44d76815aedc1ce4e56f8c153510148c386e282f37e8",
+      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
       "kind": "governedBy",
       "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000004"
     },
     {
-      "dst": "urn:sheepdog:policy:a29ce2a3b3b824fdeadf44d76815aedc1ce4e56f8c153510148c386e282f37e8",
+      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
       "kind": "governedBy",
       "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000005"
     },
     {
-      "dst": "urn:sheepdog:policy:a29ce2a3b3b824fdeadf44d76815aedc1ce4e56f8c153510148c386e282f37e8",
+      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
       "kind": "governedBy",
       "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000006"
     },
     {
-      "dst": "urn:sheepdog:policy:a29ce2a3b3b824fdeadf44d76815aedc1ce4e56f8c153510148c386e282f37e8",
+      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
       "kind": "governedBy",
       "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000007"
     },
     {
-      "dst": "urn:sheepdog:policy:a29ce2a3b3b824fdeadf44d76815aedc1ce4e56f8c153510148c386e282f37e8",
+      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
       "kind": "governedBy",
       "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000008"
     },
     {
-      "dst": "urn:sheepdog:policy:a29ce2a3b3b824fdeadf44d76815aedc1ce4e56f8c153510148c386e282f37e8",
+      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
       "kind": "governedBy",
       "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000009"
     },
     {
-      "dst": "urn:sheepdog:policy:a29ce2a3b3b824fdeadf44d76815aedc1ce4e56f8c153510148c386e282f37e8",
+      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
       "kind": "governedBy",
       "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000010"
     },
@@ -311,99 +311,99 @@
       "src": "urn:sheepdog:agent:claude_code"
     },
     {
-      "dst": "urn:sheepdog:rule:a29ce2a3b3b824fd:allow-echo",
+      "dst": "urn:sheepdog:rule:7d2b27ff7099c151:allow-echo",
       "kind": "matchedRule",
       "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000001"
     },
     {
-      "dst": "urn:sheepdog:rule:a29ce2a3b3b824fd:default.strict",
+      "dst": "urn:sheepdog:rule:7d2b27ff7099c151:default.strict",
       "kind": "matchedRule",
       "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000002"
     },
     {
-      "dst": "urn:sheepdog:rule:a29ce2a3b3b824fd:no-force-push",
+      "dst": "urn:sheepdog:rule:7d2b27ff7099c151:no-force-push",
       "kind": "matchedRule",
       "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000003"
     },
     {
-      "dst": "urn:sheepdog:rule:a29ce2a3b3b824fd:machine-recursive-delete-outside",
+      "dst": "urn:sheepdog:rule:7d2b27ff7099c151:machine-recursive-delete-outside",
       "kind": "matchedRule",
       "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000004"
     },
     {
-      "dst": "urn:sheepdog:rule:a29ce2a3b3b824fd:secrets-exfil",
+      "dst": "urn:sheepdog:rule:7d2b27ff7099c151:secrets-exfil",
       "kind": "matchedRule",
       "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000005"
     },
     {
-      "dst": "urn:sheepdog:rule:a29ce2a3b3b824fd:repo-write-outside",
+      "dst": "urn:sheepdog:rule:7d2b27ff7099c151:repo-write-outside",
       "kind": "matchedRule",
       "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000006"
     },
     {
-      "dst": "urn:sheepdog:rule:a29ce2a3b3b824fd:sp-rules-and-hooks",
+      "dst": "urn:sheepdog:rule:7d2b27ff7099c151:sp-rules-and-hooks",
       "kind": "matchedRule",
       "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000007"
     },
     {
-      "dst": "urn:sheepdog:rule:a29ce2a3b3b824fd:default.strict",
+      "dst": "urn:sheepdog:rule:7d2b27ff7099c151:default.strict",
       "kind": "matchedRule",
       "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000008"
     },
     {
-      "dst": "urn:sheepdog:rule:a29ce2a3b3b824fd:inj-risky-after-untrusted-shell",
+      "dst": "urn:sheepdog:rule:7d2b27ff7099c151:inj-risky-after-untrusted-shell",
       "kind": "matchedRule",
       "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000009"
     },
     {
-      "dst": "urn:sheepdog:rule:a29ce2a3b3b824fd:machine-pipe-to-shell",
+      "dst": "urn:sheepdog:rule:7d2b27ff7099c151:machine-pipe-to-shell",
       "kind": "matchedRule",
       "src": "urn:sheepdog:event:00000000-0000-7000-8000-000000000010"
     },
     {
-      "dst": "urn:sheepdog:policy:a29ce2a3b3b824fdeadf44d76815aedc1ce4e56f8c153510148c386e282f37e8",
+      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
       "kind": "memberOf",
-      "src": "urn:sheepdog:rule:a29ce2a3b3b824fd:allow-echo"
+      "src": "urn:sheepdog:rule:7d2b27ff7099c151:allow-echo"
     },
     {
-      "dst": "urn:sheepdog:policy:a29ce2a3b3b824fdeadf44d76815aedc1ce4e56f8c153510148c386e282f37e8",
+      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
       "kind": "memberOf",
-      "src": "urn:sheepdog:rule:a29ce2a3b3b824fd:default.strict"
+      "src": "urn:sheepdog:rule:7d2b27ff7099c151:default.strict"
     },
     {
-      "dst": "urn:sheepdog:policy:a29ce2a3b3b824fdeadf44d76815aedc1ce4e56f8c153510148c386e282f37e8",
+      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
       "kind": "memberOf",
-      "src": "urn:sheepdog:rule:a29ce2a3b3b824fd:inj-risky-after-untrusted-shell"
+      "src": "urn:sheepdog:rule:7d2b27ff7099c151:inj-risky-after-untrusted-shell"
     },
     {
-      "dst": "urn:sheepdog:policy:a29ce2a3b3b824fdeadf44d76815aedc1ce4e56f8c153510148c386e282f37e8",
+      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
       "kind": "memberOf",
-      "src": "urn:sheepdog:rule:a29ce2a3b3b824fd:machine-pipe-to-shell"
+      "src": "urn:sheepdog:rule:7d2b27ff7099c151:machine-pipe-to-shell"
     },
     {
-      "dst": "urn:sheepdog:policy:a29ce2a3b3b824fdeadf44d76815aedc1ce4e56f8c153510148c386e282f37e8",
+      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
       "kind": "memberOf",
-      "src": "urn:sheepdog:rule:a29ce2a3b3b824fd:machine-recursive-delete-outside"
+      "src": "urn:sheepdog:rule:7d2b27ff7099c151:machine-recursive-delete-outside"
     },
     {
-      "dst": "urn:sheepdog:policy:a29ce2a3b3b824fdeadf44d76815aedc1ce4e56f8c153510148c386e282f37e8",
+      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
       "kind": "memberOf",
-      "src": "urn:sheepdog:rule:a29ce2a3b3b824fd:no-force-push"
+      "src": "urn:sheepdog:rule:7d2b27ff7099c151:no-force-push"
     },
     {
-      "dst": "urn:sheepdog:policy:a29ce2a3b3b824fdeadf44d76815aedc1ce4e56f8c153510148c386e282f37e8",
+      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
       "kind": "memberOf",
-      "src": "urn:sheepdog:rule:a29ce2a3b3b824fd:repo-write-outside"
+      "src": "urn:sheepdog:rule:7d2b27ff7099c151:repo-write-outside"
     },
     {
-      "dst": "urn:sheepdog:policy:a29ce2a3b3b824fdeadf44d76815aedc1ce4e56f8c153510148c386e282f37e8",
+      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
       "kind": "memberOf",
-      "src": "urn:sheepdog:rule:a29ce2a3b3b824fd:secrets-exfil"
+      "src": "urn:sheepdog:rule:7d2b27ff7099c151:secrets-exfil"
     },
     {
-      "dst": "urn:sheepdog:policy:a29ce2a3b3b824fdeadf44d76815aedc1ce4e56f8c153510148c386e282f37e8",
+      "dst": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
       "kind": "memberOf",
-      "src": "urn:sheepdog:rule:a29ce2a3b3b824fd:sp-rules-and-hooks"
+      "src": "urn:sheepdog:rule:7d2b27ff7099c151:sp-rules-and-hooks"
     },
     {
       "dst": "urn:sheepdog:adapter:claude_code",
@@ -583,7 +583,7 @@
     {
       "dst": "urn:sheepdog:run:golden",
       "kind": "partOf",
-      "src": "urn:sheepdog:policy:a29ce2a3b3b824fdeadf44d76815aedc1ce4e56f8c153510148c386e282f37e8"
+      "src": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201"
     },
     {
       "dst": "urn:sheepdog:verdict:00000000-0000-7000-8000-000000000001",
@@ -859,7 +859,7 @@
     },
     {
       "attrs": {
-        "hash": "14769c771e424d200bf98f019168d8e882b38e1a60f4f6d3ead2edfe4676a2d7",
+        "hash": "1c8e17a780a22f1e3cde593688dbb77759a36157686eeb44142a53d131edc537",
         "index": 0,
         "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
         "record_kind": "anchor"
@@ -870,9 +870,9 @@
     },
     {
       "attrs": {
-        "hash": "471850dcfa5ebafcaa27c68067c604a03d534cbee11e3b1b75c8d2c78bab5847",
+        "hash": "909f785f7506955e7ded4fe477bfe4fbdb56e1fc362e455120d62656fccf6ef4",
         "index": 1,
-        "prev_hash": "14769c771e424d200bf98f019168d8e882b38e1a60f4f6d3ead2edfe4676a2d7",
+        "prev_hash": "1c8e17a780a22f1e3cde593688dbb77759a36157686eeb44142a53d131edc537",
         "record_kind": "decision"
       },
       "id": "urn:sheepdog:log:golden:1",
@@ -881,9 +881,9 @@
     },
     {
       "attrs": {
-        "hash": "004bfdb168e566fabcd73add63ee5d080658da6928c4a2cfa67069b41cb02dd0",
+        "hash": "ae24aeee52deb735795400257e5f22e8fec82fef1a6f88340a0d586ae2b1a13c",
         "index": 10,
-        "prev_hash": "f6206f2621371439a4644013f0923bd0bb45e92ed94b5de279de8ef76e38bb85",
+        "prev_hash": "611a0d80b7ba082fb2ec7eb4f14cbbd1944e62825a33a4652beaa9e77525462f",
         "record_kind": "decision"
       },
       "id": "urn:sheepdog:log:golden:10",
@@ -892,9 +892,9 @@
     },
     {
       "attrs": {
-        "hash": "f81361acac690e7b39c9c0edfea23e61259288ec79395bd1bcf07984e46f3698",
+        "hash": "290ee5cdd79248f8afd1c54b72de73c74650223df5a66596a52aaea3650d261f",
         "index": 11,
-        "prev_hash": "004bfdb168e566fabcd73add63ee5d080658da6928c4a2cfa67069b41cb02dd0",
+        "prev_hash": "ae24aeee52deb735795400257e5f22e8fec82fef1a6f88340a0d586ae2b1a13c",
         "record_kind": "approval"
       },
       "id": "urn:sheepdog:log:golden:11",
@@ -903,9 +903,9 @@
     },
     {
       "attrs": {
-        "hash": "95f8ae4e8d1683587bfa29981049d06e07b253e656757614cf30c59c53596a78",
+        "hash": "fb15e2e751e89d8ede541bcd7c4d3dc1061059a7f8757ec0711aa515514936c8",
         "index": 12,
-        "prev_hash": "f81361acac690e7b39c9c0edfea23e61259288ec79395bd1bcf07984e46f3698",
+        "prev_hash": "290ee5cdd79248f8afd1c54b72de73c74650223df5a66596a52aaea3650d261f",
         "record_kind": "decision"
       },
       "id": "urn:sheepdog:log:golden:12",
@@ -914,9 +914,9 @@
     },
     {
       "attrs": {
-        "hash": "7032cd800958e6deaaeb3861dbd2722a8ace6b563de46dc34063456d0e6bf0f3",
+        "hash": "b7019c7720a5a421139f6a78cf73f6be17bfc5a211f202b7ebbbd9f2e97f2ca7",
         "index": 13,
-        "prev_hash": "95f8ae4e8d1683587bfa29981049d06e07b253e656757614cf30c59c53596a78",
+        "prev_hash": "fb15e2e751e89d8ede541bcd7c4d3dc1061059a7f8757ec0711aa515514936c8",
         "record_kind": "approval"
       },
       "id": "urn:sheepdog:log:golden:13",
@@ -925,9 +925,9 @@
     },
     {
       "attrs": {
-        "hash": "5e5a30276d4f74e13f15ab18df06998776a768ee9a6d26d6e0f5747e47d300dc",
+        "hash": "3a9f9c074e0fd57672f3af2f7d392d67e584de751635b13a69f64d469ca546d8",
         "index": 14,
-        "prev_hash": "7032cd800958e6deaaeb3861dbd2722a8ace6b563de46dc34063456d0e6bf0f3",
+        "prev_hash": "b7019c7720a5a421139f6a78cf73f6be17bfc5a211f202b7ebbbd9f2e97f2ca7",
         "record_kind": "decision"
       },
       "id": "urn:sheepdog:log:golden:14",
@@ -936,9 +936,9 @@
     },
     {
       "attrs": {
-        "hash": "ec4d87dc26e94bf30dd5169ba8be48ee8b1fdb38bbeb6d9ba51efa1095615de7",
+        "hash": "4fb3b0265ccf3bdcf12287dd222b964ad6031231fa530ee60bd6f4aaf67f28cc",
         "index": 2,
-        "prev_hash": "471850dcfa5ebafcaa27c68067c604a03d534cbee11e3b1b75c8d2c78bab5847",
+        "prev_hash": "909f785f7506955e7ded4fe477bfe4fbdb56e1fc362e455120d62656fccf6ef4",
         "record_kind": "decision"
       },
       "id": "urn:sheepdog:log:golden:2",
@@ -947,9 +947,9 @@
     },
     {
       "attrs": {
-        "hash": "5fb0b12ca7ac46b7f3891636871607b1f0b48fdcd300b2a44843828ea7700452",
+        "hash": "2199dd65a24cf31d8ab1b74263ad7c8803293705aa9ea66508d3cba1b41e43ff",
         "index": 3,
-        "prev_hash": "ec4d87dc26e94bf30dd5169ba8be48ee8b1fdb38bbeb6d9ba51efa1095615de7",
+        "prev_hash": "4fb3b0265ccf3bdcf12287dd222b964ad6031231fa530ee60bd6f4aaf67f28cc",
         "record_kind": "approval"
       },
       "id": "urn:sheepdog:log:golden:3",
@@ -958,9 +958,9 @@
     },
     {
       "attrs": {
-        "hash": "4ce4235ac818b848fd761a17df697b1677317dd45855e43bf6448f1e74a58045",
+        "hash": "3a65e4dfa674cba282298d1f6d51f0e5abd5bb2f8662c188d9d3e9997b7d2ab7",
         "index": 4,
-        "prev_hash": "5fb0b12ca7ac46b7f3891636871607b1f0b48fdcd300b2a44843828ea7700452",
+        "prev_hash": "2199dd65a24cf31d8ab1b74263ad7c8803293705aa9ea66508d3cba1b41e43ff",
         "record_kind": "decision"
       },
       "id": "urn:sheepdog:log:golden:4",
@@ -969,9 +969,9 @@
     },
     {
       "attrs": {
-        "hash": "95af7c8ddfedb6da40121b054ad060eaf0b24241db30b4f850f59be850e8fd95",
+        "hash": "bc0a0d73ff5becaa91d2891b0f2ece7f9138bcacb7e76d07274f063b53f42137",
         "index": 5,
-        "prev_hash": "4ce4235ac818b848fd761a17df697b1677317dd45855e43bf6448f1e74a58045",
+        "prev_hash": "3a65e4dfa674cba282298d1f6d51f0e5abd5bb2f8662c188d9d3e9997b7d2ab7",
         "record_kind": "decision"
       },
       "id": "urn:sheepdog:log:golden:5",
@@ -980,9 +980,9 @@
     },
     {
       "attrs": {
-        "hash": "f9b021b7aa945821f173aac61dddc2462418348951926b8fca7b976111b4716e",
+        "hash": "42f71ce3812bb8f1f2b41c9cd81472ab7b6f831f943cbf654722a96e0299e84e",
         "index": 6,
-        "prev_hash": "95af7c8ddfedb6da40121b054ad060eaf0b24241db30b4f850f59be850e8fd95",
+        "prev_hash": "bc0a0d73ff5becaa91d2891b0f2ece7f9138bcacb7e76d07274f063b53f42137",
         "record_kind": "decision"
       },
       "id": "urn:sheepdog:log:golden:6",
@@ -991,9 +991,9 @@
     },
     {
       "attrs": {
-        "hash": "80c20352a757f78076d91a4e3cdc584a18d462b3ffbb6155f67fc78920a23ca5",
+        "hash": "ec6c38c1ce0306bd086fcc1e254d2cebcc27159501849b6432be713d72229391",
         "index": 7,
-        "prev_hash": "f9b021b7aa945821f173aac61dddc2462418348951926b8fca7b976111b4716e",
+        "prev_hash": "42f71ce3812bb8f1f2b41c9cd81472ab7b6f831f943cbf654722a96e0299e84e",
         "record_kind": "decision"
       },
       "id": "urn:sheepdog:log:golden:7",
@@ -1002,9 +1002,9 @@
     },
     {
       "attrs": {
-        "hash": "db7b5ce84b1c35db3ca1e7b69ad6d45ebf8c2c82bcb27f2d2b9bfda9107e887d",
+        "hash": "274b071837ca2d69d3091f43b8a21c27141b35e79c600e640a4fcc371bc8f640",
         "index": 8,
-        "prev_hash": "80c20352a757f78076d91a4e3cdc584a18d462b3ffbb6155f67fc78920a23ca5",
+        "prev_hash": "ec6c38c1ce0306bd086fcc1e254d2cebcc27159501849b6432be713d72229391",
         "record_kind": "decision"
       },
       "id": "urn:sheepdog:log:golden:8",
@@ -1013,9 +1013,9 @@
     },
     {
       "attrs": {
-        "hash": "f6206f2621371439a4644013f0923bd0bb45e92ed94b5de279de8ef76e38bb85",
+        "hash": "611a0d80b7ba082fb2ec7eb4f14cbbd1944e62825a33a4652beaa9e77525462f",
         "index": 9,
-        "prev_hash": "db7b5ce84b1c35db3ca1e7b69ad6d45ebf8c2c82bcb27f2d2b9bfda9107e887d",
+        "prev_hash": "274b071837ca2d69d3091f43b8a21c27141b35e79c600e640a4fcc371bc8f640",
         "record_kind": "approval"
       },
       "id": "urn:sheepdog:log:golden:9",
@@ -1032,18 +1032,18 @@
     },
     {
       "attrs": {
-        "policy_hash": "a29ce2a3b3b824fdeadf44d76815aedc1ce4e56f8c153510148c386e282f37e8"
+        "policy_hash": "7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201"
       },
-      "id": "urn:sheepdog:policy:a29ce2a3b3b824fdeadf44d76815aedc1ce4e56f8c153510148c386e282f37e8",
+      "id": "urn:sheepdog:policy:7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
       "kind": "Policy",
-      "label": "policy a29ce2a3b3b8"
+      "label": "policy 7d2b27ff7099"
     },
     {
       "attrs": {
         "origin": "user",
         "rule_id": "allow-echo"
       },
-      "id": "urn:sheepdog:rule:a29ce2a3b3b824fd:allow-echo",
+      "id": "urn:sheepdog:rule:7d2b27ff7099c151:allow-echo",
       "kind": "Rule",
       "label": "allow-echo"
     },
@@ -1052,7 +1052,7 @@
         "origin": "default",
         "rule_id": "default.strict"
       },
-      "id": "urn:sheepdog:rule:a29ce2a3b3b824fd:default.strict",
+      "id": "urn:sheepdog:rule:7d2b27ff7099c151:default.strict",
       "kind": "Rule",
       "label": "default.strict"
     },
@@ -1061,7 +1061,7 @@
         "origin": "injection",
         "rule_id": "inj-risky-after-untrusted-shell"
       },
-      "id": "urn:sheepdog:rule:a29ce2a3b3b824fd:inj-risky-after-untrusted-shell",
+      "id": "urn:sheepdog:rule:7d2b27ff7099c151:inj-risky-after-untrusted-shell",
       "kind": "Rule",
       "label": "inj-risky-after-untrusted-shell"
     },
@@ -1070,7 +1070,7 @@
         "origin": "machine",
         "rule_id": "machine-pipe-to-shell"
       },
-      "id": "urn:sheepdog:rule:a29ce2a3b3b824fd:machine-pipe-to-shell",
+      "id": "urn:sheepdog:rule:7d2b27ff7099c151:machine-pipe-to-shell",
       "kind": "Rule",
       "label": "machine-pipe-to-shell"
     },
@@ -1079,7 +1079,7 @@
         "origin": "machine",
         "rule_id": "machine-recursive-delete-outside"
       },
-      "id": "urn:sheepdog:rule:a29ce2a3b3b824fd:machine-recursive-delete-outside",
+      "id": "urn:sheepdog:rule:7d2b27ff7099c151:machine-recursive-delete-outside",
       "kind": "Rule",
       "label": "machine-recursive-delete-outside"
     },
@@ -1088,7 +1088,7 @@
         "origin": "user",
         "rule_id": "no-force-push"
       },
-      "id": "urn:sheepdog:rule:a29ce2a3b3b824fd:no-force-push",
+      "id": "urn:sheepdog:rule:7d2b27ff7099c151:no-force-push",
       "kind": "Rule",
       "label": "no-force-push"
     },
@@ -1097,7 +1097,7 @@
         "origin": "repo",
         "rule_id": "repo-write-outside"
       },
-      "id": "urn:sheepdog:rule:a29ce2a3b3b824fd:repo-write-outside",
+      "id": "urn:sheepdog:rule:7d2b27ff7099c151:repo-write-outside",
       "kind": "Rule",
       "label": "repo-write-outside"
     },
@@ -1106,7 +1106,7 @@
         "origin": "secrets",
         "rule_id": "secrets-exfil"
       },
-      "id": "urn:sheepdog:rule:a29ce2a3b3b824fd:secrets-exfil",
+      "id": "urn:sheepdog:rule:7d2b27ff7099c151:secrets-exfil",
       "kind": "Rule",
       "label": "secrets-exfil"
     },
@@ -1115,13 +1115,13 @@
         "origin": "self_protect",
         "rule_id": "sp-rules-and-hooks"
       },
-      "id": "urn:sheepdog:rule:a29ce2a3b3b824fd:sp-rules-and-hooks",
+      "id": "urn:sheepdog:rule:7d2b27ff7099c151:sp-rules-and-hooks",
       "kind": "Rule",
       "label": "sp-rules-and-hooks"
     },
     {
       "attrs": {
-        "policy_hash": "a29ce2a3b3b824fdeadf44d76815aedc1ce4e56f8c153510148c386e282f37e8",
+        "policy_hash": "7d2b27ff7099c151ed96d9e57ec0e26a4d9f6022186baca3939bb8d3146cc201",
         "run_id": "golden",
         "schema_version": "1"
       },

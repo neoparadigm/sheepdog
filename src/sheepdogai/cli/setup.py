@@ -12,6 +12,7 @@ import sys
 import tempfile
 from pathlib import Path
 
+from sheepdogai.cli.skills import install_skill, remove_skill, skill_targets
 from sheepdogai.constants import CLI_NAME, CONFIG_FILE
 
 DETECT = [("claude", "claude", ".claude"), ("gemini", "gemini", ".gemini")]
@@ -90,6 +91,8 @@ def cmd_setup(home: Path, yes: bool, mode: str, undo: bool) -> int:
     if undo:
         for cli in targets:
             print(inst.uninstall(cli, "user", home, home))
+            if remove_skill(cli, home):
+                print(f"removed the /{CLI_NAME} chat command for {cli}")
         print(
             f"Hooks removed. Your user policy ({user_config_path(home)}) and logs were left in place."
         )
@@ -106,9 +109,19 @@ def cmd_setup(home: Path, yes: bool, mode: str, undo: bool) -> int:
         print(f"\n  {p.path}" + ("  (already installed, no change)" if not p.changed else ""))
         for line in p.diff.splitlines():
             print("    " + line)
+    for cli in targets:
+        t = skill_targets(home).get(cli)
+        if t and not t[0].exists():
+            print(
+                f"\n  {t[0]}  (new: lets you type /{CLI_NAME} in {cli} to check or tune it by chatting)"
+            )
     if not cfg.exists():
         print(f"\n  {cfg}  (new, mode={mode})")
-    if all(not p.changed for p in plans) and cfg.exists():
+    if (
+        all(not p.changed for p in plans)
+        and cfg.exists()
+        and all((t := skill_targets(home).get(c)) is None or t[0].exists() for c in targets)
+    ):
         print("\nNothing to do: already set up.")
         return 0
     if not yes:
@@ -122,6 +135,7 @@ def cmd_setup(home: Path, yes: bool, mode: str, undo: bool) -> int:
             return 1
     for cli in targets:
         inst.install(cli, "user", home, home)
+        install_skill(cli, home)
     if not cfg.exists():
         cfg.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
         fd = os.open(cfg, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)

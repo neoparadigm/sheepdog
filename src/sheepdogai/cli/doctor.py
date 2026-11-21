@@ -60,6 +60,16 @@ def cmd_doctor(project: Path, home: Path) -> int:
             f"{cli}: protection is switched on" + (f" via {where}" if where else ""),
             f"run: {CLI_NAME} setup",
         )
+    from sheepdogai.cli.skills import skill_targets
+
+    for cli in agents:
+        t = skill_targets(home).get(cli)
+        if t:
+            line(
+                t[0].exists(),
+                f"{cli}: you can type /{CLI_NAME} to chat with it",
+                f"run: {CLI_NAME} setup",
+            )
     rules = project / CONFIG_FILE
     path = (
         rules

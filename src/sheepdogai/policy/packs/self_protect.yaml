@@ -8,9 +8,14 @@ rules:
       path: ["**/{state}/approved/**", "**/{state}/approved", "**/{state}/approval.key", "**/{state}/approval.used", "~/.config/{cli}", "~/.config/{cli}/**"]
     action: deny
     reason: approvals belong to the human; the agent may not read, write or answer them
+  - id: sp-cli-tuning
+    match:
+      command: ["{cli} mode*", "{cli} allow*", "{cli} block*"]
+    action: ask
+    reason: changing how cautious the guard is needs a human
   - id: sp-cli-self-management
     match:
-      command: ["{cli} approve*", "{cli} uninstall*", "{cli} install*", "{cli} init*", "{cli} daemon*"]
+      command: ["{cli} setup*", "{cli} approve*", "{cli} uninstall*", "{cli} install*", "{cli} init*", "{cli} daemon*"]
     action: deny
     reason: the agent may not change or approve its own guard
   - id: sp-rules-and-hooks
