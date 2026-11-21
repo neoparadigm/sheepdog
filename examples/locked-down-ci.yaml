@@ -1,0 +1,19 @@
+# Locked-down CI runner: no human to ask. Anything not explicitly allowed is denied.
+version: 1
+mode: strict            # ask becomes deny on adapters that cannot ask; run a CLI with no TTY
+fail: closed
+packs: [self_protect, machine, secrets, repo, network, injection]
+budget: {max_steps: 80, max_cost_usd: 2, max_repeats: 2}
+approvals: {ask_timeout_s: 1, remember: none}
+log: {path: .sheepdog/runs, hash_chain: true, redact_secrets: true}
+rules:
+  - id: allow-build-and-test
+    match: {tool: Bash, command: ["make build", "make test", "uv run pytest*", "npm test", "npm run build"]}
+    action: allow
+  - id: allow-read-tools
+    match: {kind: file_read}
+    action: allow
+  - id: deny-everything-else-mutating
+    match: {mutates: true}
+    action: deny
+    reason: CI runs are read-only apart from the allowed build and test commands

@@ -1,0 +1,8 @@
+sheepdogai
+Copyright 2026 The sheepdogai contributors
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+The ontology reuses terms from the W3C PROV-O vocabulary (https://www.w3.org/TR/prov-o/) and
+names from OpenTelemetry semantic conventions (https://github.com/open-telemetry/semantic-conventions),
+both referenced by IRI/name only; no third-party text is redistributed.

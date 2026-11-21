@@ -1,0 +1,13 @@
+# Solo developer: balanced. Read-only commands run; everything else asks.
+version: 1
+mode: balanced
+fail: closed
+packs: [self_protect, machine, secrets, repo, network, injection]
+budget: {max_steps: 300, max_cost_usd: 10, max_repeats: 4}
+approvals: {ask_timeout_s: 60, remember: session}
+log: {path: .sheepdog/runs, hash_chain: true, redact_secrets: true}
+rules:
+  - id: allow-tests
+    match: {tool: Bash, command: ["pytest*", "python -m pytest*", "uv run pytest*", "make test", "make lint"]}
+    action: allow
+    reason: running the test suite is routine

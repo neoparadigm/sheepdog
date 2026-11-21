@@ -10,3 +10,4 @@ bench/report.md
 .hypothesis/
 tests/perf/last_run.json
 bench/.work/
+site/

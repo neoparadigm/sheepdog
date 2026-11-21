@@ -251,6 +251,7 @@ class _Handler(socketserver.StreamRequestHandler):
     server: _Server
 
     def handle(self) -> None:
+        """Serve one framed request: peer check, read payload, decide, reply."""
         self.request.settimeout(10)
         try:
             if not _peer_uid_ok(self.request):
@@ -285,6 +286,7 @@ class _Server(socketserver.ThreadingMixIn, socketserver.UnixStreamServer):
         super().__init__(path, _Handler)
 
     def touch(self) -> None:
+        """Record activity (for the idle watchdog)."""
         self.last = time.monotonic()
 
 

@@ -476,6 +476,7 @@ class _Parser:
 
     # -- scanning ----------------------------------------------------------
     def run(self, s: str) -> Parsed:  # noqa: C901
+        """Scan ``s`` and return the parsed result."""
         i, n = 0, len(s)
         word: list[tuple[str, bool]] = []
         in_word = False
@@ -1181,6 +1182,7 @@ class CompiledMatch:
         return host == pat
 
     def matches(self, f: Facts, b: BudgetState | None = None) -> bool:  # noqa: C901
+        """Return True when every matcher in the rule holds for these facts."""
         m, ev = self.m, f.event
         if self.tools and ev.tool.name.lower() not in self.tools:
             return False

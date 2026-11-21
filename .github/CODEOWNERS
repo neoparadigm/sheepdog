@@ -1,0 +1,6 @@
+# Replace with real owners before publishing.
+*                       @OWNER/maintainers
+/src/sheepdogai/policy/ @OWNER/maintainers
+/src/sheepdogai/log/    @OWNER/maintainers
+/.github/               @OWNER/maintainers
+/SECURITY.md            @OWNER/maintainers

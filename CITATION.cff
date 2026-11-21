@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "sheepdogai: a safety and observability gate for AI agent tool calls"
+type: software
+version: 0.1.0.dev0
+license: Apache-2.0
+authors:
+  - name: "sheepdogai contributors"
+repository-code: "https://github.com/OWNER/sheepdogai"
+abstract: >-
+  Framework-agnostic guard at the tool-call boundary of AI agents: deterministic policy, a
+  stricter-only Decider, budgets, and a tamper-evident replayable log mapped to PROV-O and OpenTelemetry.
+keywords: [ai-safety, agents, guardrails, provenance, prov-o, opentelemetry]

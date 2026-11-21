@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from sheepdogai.constants import OTEL_GENAI_SEMCONV_VERSION
+from sheepdogai.constants import OTEL_GENAI_SEMCONV_VERSION, PACKAGE_NAME
 
 
 def spans_from_records(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -57,7 +57,7 @@ def emit(records: list[dict[str, Any]]) -> int:
         from opentelemetry import trace
     except ImportError as e:
         raise ImportError("OTel export needs the extra: pip install sheepdogai[otel]") from e
-    tracer = trace.get_tracer("sheepdogai")
+    tracer = trace.get_tracer(PACKAGE_NAME)
     n = 0
     for s in spans_from_records(records):
         with tracer.start_as_current_span(s["name"], attributes=s["attributes"]):

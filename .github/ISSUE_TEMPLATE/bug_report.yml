@@ -1,0 +1,13 @@
+name: Bug report
+description: Something behaves differently from the docs
+body:
+  - type: markdown
+    attributes: {value: "**Security bypass?** Do not open a public issue. See SECURITY.md."}
+  - type: input
+    attributes: {label: sheepdog version, description: "output of `sheepdog --version`"}
+    validations: {required: true}
+  - type: input
+    attributes: {label: Agent CLI and version}
+  - type: textarea
+    attributes: {label: What happened, description: "Redact secrets. `sheepdog verify-log <run>` output helps."}
+    validations: {required: true}

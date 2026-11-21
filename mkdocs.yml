@@ -1,0 +1,20 @@
+site_name: sheepdogai
+site_description: Safety and observability gate for AI agent tool calls
+docs_dir: docs
+strict: true
+theme: {name: readthedocs}
+nav:
+  - Home: index.md
+  - Architecture: architecture.md
+  - Threat model: threat-model.md
+  - Limitations: limitations.md
+  - Ontology: ontology.md
+  - Architecture decisions:
+      - "0001 Fail closed": adr/0001-fail-closed.md
+      - "0002 Decider only stricter": adr/0002-decider-only-stricter.md
+      - "0003 Hooks before MCP": adr/0003-hooks-before-mcp.md
+      - "0004 Unix socket daemon": adr/0004-unix-socket-daemon.md
+      - "0005 Hash chain": adr/0005-hash-chain-log.md
+      - "0006 PROV-O reuse": adr/0006-prov-o-reuse.md
+      - "0007 Dependencies": adr/0007-dependencies.md
+      - "0008 Never grant permission": adr/0008-never-grant-permission.md
