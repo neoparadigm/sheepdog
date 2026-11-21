@@ -9,3 +9,4 @@ bench/report.md
 .ruff_cache/
 .hypothesis/
 tests/perf/last_run.json
+bench/.work/

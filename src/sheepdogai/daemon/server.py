@@ -76,9 +76,15 @@ class Gateway:
     """parse -> engine -> log -> respond. Every failure becomes a fail-closed response."""
 
     def __init__(
-        self, project_root: Path, rules_path: Path | None = None, log_dir: Path | None = None
+        self,
+        project_root: Path,
+        rules_path: Path | None = None,
+        log_dir: Path | None = None,
+        home: str | None = None,
     ) -> None:
         self.project_root = project_root.resolve()
+        self.home = home
+        self.last_decision: Decision | None = None
         self.rules_path = rules_path if rules_path is not None else self._find_rules()
         self._explicit_log_dir = log_dir
         self.sessions: dict[str, RunSession] = {}
@@ -102,7 +108,7 @@ class Gateway:
 
     def _load(self) -> PolicyEngine:
         self._sig = self._signature()
-        pol = load_policy(self.rules_path, project_root=self.project_root)
+        pol = load_policy(self.rules_path, project_root=self.project_root, home=self.home)
         return PolicyEngine(pol)
 
     def _maybe_reload(self) -> None:
@@ -191,6 +197,7 @@ class Gateway:
         dec = self.engine.decide(event, sess.state, adapter.capabilities)
         latency = (time.perf_counter() - t0) * 1000
         sess.state = dec.budget
+        self.last_decision = dec
         rec = DecisionRecord(
             event=event,
             verdict=dec.verdict,
