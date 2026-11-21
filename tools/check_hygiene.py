@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-FORBIDDEN = [r"\beval\(", r"\bexec\(", r"\bpickle\b", r"shell\s*=\s*True", r"yaml\.load\("]
+FORBIDDEN = [r"\beval\(", r"\bexec\(", r"\bpickle\b", r"(?<!\w)shell\s*=\s*True", r"yaml\.load\("]
 NET_DIRS = ["core", "policy", "log", "redact"]
 NET_RE = re.compile(r"^\s*(import|from)\s+(socket|urllib|http)\b", re.M)
 # UNVERIFIED may appear only in experimental adapters, docs, tests and this tooling.

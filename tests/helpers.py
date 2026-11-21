@@ -55,3 +55,9 @@ def make_engine(project: Path, home: Path | None = None, **cfg: Any) -> PolicyEn
     config = Config.model_validate({"version": 1, **cfg})
     pol = build_policy(config, project_root=str(project), home=str(home or project.parent / "home"))
     return PolicyEngine(pol)
+
+
+def event_raw(kind: ToolKind, args: dict[str, Any], cwd: str | None) -> ToolCallEvent:
+    """Build an event with fully arbitrary args (for property tests)."""
+    e = event(None, kind=kind, cwd=cwd)
+    return e.model_copy(update={"args": args})

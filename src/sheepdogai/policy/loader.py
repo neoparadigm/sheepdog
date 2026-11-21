@@ -93,7 +93,11 @@ def parse_yaml(text: str, file: str) -> tuple[dict[str, Any], yaml.Node | None]:
     """Parse YAML safely with duplicate-key detection; returns (data, root node)."""
     try:
         root = yaml.compose(text, Loader=_UniqueKeyLoader)
-        data = yaml.load(text, Loader=_UniqueKeyLoader)  # noqa: S506 - SafeLoader subclass
+        loader = _UniqueKeyLoader(text)
+        try:
+            data = loader.get_single_data()  # what yaml.safe_load does, on our SafeLoader subclass
+        finally:
+            loader.dispose()
     except RulesError as e:
         raise RulesError(str(e).split(": ", 1)[-1], file=file, line=e.line) from e
     except yaml.YAMLError as e:

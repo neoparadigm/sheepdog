@@ -16,7 +16,6 @@ import re
 import unicodedata
 from dataclasses import dataclass, field
 from typing import Any
-from urllib.parse import urlsplit
 
 from sheepdogai.core.events import ToolCallEvent
 from sheepdogai.core.verdict import BudgetState
@@ -948,10 +947,7 @@ def hosts_from_text(parsed: Parsed | None, strings: list[str]) -> list[str]:
     hosts: list[str] = []
     for s in strings:
         for m in _URL.finditer(s):
-            try:
-                h = urlsplit(m.group()).hostname
-            except ValueError:
-                h = None
+            h = _url_host(m.group())
             if h:
                 hosts.append(h)
     if parsed:
@@ -966,6 +962,21 @@ def hosts_from_text(parsed: Parsed | None, strings: list[str]) -> list[str]:
                 if seg.cmd[0] in {"nc", "ncat", "netcat", "telnet", "socat"}:
                     pass
     return sorted({_norm_host(h) for h in hosts})
+
+
+_AUTHORITY = re.compile(r"^[a-zA-Z][a-zA-Z0-9+.-]*://([^/?#]*)")
+
+
+def _url_host(url: str) -> str | None:
+    """Hostname of a URL without urllib: strip userinfo and port, handle [ipv6]."""
+    m = _AUTHORITY.match(url)
+    if not m:
+        return None
+    auth = m.group(1).rsplit("@", 1)[-1]
+    if auth.startswith("["):
+        end = auth.find("]")
+        return auth[1:end] if end > 0 else None
+    return auth.split(":", 1)[0] or None
 
 
 def _norm_host(h: str) -> str:

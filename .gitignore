@@ -8,3 +8,4 @@ bench/report.md
 .mypy_cache/
 .ruff_cache/
 .hypothesis/
+tests/perf/last_run.json

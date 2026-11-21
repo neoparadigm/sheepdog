@@ -4,7 +4,7 @@ from pathlib import Path
 
 from hypothesis import HealthCheck, given, settings
 from hypothesis import strategies as st
-from tests.helpers import event, make_engine
+from tests.helpers import event, event_raw, make_engine
 
 from sheepdogai.core.canonical import canonical_json
 from sheepdogai.core.decider import apply_decider
@@ -34,7 +34,7 @@ def test_engine_total_on_arbitrary_commands(cmd: str) -> None:
 @SETTINGS
 @given(kind=kinds, a=args, cwd=st.none() | st.text(max_size=30))
 def test_engine_total_on_arbitrary_events(kind: str, a: dict[str, object], cwd: str | None) -> None:
-    e = event(None, kind=kind, cwd=cwd, **a)  # type: ignore[arg-type]
+    e = event_raw(kind, a, cwd)  # type: ignore[arg-type]
     d = ENG.decide(e)
     assert d.verdict.action in (Action.ALLOW, Action.ASK, Action.DENY)
 

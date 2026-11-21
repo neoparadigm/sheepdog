@@ -9,11 +9,28 @@ from pathlib import Path
 from typing import Any
 
 from sheepdogai.constants import SCHEMA_VERSION
+from sheepdogai.core.canonical import sha256_hex
 from sheepdogai.core.errors import LogError
 from sheepdogai.log import chain
 from sheepdogai.redact.secrets import redact_obj
 
 MAX_RECORD_BYTES = 256 * 1024
+MAX_STR_IN_LOG = 8000
+
+
+def compact(obj: Any, limit: int = MAX_STR_IN_LOG) -> Any:
+    """Shorten very long strings (after redaction) and keep a digest of what was cut."""
+    if isinstance(obj, str):
+        if len(obj) > limit:
+            return (
+                obj[:limit] + f"...[+{len(obj) - limit} chars cut; sha256={sha256_hex(obj)[:16]}]"
+            )
+        return obj
+    if isinstance(obj, dict):
+        return {k: compact(v, limit) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [compact(v, limit) for v in obj[:200]]
+    return obj
 
 
 class RunLogWriter:
@@ -50,7 +67,7 @@ class RunLogWriter:
 
     def append(self, kind: str, data: dict[str, Any]) -> dict[str, Any]:
         """Redact, chain and durably append one record. Raises LogError on any failure."""
-        clean = redact_obj(data)
+        clean = compact(redact_obj(data))
         rec = chain.make_record(self._index, kind, clean, self._prev)
         line = chain.encode_line(rec)
         if len(line) > MAX_RECORD_BYTES:
