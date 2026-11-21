@@ -6,6 +6,7 @@ import time
 from pathlib import Path
 
 import pytest
+from tests.helpers import event
 
 from sheepdogai.cli.main import main
 from sheepdogai.core.errors import RulesError
@@ -19,7 +20,6 @@ from sheepdogai.policy.loader import (
     load_policy,
     shared_state,
 )
-from tests.helpers import event
 
 USER = "version: 1\nmode: balanced\npacks: [machine]\nbudget: {max_steps: 100, max_cost_usd: 5, max_repeats: 3}\n"
 SHARED = (

@@ -15,6 +15,7 @@ UNVERIFIED_OK = (
     "src/sheepdogai/adapters/codex.py",
     "src/sheepdogai/adapters/mcp_proxy.py",
     "src/sheepdogai/adapters/wrap.py",
+    "src/sheepdogai/approvals_net.py",
     "docs/",
     "CONTRIBUTING.md",
     "SECURITY.md",

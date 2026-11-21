@@ -6,10 +6,10 @@ from pathlib import Path
 from typing import Any
 
 import pytest
+from tests.helpers import event, make_engine
 
 from sheepdogai.core.verdict import Action
 from sheepdogai.policy.loader import load_pack, load_policy
-from tests.helpers import event, make_engine
 
 A, K, D = Action.ALLOW, Action.ASK, Action.DENY
 HOME_CFG: dict[str, Any] = {

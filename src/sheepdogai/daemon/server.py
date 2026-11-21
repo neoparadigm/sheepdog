@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import contextlib
+import dataclasses
 import fcntl
 import json
 import os
@@ -22,8 +23,10 @@ import threading
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Any
 
 from sheepdogai.adapters import get_adapter
+from sheepdogai.approvals import ApprovalBroker, Notifier
 from sheepdogai.constants import CONFIG_FILE
 from sheepdogai.core.adapter import Adapter, AdapterResponse
 from sheepdogai.core.errors import LogError, ParseError, SheepdogError
@@ -81,9 +84,14 @@ class Gateway:
         rules_path: Path | None = None,
         log_dir: Path | None = None,
         home: str | None = None,
+        notifier: Notifier | None = None,
     ) -> None:
         self.project_root = project_root.resolve()
         self.home = home
+        self._notifier_override = notifier
+        self._notifier: Notifier | None = None
+        self._notifier_channel: str | None = None
+        self.broker: ApprovalBroker | None = None
         self.last_decision: Decision | None = None
         self.rules_path = rules_path if rules_path is not None else self._find_rules()
         self._explicit_log_dir = log_dir
@@ -188,6 +196,69 @@ class Gateway:
                 },
             )
 
+    def _get_notifier(self) -> Notifier | None:
+        """The human channel from ``approvals.channel`` (or the injected one)."""
+        if self._notifier_override is not None:
+            return self._notifier_override
+        ch = self.policy.config.approvals.channel
+        if ch == "cli":
+            return None
+        if self._notifier is None or self._notifier_channel != ch:
+            from sheepdogai.approvals_net import build_notifier
+
+            self._notifier = build_notifier(ch)
+            self._notifier_channel = ch
+        return self._notifier
+
+    def _ask_human(
+        self, notifier: Notifier, event: ToolCallEvent, dec: Decision
+    ) -> tuple[Verdict, dict[str, Any]]:
+        """Resolve an ask through the notifier. Timeout means deny. Returns (verdict, log record)."""
+        cfg = self.policy.config.approvals
+        if self.broker is None:
+            self.broker = ApprovalBroker(self.project_root / ".sheepdog")
+        key = (dec.verdict.rule_id, event.tool.name)
+        if cfg.remember != "none" and key in self.broker.remembered and not dec.once_only:
+            v = Verdict(
+                action=Action.ALLOW,
+                rule_id=dec.verdict.rule_id,
+                reason="approved earlier for this run",
+                decided_by="human:remembered",
+            )
+            return v, {"outcome": "allow_run", "channel": "remembered", "request_id": None}
+        summary = str(
+            event.args.get("command")
+            or event.args.get("path")
+            or event.args.get("url")
+            or json.dumps(event.args, sort_keys=True)[:200]
+        )
+        req = self.broker.new_request(
+            event,
+            summary,
+            dec.verdict.reason,
+            dec.verdict.rule_id,
+            float(cfg.ask_timeout_s),
+            dec.once_only,
+        )
+        outcome, logged, channel = self.broker.ask(notifier, req, float(cfg.ask_timeout_s))
+        rec = {"outcome": logged, "channel": channel, "request_id": req.request_id}
+        if outcome == "deny":
+            why = "approval timed out" if logged == "timeout_deny" else "denied by human"
+            return Verdict(
+                action=Action.DENY,
+                rule_id=dec.verdict.rule_id,
+                reason=why,
+                decided_by=f"human:{channel}",
+            ), rec
+        if outcome == "allow_run" and cfg.remember != "none":
+            self.broker.remembered.add(key)
+        return Verdict(
+            action=Action.ALLOW,
+            rule_id=dec.verdict.rule_id,
+            reason=f"approved by human ({logged})",
+            decided_by=f"human:{channel}",
+        ), rec
+
     def _decide(self, adapter: Adapter, event: ToolCallEvent) -> AdapterResponse:
         run_id = safe_run_id(event.run_id)
         sess = self._session(run_id)
@@ -201,25 +272,41 @@ class Gateway:
                 ),
             }
         )
+        notifier = self._get_notifier()
+        caps = adapter.capabilities
+        if (
+            notifier is not None
+        ):  # a human channel exists: the engine may ask even if the CLI cannot
+            caps = caps.model_copy(update={"can_ask": True})
         t0 = time.perf_counter()
-        dec = self.engine.decide(event, sess.state, adapter.capabilities)
+        dec = self.engine.decide(event, sess.state, caps)
         latency = (time.perf_counter() - t0) * 1000
         sess.state = dec.budget
         self.last_decision = dec
+        final, rules_v, approval = dec.verdict, dec.rules_verdict, None
+        if dec.verdict.action is Action.ASK and notifier is not None:
+            final, approval = self._ask_human(notifier, event, dec)
+            rules_v = dec.verdict
+            dec = dataclasses.replace(dec, verdict=final, rules_verdict=rules_v)
+            self.last_decision = dec
         rec = DecisionRecord(
             event=event,
-            verdict=dec.verdict,
+            verdict=final,
             latency_ms=round(latency, 3),
             policy_hash=self.policy.policy_hash,
             notes=dec.notes,
             budget=dec.budget,
+            rules_verdict=rules_v,
+            decider_proposed=dec.decider_proposed,
         )
         try:
             sess.writer.append(
                 "decision",
                 {**rec.model_dump(mode="json"), "origin": dec.origin, "adapter": adapter.name},
             )
-            if dec.verdict.action is Action.ASK:
+            if approval is not None:
+                sess.writer.append("approval", {"event_id": event.event_id, **approval})
+            elif final.action is Action.ASK:
                 sess.writer.append(
                     "approval",
                     {
@@ -233,7 +320,7 @@ class Gateway:
             return adapter.fail_closed(f"cannot write log: {e}")
         if event.tool.kind in {"network", "mcp"}:
             sess.untrusted = True  # heuristic: external content may now be in the agent context
-        return adapter.respond(dec.verdict)
+        return adapter.respond(final)
 
     def close(self) -> None:
         """Close all log writers."""
