@@ -52,6 +52,12 @@ def _parser() -> argparse.ArgumentParser:
     h = sub.add_parser("hook", help="hook entry point (reads the payload on stdin)")
     h.add_argument("cli", choices=["claude", "codex", "gemini"])
     h.add_argument("--experimental", action="store_true")
+    st = sub.add_parser(
+        "setup", help="detect your agents, show the changes, install the hook for all of them"
+    )
+    st.add_argument("--yes", action="store_true", help="apply without asking")
+    st.add_argument("--mode", choices=["strict", "balanced", "relaxed"], default="balanced")
+    st.add_argument("--undo", action="store_true", help="remove the hooks that setup installed")
     sub.add_parser("status", help="show policy, daemon and installed hooks")
     ap = sub.add_parser("approve-shared", help="approve (or revoke) the committed shared config")
     ap.add_argument("--yes", action="store_true", help="do not ask for confirmation")
@@ -143,6 +149,10 @@ def _dispatch(a: argparse.Namespace) -> int:  # noqa: C901
         else:
             print(inst.uninstall(a.cli, scope, project, home, a.dry_run))
         return 0
+    if a.cmd == "setup":
+        from sheepdogai.cli.setup import cmd_setup
+
+        return cmd_setup(home, a.yes, a.mode, a.undo)
     if a.cmd == "mcp-proxy":
         import os
 

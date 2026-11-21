@@ -27,7 +27,7 @@ from typing import Any
 
 from sheepdogai.adapters import get_adapter
 from sheepdogai.approvals import ApprovalBroker, Notifier
-from sheepdogai.constants import CONFIG_FILE
+from sheepdogai.constants import CLI_NAME, CONFIG_FILE
 from sheepdogai.core.adapter import Adapter, AdapterResponse
 from sheepdogai.core.errors import LogError, ParseError, SheepdogError
 from sheepdogai.core.events import ToolCallEvent
@@ -103,7 +103,10 @@ class Gateway:
 
     def _find_rules(self) -> Path | None:
         p = self.project_root / CONFIG_FILE
-        return p if p.exists() else None
+        if p.exists():
+            return p
+        user = Path(os.path.expanduser("~")) / ".config" / CLI_NAME / CONFIG_FILE
+        return user if user.is_file() else None
 
     def _signature(self) -> tuple[tuple[float, int] | None, ...]:
         """Stat signature of everything the policy depends on (rules, shared config, approval)."""
@@ -128,8 +131,9 @@ class Gateway:
         return PolicyEngine(pol)
 
     def _maybe_reload(self) -> None:
-        if self.rules_path is None and (self.project_root / CONFIG_FILE).exists():
-            self.rules_path = self.project_root / CONFIG_FILE
+        project_file = self.project_root / CONFIG_FILE
+        if self.rules_path != project_file and project_file.exists():
+            self.rules_path = project_file
         sig = self._signature()
         if sig == self._sig:
             return

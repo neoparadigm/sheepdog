@@ -16,16 +16,22 @@ writes a tamper-evident, replayable record that maps to W3C PROV-O and OpenTelem
 Status: 0.1 pre-release. Claude Code and Gemini CLI adapters follow the official hook docs; the Codex
 adapter is experimental because parts of its contract could not be verified.
 
-## 60-second quickstart
+## Install: two commands
 
 ```bash
-uv pip install sheepdogai        # after publication; today: uv pip install -e .
-sheepdog init                    # writes a commented sheepdog.yaml (strict mode)
-sheepdog install claude          # merges the hook into .claude/settings.json (backs it up, prints a diff)
+uv tool install sheepdogai      # after publication; today: uv tool install git+https://github.com/neoparadigm/sheepdog
+sheepdog setup
 ```
 
-Preview first with `sheepdog install claude --dry-run`; undo exactly with `sheepdog uninstall claude`.
-Other CLIs: `sheepdog install gemini`; `sheepdog install codex --experimental`.
+`sheepdog setup` finds your agents (Claude Code, Gemini CLI), shows the exact change it will make to
+each one's user-wide settings, waits for Enter, installs the hook, writes a user-wide policy
+(`balanced` by default: read-only commands run, everything else is checked), and then proves it works by
+sending `rm -rf /` through the real hook and confirming it is blocked. Restart your agent and you are
+protected in every project. Undo anytime with `sheepdog setup --undo` (your original settings are
+restored byte for byte). Use `--yes` to skip the prompt, `--mode strict` to ask about everything.
+
+Want per-project rules instead? `sheepdog init` writes a commented `sheepdog.yaml`; a project's own file
+overrides the user-wide one. Codex support is experimental: `sheepdog install codex --experimental`.
 
 ## What a block looks like
 

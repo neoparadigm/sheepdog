@@ -18,6 +18,9 @@ versioning: [Semantic Versioning](https://semver.org/).
   notifiers), experimental MCP proxy and `wrap()`, static HTML replay report, shared repo config
   (`approve-shared`, tighten-only).
 
+- `sheepdog setup`: detect agents, show the diff, confirm, install user-wide, self-test; `--undo`.
+  User-wide policy at `~/.config/sheepdog/sheepdog.yaml` for projects without their own.
+
 ### Security
 - Fixed while building (kept as permanent regressions): `curl | sudo bash`, `echo $TOKEN`,
   `/proc/self/environ`, `/etc/shadow`, `ls ~/.ssh`, `~/.git-credentials`, `$IFS$9` word splitting.
