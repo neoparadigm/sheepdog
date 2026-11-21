@@ -1,0 +1,41 @@
+name: repo
+description: Source repository safety.
+rules:
+  - id: repo-force-push
+    match: {command: ["git push --force*", "git push -f*", "git push * --force*", "git push * -f", "git push * -f *", "git push * +*"]}
+    action: ask
+    reason: force-push rewrites shared history
+  - id: repo-delete-remote-ref
+    match: {command: ["git push --delete *", "git push * --delete *", "git push * :*"]}
+    action: ask
+    reason: deleting a remote branch or tag
+  - id: repo-branch-tag-delete
+    match: {command: ["git branch -d*", "git branch -D*", "git branch --delete*", "git tag -d*", "git tag --delete*"]}
+    action: ask
+    reason: deleting a branch or tag
+  - id: repo-push
+    match: {command: ["git push", "git push *"]}
+    action: ask
+    reason: pushing publishes code
+  - id: repo-write-outside
+    match: {mutates: true, outside_project: true}
+    action: deny
+    reason: writes outside the project are not allowed
+  - id: repo-ci-edit
+    match:
+      mutates: true
+      path: [".github/workflows/**", ".gitlab-ci.yml", "Jenkinsfile", ".circleci/**", "azure-pipelines.yml", ".buildkite/**"]
+    action: ask
+    reason: CI configuration changes need review
+  - id: repo-deploy-edit
+    match:
+      mutates: true
+      path: ["Dockerfile", "docker-compose*.yml", "docker-compose*.yaml", "**/k8s/**", "**/helm/**", "**/terraform/**", "*.tf", "fly.toml", "vercel.json", "netlify.toml", "serverless.yml"]
+    action: ask
+    reason: deploy configuration changes need review
+  - id: repo-lockfile-edit
+    match:
+      mutates: true
+      path: ["package-lock.json", "yarn.lock", "pnpm-lock.yaml", "uv.lock", "poetry.lock", "Cargo.lock", "Gemfile.lock", "go.sum", "composer.lock", "Pipfile.lock"]
+    action: ask
+    reason: lockfile changes need review

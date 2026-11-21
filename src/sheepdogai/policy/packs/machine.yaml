@@ -1,0 +1,43 @@
+name: machine
+description: Destructive or privileged machine operations.
+rules:
+  - id: machine-privilege
+    match: {command: ["sudo", "sudo *", "su", "su *", "doas *", "pkexec *", "runas *"]}
+    action: deny
+    reason: privilege escalation is not allowed
+  - id: machine-forkbomb
+    match: {command: ["re::\\(\\)\\s{0,5}\\{"]}
+    action: deny
+    reason: fork bomb pattern
+  - id: machine-disk
+    match: {command: ["mkfs*", "mkswap *", "fdisk *", "parted *", "wipefs *", "shred *", "dd *of=/dev/*", "diskutil erase*"]}
+    action: deny
+    reason: disk-destroying command
+  - id: machine-device-write
+    match:
+      mutates: true
+      path: ["/dev/sd*", "/dev/nvme*", "/dev/disk*", "/dev/hd*", "/dev/vd*", "/dev/mem", "/dev/kmem"]
+    action: deny
+    reason: write to a block device
+  - id: machine-pipe-to-shell
+    match: {pipe_to_shell: true}
+    action: deny
+    reason: piping downloaded or decoded content into a shell is not allowed
+  - id: machine-recursive-delete-outside
+    match: {command: ["rm -r", "rm -r *"], outside_project: true}
+    action: deny
+    reason: recursive delete outside the project
+  - id: machine-recursive-perm-outside
+    match: {command: ["chmod -R *", "chmod -r *", "chown -R *", "chown -r *", "chgrp -R *"], outside_project: true}
+    action: deny
+    reason: recursive permission change outside the project
+  - id: machine-system-paths
+    match:
+      mutates: true
+      path: ["/etc/**", "/usr/**", "/bin/**", "/sbin/**", "/lib/**", "/lib64/**", "/boot/**", "/sys/**", "/proc/**", "/dev/**", "/var/lib/**", "/System/**", "/Library/**"]
+    action: deny
+    reason: modifying system paths
+  - id: machine-opaque-command
+    match: {opaque: true}
+    action: ask
+    reason: the command could not be fully resolved (variable or substitution in command position)

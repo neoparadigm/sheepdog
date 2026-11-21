@@ -1,0 +1,28 @@
+name: injection
+description: Prompt-injection guards.
+rules:
+  - id: inj-disable-harness
+    match:
+      kind: shell
+      command:
+        - "sheepdog uninstall*"
+        - "sheepdog install*"
+        - "*--dangerously-skip-permissions*"
+        - "*SHEEPDOG_DISABLE*"
+        - "*SHEEPDOG_BYPASS*"
+        - "unset SHEEPDOG*"
+        - "re:(?i)\\b(disable|uninstall|remove|bypass)\\b.{0,30}\\bsheepdog\\b"
+    action: deny
+    reason: instruction to disable the harness
+  - id: inj-risky-after-untrusted-shell
+    match: {provenance: {untrusted_content_seen: true}, mutates: true}
+    action: ask
+    reason: risky action after untrusted content was read
+  - id: inj-network-after-untrusted
+    match: {provenance: {untrusted_content_seen: true}, network_use: true}
+    action: ask
+    reason: network access after untrusted content was read
+  - id: inj-kinds-after-untrusted
+    match: {provenance: {untrusted_content_seen: true}, kind: [network, file_write, mcp]}
+    action: ask
+    reason: write or external call after untrusted content was read

@@ -1,0 +1,23 @@
+name: network
+description: Default-deny outbound domains except a registry and GitHub allowlist.
+rules:
+  - id: net-not-allowlisted
+    match:
+      domain_not:
+        - github.com
+        - "*.github.com"
+        - "*.githubusercontent.com"
+        - pypi.org
+        - files.pythonhosted.org
+        - registry.npmjs.org
+        - crates.io
+        - static.crates.io
+        - index.crates.io
+        - proxy.golang.org
+        - sum.golang.org
+        - rubygems.org
+        - localhost
+        - 127.0.0.1
+        - "::1"
+    action: deny
+    reason: domain is not on the allowlist

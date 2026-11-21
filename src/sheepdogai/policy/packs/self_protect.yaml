@@ -1,0 +1,35 @@
+# self_protect: always first, cannot be disabled. The agent may not change the rules file,
+# the hook configuration or the log directory without a human. Reads are not affected.
+name: self_protect
+description: Protect the guard from the thing it guards.
+rules:
+  - id: sp-rules-and-hooks
+    match:
+      mutates: true
+      path:
+        - sheepdog.yaml
+        - sheepdog.yml
+        - "**/.sheepdog/shared.yaml"
+        - "**/.sheepdog/approved/**"
+        - "**/.claude/settings.json"
+        - "**/.claude/settings.local.json"
+        - "~/.claude/settings.json"
+        - "**/.codex/hooks.json"
+        - "**/.codex/config.toml"
+        - "~/.codex/hooks.json"
+        - "~/.codex/config.toml"
+        - "**/.gemini/settings.json"
+        - "~/.gemini/settings.json"
+    action: ask
+    reason: edits to the rules file or hook configuration need a human
+  - id: sp-log-dir
+    match:
+      mutates: true
+      path: ["**/.sheepdog/**", "{project}/.sheepdog"]
+    action: deny
+    reason: the run log directory is append-only and not editable by the agent
+  - id: sp-kill-daemon
+    match:
+      command: ["re:\\b(pkill|killall)\\b.{0,40}sheepdog", "re:\\bkill\\b.{0,20}sheepdog"]
+    action: ask
+    reason: stopping the guard needs a human

@@ -60,6 +60,8 @@ class BudgetState(BaseModel):
     cost_usd: float = 0.0
     cost_known: bool = False
     repeats: int = 0
+    last_fingerprint: str | None = None
+    last_failed: bool | None = None
     exceeded: str | None = None
 
 

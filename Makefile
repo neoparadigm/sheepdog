@@ -16,6 +16,5 @@ bench:
 verify: lint type
 	$(PY) tools/check_suites.py
 	$(PY) tools/check_hygiene.py
-	uv run pytest tests/unit tests/property --cov --cov-report=term-missing:skip-covered
-	uv run pytest tests/conformance tests/redteam tests/replay tests/ontology tests/fuzz
+	uv run pytest tests --ignore=tests/perf --cov --cov-report=term-missing:skip-covered
 	uv run pytest tests/perf
