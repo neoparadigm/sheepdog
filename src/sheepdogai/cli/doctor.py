@@ -12,21 +12,36 @@ from sheepdogai.core.errors import SheepdogError
 OK, BAD = "OK  ", "FAIL"
 
 
-def _hook_installed(cli: str, home: Path, project: Path) -> str | None:
-    from sheepdogai.cli.install import SPECS, target_path
+def _hook_installed(cli: str, home: Path, project: Path) -> tuple[str, str] | None:
+    """(where, command) of our hook entry, or None."""
+    from sheepdogai.cli.install import SPECS, is_our_command, target_path
 
     spec = SPECS[cli]
-    for scope, base in (("user", home), ("project", project)):
+    for scope in ("user", "project"):
         p = target_path(cli, scope, project, home)
         try:
             data = json.loads(p.read_text())
         except (OSError, ValueError):
             continue
         for entry in data.get("hooks", {}).get(spec["event"], []):
-            if any(h.get("command") == spec["cmd"] for h in entry.get("hooks", [])):
-                return f"{scope} ({p})"
-        del base
+            for h in entry.get("hooks", []):
+                if is_our_command(h.get("command"), cli):
+                    return f"{scope} ({p})", str(h["command"])
     return None
+
+
+def _program_exists(command: str) -> bool:
+    """Does the program the hook runs exist and can it be executed?"""
+    import os
+    import shlex
+
+    try:
+        first = shlex.split(command)[0]
+    except (ValueError, IndexError):
+        return False
+    if os.sep in first:
+        return os.access(first, os.X_OK)
+    return shutil.which(first) is not None
 
 
 def cmd_doctor(project: Path, home: Path) -> int:
@@ -54,12 +69,18 @@ def cmd_doctor(project: Path, home: Path) -> int:
         "install Claude Code or Gemini CLI first",
     )
     for cli in agents:
-        where = _hook_installed(cli, home, project)
+        found = _hook_installed(cli, home, project)
         line(
-            where is not None,
-            f"{cli}: protection is switched on" + (f" via {where}" if where else ""),
+            found is not None,
+            f"{cli}: protection is switched on" + (f" via {found[0]}" if found else ""),
             f"run: {CLI_NAME} setup",
         )
+        if found:
+            line(
+                _program_exists(found[1]),
+                f"{cli}: the program the hook runs exists (an agent skips a hook that cannot start)",
+                f"run: {CLI_NAME} setup   (it was probably moved or uninstalled)",
+            )
     from sheepdogai.cli.skills import skill_targets
 
     for cli in agents:

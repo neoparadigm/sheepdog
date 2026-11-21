@@ -6,11 +6,14 @@ import difflib
 import hashlib
 import json
 import os
+import shlex
+import shutil
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from sheepdogai.constants import CLI_NAME, STATE_DIR
+from sheepdogai.constants import CLI_NAME, PACKAGE_NAME, STATE_DIR
 from sheepdogai.core.errors import SheepdogError
 
 # claude / gemini formats are verified (see adapter docstrings). The codex layout is not verified.
@@ -61,9 +64,36 @@ def state_dir(scope: str, project: Path, home: Path) -> Path:
     return (project if scope == "project" else home) / STATE_DIR / "install"
 
 
-def _is_ours(entry: Any, cmd: str) -> bool:
+def hook_suffix(cli: str) -> str:
+    """The part of the hook command that identifies it, whatever path the program has."""
+    return str(SPECS[cli]["cmd"]).split(" ", 1)[1]  # "hook claude" / "hook codex --experimental"
+
+
+def hook_command(cli: str) -> str:
+    """The command written into the agent's settings.
+
+    It uses the **absolute path** of this program. A bare ``sheepdogai`` resolved through the agent's
+    PATH can fail with "not found" (exit 127), which Claude Code and Gemini treat as a non-blocking error:
+    the call would then run unguarded and silently. An absolute path removes that failure mode.
+    """
+    exe = shutil.which(CLI_NAME)
+    prog = shlex.quote(exe) if exe else f"{shlex.quote(sys.executable)} -m sheepdogai.cli.main"
+    return f"{prog} {hook_suffix(cli)}"
+
+
+def is_our_command(command: object, cli: str) -> bool:
+    """True for our hook command in any spelling (bare name, absolute path, python -m)."""
+    return (
+        isinstance(command, str)
+        and command.endswith(" " + hook_suffix(cli))
+        and (command.startswith(CLI_NAME) or PACKAGE_NAME in command)
+    )
+
+
+def _is_ours(entry: Any, cli: str) -> bool:
     return isinstance(entry, dict) and any(
-        isinstance(h, dict) and h.get("command") == cmd for h in entry.get("hooks", [])
+        isinstance(h, dict) and is_our_command(h.get("command"), cli)
+        for h in entry.get("hooks", [])
     )
 
 
@@ -90,10 +120,11 @@ def plan_install(cli: str, path: Path) -> Plan:
     lst = hooks.setdefault(spec["event"], [])
     if not isinstance(lst, list):
         raise SheepdogError(f"{path}: hooks.{spec['event']} is not a list")
-    if any(_is_ours(e, spec["cmd"]) for e in lst):
+    if any(_is_ours(e, cli) for e in lst):
         return Plan(path, before, before or b"", False, "")
     lst.insert(
-        0, {"matcher": spec["matcher"], "hooks": [{"type": "command", "command": spec["cmd"]}]}
+        0,
+        {"matcher": spec["matcher"], "hooks": [{"type": "command", "command": hook_command(cli)}]},
     )
     after = _dump(data)
     diff = "".join(
@@ -171,9 +202,7 @@ def uninstall(cli: str, scope: str, project: Path, home: Path, dry_run: bool = F
         data = json.loads(current)
         spec = SPECS[cli]
         hooks = data.get("hooks", {})
-        hooks[spec["event"]] = [
-            e for e in hooks.get(spec["event"], []) if not _is_ours(e, spec["cmd"])
-        ]
+        hooks[spec["event"]] = [e for e in hooks.get(spec["event"], []) if not _is_ours(e, cli)]
         if not hooks[spec["event"]]:
             del hooks[spec["event"]]
         msg = f"{path} was modified since install: removed only the {CLI_NAME} entry"

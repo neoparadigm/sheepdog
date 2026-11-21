@@ -37,11 +37,7 @@ def test_non_interactive_needs_yes_and_changes_nothing(
     (home / ".claude").mkdir()
     assert main(["setup"]) == 1
     out = capsys.readouterr()
-    assert (
-        "pass --yes" in out.err
-        and "This will change" in out.out
-        and "sheepdogai hook claude" in out.out
-    )
+    assert "pass --yes" in out.err and "This will change" in out.out and " hook claude" in out.out
     assert (
         not (home / ".claude" / "settings.json").exists() and not su.user_config_path(home).exists()
     )
@@ -57,8 +53,8 @@ def test_setup_applies_selftests_is_idempotent_and_undoes(
     assert main(["setup", "--yes", "--mode", "balanced"]) == 0
     out = capsys.readouterr().out
     assert "blocked `rm -rf /` as expected" in out
-    assert "sheepdogai hook claude" in (home / ".claude/settings.json").read_text()
-    assert "sheepdogai hook gemini" in (home / ".gemini/settings.json").read_text()
+    assert " hook claude" in (home / ".claude/settings.json").read_text()
+    assert " hook gemini" in (home / ".gemini/settings.json").read_text()
     cfg = su.user_config_path(home)
     assert "mode: balanced" in cfg.read_text() and cfg.stat().st_mode & 0o077 == 0
     assert main(["setup", "--yes"]) == 0 and "already set up" in capsys.readouterr().out
@@ -120,3 +116,91 @@ def test_broken_pipe_is_not_an_error(
     monkeypatch.setattr(m, "_dispatch", boom)
     assert m.main(["status"]) == 0
     assert capsys.readouterr().err == ""
+
+
+# ---- the hook must not depend on the agent's PATH (a "not found" hook fails OPEN) -------------------------------
+
+
+def test_installed_hook_uses_an_absolute_program_path(
+    home: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import json
+    import os
+    import shlex
+    import stat
+
+    exe = home / "bin" / "sheepdogai"
+    exe.parent.mkdir()
+    exe.write_text("#!/bin/sh\n")
+    exe.chmod(exe.stat().st_mode | stat.S_IXUSR)
+    monkeypatch.setenv("PATH", f"{exe.parent}:/usr/bin:/bin")
+    (home / ".claude").mkdir()
+    assert main(["setup", "--yes"]) == 0
+    cmd = json.loads((home / ".claude/settings.json").read_text())["hooks"]["PreToolUse"][0][
+        "hooks"
+    ][0]["command"]
+    assert (
+        shlex.split(cmd)[0] == str(exe)
+        and os.path.isabs(shlex.split(cmd)[0])
+        and cmd.endswith(" hook claude")
+    )
+    assert main(["setup", "--yes"]) == 0  # idempotent: no second entry
+    assert len(json.loads((home / ".claude/settings.json").read_text())["hooks"]["PreToolUse"]) == 1
+
+
+def test_old_bare_command_is_still_recognised_and_removed(home: Path) -> None:
+    import json
+
+    (home / ".claude").mkdir()
+    (home / ".claude/settings.json").write_text(
+        json.dumps(
+            {
+                "hooks": {
+                    "PreToolUse": [
+                        {
+                            "matcher": "*",
+                            "hooks": [{"type": "command", "command": "sheepdogai hook claude"}],
+                        }
+                    ]
+                }
+            }
+        )
+    )
+    assert main(["setup", "--yes"]) == 0
+    assert (
+        len(json.loads((home / ".claude/settings.json").read_text())["hooks"]["PreToolUse"]) == 1
+    )  # no duplicate
+
+
+def test_doctor_flags_a_hook_whose_program_is_missing(
+    home: Path, tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    import json
+
+    (home / ".claude").mkdir()
+    (home / ".claude/settings.json").write_text(
+        json.dumps(
+            {
+                "hooks": {
+                    "PreToolUse": [
+                        {
+                            "matcher": "*",
+                            "hooks": [
+                                {
+                                    "type": "command",
+                                    "command": "/nonexistent/bin/sheepdogai hook claude",
+                                }
+                            ],
+                        }
+                    ]
+                }
+            }
+        )
+    )
+    assert main(["--project", str(tmp_path), "doctor"]) == 1
+    out = capsys.readouterr().out
+    assert (
+        "protection is switched on" in out
+        and "the program the hook runs exists" in out
+        and "[FAIL]" in out
+    )

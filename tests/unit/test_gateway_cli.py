@@ -129,7 +129,7 @@ def test_install_dry_run_changes_nothing(tmp_path: Path, cli: str) -> None:
     home.mkdir()
     before = {p: p.read_bytes() for p in tmp_path.rglob("*") if p.is_file()}
     plan = inst.install(cli, "project", proj, home, dry_run=True)
-    assert plan.changed and "sheepdogai hook" in plan.diff
+    assert plan.changed and " hook " in plan.diff
     assert {p: p.read_bytes() for p in tmp_path.rglob("*") if p.is_file()} == before
     assert not (proj / ".sheepdogai").exists()
 
@@ -156,7 +156,7 @@ def test_install_uninstall_restores_byte_for_byte(
     inst.install(cli, "project", proj, home)
     data = json.loads(path.read_text())
     ev = inst.SPECS[cli]["event"]
-    assert data["hooks"][ev][0]["hooks"][0]["command"] == f"sheepdogai hook {cli}"
+    assert data["hooks"][ev][0]["hooks"][0]["command"].endswith(f" hook {cli}")
     assert (path.stat().st_mode & 0o777) in (0o600, 0o644)
     again = inst.install(cli, "project", proj, home)  # idempotent
     assert not again.changed and json.loads(path.read_text()) == data

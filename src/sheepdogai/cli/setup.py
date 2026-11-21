@@ -97,11 +97,6 @@ def cmd_setup(home: Path, yes: bool, mode: str, undo: bool) -> int:
             f"Hooks removed. Your user policy ({user_config_path(home)}) and logs were left in place."
         )
         return 0
-    if shutil.which(CLI_NAME) is None:
-        print(
-            f"warning: `{CLI_NAME}` is not on your PATH, but the hook runs it. Install the tool first "
-            "(uv tool install sheepdogai) or the agent's hook calls will fail closed (block everything)."
-        )
     plans = [inst.install(cli, "user", home, home, dry_run=True) for cli in targets]
     cfg = user_config_path(home)
     print("\nThis will change:")
