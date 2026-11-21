@@ -1,0 +1,11 @@
+{
+  "cwd": "/home/user/proj",
+  "hook_event_name": "BeforeTool",
+  "session_id": "s1",
+  "timestamp": "2026-11-21T12:00:00Z",
+  "tool_input": {
+    "prompt": "summarise https://example.com/x"
+  },
+  "tool_name": "web_fetch",
+  "transcript_path": "/home/user/.gemini/tmp/t.json"
+}

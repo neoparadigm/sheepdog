@@ -1,0 +1,14 @@
+{
+  "cwd": "/home/user/proj",
+  "hook_event_name": "BeforeTool",
+  "mcp_context": {
+    "server_name": "github"
+  },
+  "session_id": "s1",
+  "timestamp": "2026-11-21T12:00:00Z",
+  "tool_input": {
+    "number": 1
+  },
+  "tool_name": "mcp_github_get_issue",
+  "transcript_path": "/home/user/.gemini/tmp/t.json"
+}

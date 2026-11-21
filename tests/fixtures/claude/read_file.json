@@ -1,0 +1,14 @@
+{
+  "cwd": "/home/user/my-project",
+  "hook_event_name": "PreToolUse",
+  "permission_mode": "default",
+  "session_id": "abc123",
+  "tool_input": {
+    "file_path": "/home/user/my-project/README.md",
+    "limit": 50,
+    "offset": 10
+  },
+  "tool_name": "Read",
+  "tool_use_id": "toolu_01ABC123",
+  "transcript_path": "/home/user/.claude/projects/p/transcript.jsonl"
+}

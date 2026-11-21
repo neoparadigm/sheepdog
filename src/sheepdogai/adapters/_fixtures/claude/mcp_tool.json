@@ -1,0 +1,18 @@
+{
+  "cwd": "/home/user/my-project",
+  "hook_event_name": "PreToolUse",
+  "mcp_server": {
+    "name": "github",
+    "source": "user"
+  },
+  "permission_mode": "default",
+  "session_id": "abc123",
+  "tool_input": {
+    "number": 1,
+    "owner": "o",
+    "repo": "r"
+  },
+  "tool_name": "mcp__github__get_issue",
+  "tool_use_id": "toolu_01ABC123",
+  "transcript_path": "/home/user/.claude/projects/p/transcript.jsonl"
+}

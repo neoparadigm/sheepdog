@@ -1,0 +1,12 @@
+{
+  "cwd": "/home/user/my-project",
+  "hook_event_name": "PreToolUse",
+  "permission_mode": "bypassPermissions",
+  "session_id": "abc123",
+  "tool_input": {
+    "command": "rm -rf /"
+  },
+  "tool_name": "Bash",
+  "tool_use_id": "toolu_01ABC123",
+  "transcript_path": "/home/user/.claude/projects/p/transcript.jsonl"
+}

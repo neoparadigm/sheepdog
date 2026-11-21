@@ -1,0 +1,13 @@
+{
+  "cwd": "/home/user/my-project",
+  "hook_event_name": "PreToolUse",
+  "permission_mode": "default",
+  "session_id": "abc123",
+  "tool_input": {
+    "content": "version: 1",
+    "file_path": "/home/user/my-project/sheepdog.yaml"
+  },
+  "tool_name": "Write",
+  "tool_use_id": "toolu_01ABC123",
+  "transcript_path": "/home/user/.claude/projects/p/transcript.jsonl"
+}

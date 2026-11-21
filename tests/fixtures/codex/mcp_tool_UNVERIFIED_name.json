@@ -1,0 +1,14 @@
+{
+  "cwd": "/home/user/proj",
+  "hook_event_name": "PreToolUse",
+  "model": "gpt-5-codex",
+  "permission_mode": "default",
+  "session_id": "019a",
+  "tool_input": {
+    "number": 1
+  },
+  "tool_name": "mcp__github__get_issue",
+  "tool_use_id": "call-1",
+  "transcript_path": null,
+  "turn_id": "t1"
+}

@@ -1,0 +1,11 @@
+{
+  "cwd": "/home/user/proj",
+  "hook_event_name": "BeforeTool",
+  "session_id": "s1",
+  "timestamp": "2026-11-21T12:00:00Z",
+  "tool_input": {
+    "command": "rm -rf /"
+  },
+  "tool_name": "run_shell_command",
+  "transcript_path": "/home/user/.gemini/tmp/t.json"
+}

@@ -1,0 +1,12 @@
+{
+  "cwd": "/home/user/proj",
+  "hook_event_name": "BeforeTool",
+  "session_id": "s1",
+  "timestamp": "2026-11-21T12:00:00Z",
+  "tool_input": {
+    "content": "{}",
+    "file_path": "/home/user/proj/.gemini/settings.json"
+  },
+  "tool_name": "write_file",
+  "transcript_path": "/home/user/.gemini/tmp/t.json"
+}
