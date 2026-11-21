@@ -802,6 +802,19 @@ def parse_shell(cmd: str, env: dict[str, str] | None = None, depth: int = 0) -> 
 # --------------------------------------------------------------------------- paths
 
 
+def canon(path: str) -> str:
+    """Undo macOS's firmlink-style symlinks: /etc, /var and /tmp live under /private.
+
+    ``realpath('/etc/shadow')`` is ``/private/etc/shadow`` on macOS, which would dodge every rule
+    written for ``/etc/**``. Rules, the project root and resolved paths are all compared in this form.
+    """
+    for top in ("etc", "var", "tmp"):
+        pre = f"/private/{top}"
+        if path == pre or path.startswith(pre + "/"):
+            return path[len("/private") :]
+    return path
+
+
 def resolve_path(p: str, cwd: str | None, home: str) -> str | None:
     """Resolve ``p`` with realpath so symlinks and '..' cannot escape. None if invalid."""
     if "\x00" in p:
@@ -810,7 +823,7 @@ def resolve_path(p: str, cwd: str | None, home: str) -> str | None:
         p = home + p[1:]
     base = cwd or os.getcwd()
     try:
-        return os.path.realpath(os.path.join(base, p))
+        return canon(os.path.realpath(os.path.join(base, p)))
     except (OSError, ValueError):
         return None
 

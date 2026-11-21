@@ -15,7 +15,7 @@ from pydantic import ValidationError
 from sheepdogai.constants import CLI_NAME, CONFIG_FILE, STATE_DIR
 from sheepdogai.core.canonical import canonical_json, sha256_hex
 from sheepdogai.core.errors import RulesError
-from sheepdogai.policy.matchers import CompiledMatch, check_regex_safe
+from sheepdogai.policy.matchers import CompiledMatch, canon, check_regex_safe
 from sheepdogai.policy.schema import BudgetConfig, Config, Match, PackFile, Rule, SharedConfig
 
 BUILTIN_PACKS = ("self_protect", "machine", "secrets", "repo", "network", "injection", "personal")
@@ -221,7 +221,7 @@ def build_policy(
 ) -> Policy:
     """Compile a validated config + packs (+ an approved shared config) into a Policy."""
     home = home or os.path.expanduser("~")
-    project_root = os.path.realpath(project_root)
+    project_root = canon(os.path.realpath(project_root))
     user_config = config
     if shared is not None:
         config = merge_shared(user_config, shared)

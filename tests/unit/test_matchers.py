@@ -236,3 +236,49 @@ def test_budget_matcher_and_domain(tmp_path: Path) -> None:
     assert isinstance(
         Verdict(action=Action.ALLOW).stricter_than_or_equal(Verdict(action=Action.ASK)), bool
     )
+
+
+# ---- macOS: /etc, /var, /tmp are symlinks into /private ----------------------------------------
+
+
+def test_canon_strips_private_prefix_only_for_etc_var_tmp() -> None:
+    from sheepdogai.policy.matchers import canon
+
+    assert (
+        canon("/private/etc/shadow") == "/etc/shadow"
+        and canon("/private/var/folders/x") == "/var/folders/x"
+    )
+    assert canon("/private/tmp") == "/tmp" and canon("/private/other/x") == "/private/other/x"
+    assert canon("/private/etcetera") == "/private/etcetera" and canon("/etc/x") == "/etc/x"
+
+
+def test_macos_symlinked_system_paths_are_still_protected(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import os
+
+    real = os.path.realpath
+
+    def mac_realpath(p: str, **kw: object) -> str:  # what macOS does for /etc, /var, /tmp
+        r = real(p, **kw)  # type: ignore[arg-type]
+        for top in ("/etc", "/var", "/tmp"):
+            if r == top or r.startswith(top + "/"):
+                return "/private" + r
+        return r
+
+    monkeypatch.setattr("sheepdogai.policy.matchers.os.path.realpath", mac_realpath)
+    monkeypatch.setattr("sheepdogai.policy.loader.os.path.realpath", mac_realpath)
+    eng = make_engine(tmp_path, mode="relaxed")
+    assert (
+        eng.decide(event("cat /etc/shadow", cwd=str(tmp_path))).verdict.rule_id == "secrets-access"
+    )
+    assert (
+        eng.decide(event("echo x > /etc/passwd", cwd=str(tmp_path))).verdict.rule_id
+        == "machine-system-paths"
+    )
+    assert eng.decide(event("rm -rf /private/etc", cwd=str(tmp_path))).verdict.action is Action.DENY
+    scratch = make_engine(tmp_path, mode="relaxed", settings={"scratch_paths": ["/tmp"]})
+    assert (
+        scratch.decide(event("echo x > /tmp/f", cwd=str(tmp_path))).verdict.rule_id
+        != "repo-write-outside"
+    )
