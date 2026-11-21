@@ -14,13 +14,12 @@ from pathlib import Path
 from typing import Any
 
 from sheepdogai.cli.verify_log import resolve_run
-from sheepdogai.constants import CONFIG_FILE
 from sheepdogai.core.errors import SheepdogError
 from sheepdogai.core.events import ToolCallEvent
 from sheepdogai.core.verdict import Action, BudgetState, Verdict
 from sheepdogai.log.verify import verify_log
 from sheepdogai.policy.engine import PolicyEngine
-from sheepdogai.policy.loader import Policy, load_policy
+from sheepdogai.policy.loader import Policy, find_rules, load_policy
 
 RULES_DECIDERS = {"rules", "engine", "budget"}
 
@@ -101,8 +100,7 @@ def cmd_replay(run: str, project: Path, html: str | None = None) -> int:
     """Replay a run; exit 0 when nothing differs, 1 otherwise."""
     path = resolve_run(run, project)
     records = read_records(path)
-    rules = project / CONFIG_FILE
-    policy = load_policy(rules if rules.exists() else None, project_root=project)
+    policy = load_policy(find_rules(project), project_root=project)
     diffs, n = replay_records(records, policy)
     anchor = records[0]["data"].get("policy_hash", "")
     print(

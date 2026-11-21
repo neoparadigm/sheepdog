@@ -27,14 +27,14 @@ from typing import Any
 
 from sheepdogai.adapters import get_adapter
 from sheepdogai.approvals import ApprovalBroker, Notifier
-from sheepdogai.constants import CLI_NAME, CONFIG_FILE
+from sheepdogai.constants import CONFIG_FILE
 from sheepdogai.core.adapter import Adapter, AdapterResponse
 from sheepdogai.core.errors import LogError, ParseError, SheepdogError
 from sheepdogai.core.events import ToolCallEvent
 from sheepdogai.core.verdict import Action, BudgetState, DecisionRecord, Verdict
 from sheepdogai.log.writer import RunLogWriter
 from sheepdogai.policy.engine import Decision, PolicyEngine
-from sheepdogai.policy.loader import APPROVED_REL, SHARED_REL, Policy, load_policy
+from sheepdogai.policy.loader import APPROVED_REL, SHARED_REL, Policy, find_rules, load_policy
 
 MAX_REQUEST = 20 * 1024 * 1024
 _SAFE = re.compile(r"[^A-Za-z0-9_.-]")
@@ -102,11 +102,7 @@ class Gateway:
         self.engine: PolicyEngine = self._load()  # raises RulesError at startup
 
     def _find_rules(self) -> Path | None:
-        p = self.project_root / CONFIG_FILE
-        if p.exists():
-            return p
-        user = Path(os.path.expanduser("~")) / ".config" / CLI_NAME / CONFIG_FILE
-        return user if user.is_file() else None
+        return find_rules(self.project_root)
 
     def _signature(self) -> tuple[tuple[float, int] | None, ...]:
         """Stat signature of everything the policy depends on (rules, shared config, approval)."""

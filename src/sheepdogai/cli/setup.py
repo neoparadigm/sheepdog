@@ -142,6 +142,11 @@ def cmd_setup(home: Path, yes: bool, mode: str, undo: bool) -> int:
             fd, USER_CONFIG_TEMPLATE.format(cli=CLI_NAME, config=CONFIG_FILE, mode=mode).encode()
         )
         os.close(fd)
+    if "gemini" in targets:
+        print(
+            "\nNote for Gemini CLI: it cannot ask you, so anything not clearly safe (for example `npm test`) is blocked.\n"
+            f"Allow what you use: {CLI_NAME} allow 'npm test*'   or loosen it: {CLI_NAME} mode relaxed"
+        )
     ok, msg = self_test(home)
     print(f"\nself-test: {'blocked `rm -rf /` as expected' if ok else 'FAILED'}  ({msg})")
     print(

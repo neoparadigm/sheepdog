@@ -169,3 +169,50 @@ def test_agent_cannot_loosen_or_reinstall_unattended(tmp_path: Path) -> None:
         assert v.action is Action.DENY, cmd
     for cmd in ("sheepdogai doctor", "sheepdogai recent -n 5", "sheepdogai status"):
         assert eng.decide(event(cmd, cwd=str(tmp_path))).verdict.action is Action.ALLOW, cmd
+
+
+def test_replay_and_status_use_the_user_wide_policy(
+    home: Path, tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    import json
+
+    from sheepdogai.daemon.server import Gateway
+
+    cfg = user_config_path(home)
+    cfg.parent.mkdir(parents=True)
+    cfg.write_text(
+        "version: 1\nmode: relaxed\npacks: [self_protect, machine]\n"
+    )  # differs from the strict defaults
+    proj = tmp_path / "proj"
+    proj.mkdir()
+    gw = Gateway(proj)
+    for c in ("echo hi", "rm -rf /", "ls"):
+        gw.handle(
+            "claude",
+            json.dumps(
+                {
+                    "session_id": "r",
+                    "cwd": str(proj),
+                    "hook_event_name": "PreToolUse",
+                    "tool_name": "Bash",
+                    "tool_input": {"command": c},
+                }
+            ).encode(),
+        )
+    gw.close()
+    assert (
+        main(["--project", str(proj), "replay", "r"]) == 0
+    )  # no false diffs against strict defaults
+    assert "0 verdict(s) differ" in capsys.readouterr().out
+    assert main(["--project", str(proj), "status"]) == 0
+    assert str(cfg) in capsys.readouterr().out
+
+
+def test_reason_for_rules_added_by_allow_and_block_is_human(tmp_path: Path, home: Path) -> None:
+    f = tmp_path / "sheepdogai.yaml"
+    f.write_text("version: 1\nmode: relaxed\npacks: []\n")
+    add_rule(tmp_path, home, "npm publish*", "deny")
+    d = PolicyEngine(load_policy(f, project_root=tmp_path)).decide(
+        event("npm publish", cwd=str(tmp_path))
+    )
+    assert d.verdict.reason == "you chose to block commands matching npm publish*"

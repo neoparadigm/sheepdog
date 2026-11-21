@@ -77,9 +77,14 @@ def add_rule(project: Path, home: Path, pattern: str, action: str) -> str:
     while f"user-{action}-{n}" in text:
         n += 1
     rid = f"user-{action}-{n}"
+    why = (
+        f"you chose to block commands matching {pattern}"
+        if action == "deny"
+        else f"you chose to allow commands matching {pattern}"
+    )
     item = (
         f"  - id: {rid}\n    match: {{tool: [Bash, run_shell_command], command: {_q(pattern)}}}\n"
-        f"    action: {action}\n    reason: added with `{CLI_NAME} {'allow' if action == 'allow' else 'block'}`\n"
+        f"    action: {action}\n    reason: {_q(why)}\n"
     )
     lines = text.splitlines(keepends=True)
     idx = next(

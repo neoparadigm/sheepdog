@@ -6,7 +6,7 @@ import json
 import shutil
 from pathlib import Path
 
-from sheepdogai.constants import CLI_NAME, CONFIG_FILE
+from sheepdogai.constants import CLI_NAME
 from sheepdogai.core.errors import SheepdogError
 
 OK, BAD = "OK  ", "FAIL"
@@ -31,9 +31,9 @@ def _hook_installed(cli: str, home: Path, project: Path) -> str | None:
 
 def cmd_doctor(project: Path, home: Path) -> int:
     """Run the checks and print one line each with a fix. Returns 0 only if all pass."""
-    from sheepdogai.cli.setup import detect, self_test, user_config_path
+    from sheepdogai.cli.setup import detect, self_test
     from sheepdogai.log.verify import verify_log
-    from sheepdogai.policy.loader import load_policy
+    from sheepdogai.policy.loader import find_rules, load_policy
 
     bad = 0
 
@@ -70,12 +70,7 @@ def cmd_doctor(project: Path, home: Path) -> int:
                 f"{cli}: you can type /sheepdog to chat with it",
                 f"run: {CLI_NAME} setup",
             )
-    rules = project / CONFIG_FILE
-    path = (
-        rules
-        if rules.exists()
-        else (user_config_path(home) if user_config_path(home).exists() else None)
-    )
+    path = find_rules(project)
     try:
         pol = load_policy(path, project_root=project)
         line(True, f"your rules are valid ({pol.config.mode} mode, {len(pol.rules)} rules)")

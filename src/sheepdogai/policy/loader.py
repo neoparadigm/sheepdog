@@ -306,6 +306,15 @@ def build_policy(
     return Policy(config, loaded, h, project_root, home, source, budget, notes)
 
 
+def find_rules(project_root: Path) -> Path | None:
+    """The rules file that governs a project: its own, else the user-wide one, else None (defaults)."""
+    own = project_root / CONFIG_FILE
+    if own.exists():
+        return own
+    user = Path(os.path.expanduser("~")) / ".config" / CLI_NAME / CONFIG_FILE
+    return user if user.is_file() else None
+
+
 def shared_state(project_root: Path) -> tuple[str, str | None]:
     """('absent'|'unapproved'|'approved', sha256 of the shared file)."""
     f = project_root / SHARED_REL

@@ -97,3 +97,13 @@ def test_user_wide_policy_applies_in_projects_without_their_own(home: Path, tmp_
     assert call("rm -rf /") == 0  # packs: [] in the project file replaces the user-wide packs
     assert gw.rules_path == proj / "sheepdogai.yaml"
     gw.close()
+
+
+def test_gemini_users_are_told_why_things_get_blocked(
+    home: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    (home / ".gemini").mkdir()
+    assert main(["setup", "--yes"]) == 0
+    out = capsys.readouterr().out
+    assert "Gemini CLI" in out and "cannot ask" in out and "sheepdogai allow" in out
+    (home / ".gemini" / "settings.json").unlink()

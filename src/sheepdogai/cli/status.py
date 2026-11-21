@@ -5,7 +5,7 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-from sheepdogai.constants import CLI_NAME, CONFIG_FILE
+from sheepdogai.constants import CLI_NAME
 from sheepdogai.core.errors import SheepdogError
 from sheepdogai.daemon.client import sock_for
 
@@ -13,14 +13,14 @@ from sheepdogai.daemon.client import sock_for
 def cmd_status(project: Path, home: Path) -> int:
     """Print policy validity, daemon state and installed hooks."""
     from sheepdogai.cli.install import SPECS, state_dir
-    from sheepdogai.policy.loader import load_policy
+    from sheepdogai.policy.loader import find_rules, load_policy
 
-    rules = project / CONFIG_FILE
+    rules = find_rules(project)
     pol = None
     print(f"project: {project}")
     try:
-        pol = load_policy(rules if rules.exists() else None, project_root=project)
-        src = rules if rules.exists() else "built-in defaults (no sheepdogai.yaml)"
+        pol = load_policy(rules, project_root=project)
+        src = rules if rules else "built-in defaults (no sheepdogai.yaml)"
         print(
             f"policy:  OK mode={pol.config.mode} hash={pol.policy_hash[:16]} rules={len(pol.rules)} from {src}"
         )
