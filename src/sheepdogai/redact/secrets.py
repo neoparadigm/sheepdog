@@ -16,7 +16,8 @@ _PATTERNS: list[tuple[str, re.Pattern[str]]] = [
         "private_key",
         re.compile(
             r"-----BEGIN [A-Z0-9 ]{0,40}PRIVATE KEY(?: BLOCK)?-----"
-            r"(?:[\s\S]{0,20000}?-----END [A-Z0-9 ]{0,40}PRIVATE KEY(?: BLOCK)?-----|[A-Za-z0-9+/=\s]{0,20000})"
+            r"(?:[\s\S]{0,20000}?-----END [A-Z0-9 ]{0,40}PRIVATE KEY(?: BLOCK)?-----"
+            r"|[A-Za-z0-9+/=\s]{0,20000})"
         ),
     ),
     ("aws_access_key", re.compile(r"\b(?:AKIA|ASIA|AGPA|AIDA|AROA)[0-9A-Z]{16}\b")),
@@ -55,11 +56,11 @@ def redact_text(s: str) -> str:
         return head + f"[TRUNCATED:{len(s) - MAX_STR} chars not scanned or stored]"
     for kind, pat in _PATTERNS:
         if kind == "assignment":
-            s = pat.sub(lambda m, k=kind: f"{m.group(1)}{m.group(2)}[REDACTED:{k}]", s)
+            s = pat.sub(r"\g<1>\g<2>[REDACTED:assignment]", s)
         elif kind == "bearer":
-            s = pat.sub(lambda m, k=kind: f"{m.group(1)} [REDACTED:{k}]", s)
+            s = pat.sub(r"\g<1> [REDACTED:bearer]", s)
         elif kind == "url_credentials":
-            s = pat.sub(lambda m, k=kind: f"{m.group(1)}[REDACTED:{k}]@", s)
+            s = pat.sub(r"\g<1>[REDACTED:url_credentials]@", s)
         else:
             s = pat.sub(f"[REDACTED:{kind}]", s)
     return s
