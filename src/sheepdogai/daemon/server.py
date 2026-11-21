@@ -318,7 +318,7 @@ class Gateway:
                 )
         except LogError as e:
             return adapter.fail_closed(f"cannot write log: {e}")
-        if event.tool.kind in {"network", "mcp"}:
+        if event.tool.kind in {"network", "mcp"} and final.action is not Action.DENY:
             sess.untrusted = True  # heuristic: external content may now be in the agent context
         return adapter.respond(final)
 

@@ -83,9 +83,7 @@ def test_token_bound_to_event(tmp_path: Path) -> None:
     e2 = event("b", kind="mcp", name="send_email", to="x@y.z")
     r1 = req(b, e1)
     assert b.redeem(r1.token, event_hash(e2)) is False  # used for a different event
-    assert (
-        b.redeem(r1.token, r1.event_hash) is False or True
-    )  # (failed attempt must not burn... see next)
+    assert b.redeem(r1.token, r1.event_hash) is True  # the wrong-event attempt did not burn it
 
 
 def test_failed_attempt_for_wrong_event_does_not_burn_token(tmp_path: Path) -> None:

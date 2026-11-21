@@ -1,0 +1,10 @@
+{
+  "arguments": {
+    "url": "https://example.com"
+  },
+  "cwd": "/home/user/proj",
+  "framework": "langgraph",
+  "kind": "network",
+  "session_id": "fw-1",
+  "tool_name": "fetch"
+}

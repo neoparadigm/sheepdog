@@ -13,8 +13,14 @@ from sheepdogai.core.errors import ParseError
 from sheepdogai.core.verdict import Action, Verdict
 
 FIX = Path(__file__).resolve().parent.parent / "fixtures"
-CLIS = {"claude": "claude", "gemini": "gemini", "codex": "codex"}
-NEGATIVE = {"not_pretooluse", "not_beforetool"}
+CLIS = {
+    "claude": "claude",
+    "gemini": "gemini",
+    "codex": "codex",
+    "mcp": "mcp",
+    "framework": "framework",
+}
+NEGATIVE = {"not_pretooluse", "not_beforetool", "not_tools_call", "not_a_tool_call"}
 
 
 def adapter(cli: str) -> Adapter:
@@ -113,18 +119,42 @@ def test_garbage_raises_parse_error_only(cli: str, raw: bytes) -> None:
     assert cli == "codex" and b'"tool_input":"x"' in raw
 
 
-@pytest.mark.parametrize("cli", CLIS)
-def test_ten_megabyte_payload_does_not_crash(cli: str) -> None:
+def big_payload(cli: str, size: int) -> dict[str, object]:
+    cmd = "echo " + "A" * size
+    if cli == "mcp":
+        return {
+            "session_id": "s",
+            "cwd": "/p",
+            "server": "srv",
+            "request": {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "method": "tools/call",
+                "params": {"name": "t", "arguments": {"command": cmd}},
+            },
+        }
+    if cli == "framework":
+        return {
+            "session_id": "s",
+            "cwd": "/p",
+            "tool_name": "t",
+            "kind": "shell",
+            "arguments": {"command": cmd},
+        }
     hook = {"claude": "PreToolUse", "gemini": "BeforeTool", "codex": "PreToolUse"}[cli]
     tool = {"claude": "Bash", "gemini": "run_shell_command", "codex": "Bash"}[cli]
-    payload = {
+    return {
         "session_id": "s",
         "cwd": "/p",
         "hook_event_name": hook,
         "tool_name": tool,
-        "tool_input": {"command": "echo " + "A" * (10 * 1024 * 1024)},
+        "tool_input": {"command": cmd},
     }
-    ev = adapter(cli).parse(json.dumps(payload).encode())
+
+
+@pytest.mark.parametrize("cli", CLIS)
+def test_ten_megabyte_payload_does_not_crash(cli: str) -> None:
+    ev = adapter(cli).parse(json.dumps(big_payload(cli, 10 * 1024 * 1024)).encode())
     assert len(ev.args["command"]) > 10_000_000
     too_big = b" " * (17 * 1024 * 1024)
     with pytest.raises(ParseError):
@@ -135,14 +165,20 @@ def test_capabilities_declared() -> None:
     for cli in CLIS:
         c = adapter(cli).capabilities
         assert c.can_block is True
+    assert not adapter("mcp").capabilities.can_ask and not adapter("framework").capabilities.can_ask
     assert not adapter("codex").capabilities.can_ask  # verified from Codex source
     assert not adapter("gemini").capabilities.can_ask
     assert adapter("claude").capabilities.can_ask
 
 
-def test_codex_is_gated() -> None:
+@pytest.mark.parametrize("name", ["codex", "mcp", "framework"])
+def test_experimental_adapters_are_gated(name: str) -> None:
     with pytest.raises(ParseError):
-        get_adapter("codex")
+        get_adapter(name)
+    assert get_adapter(name, experimental=True).name
+
+
+def test_codex_is_gated() -> None:
     with pytest.raises(ParseError):
         get_adapter("nope")
 

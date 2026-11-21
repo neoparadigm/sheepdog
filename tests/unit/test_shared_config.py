@@ -162,7 +162,7 @@ def test_daemon_picks_up_approval_and_edits_at_runtime(tmp_path: Path) -> None:
             ).encode(),
         ).exit_code
 
-    assert call("pip install x") == 0 or True  # balanced: asks/allows, not denied by shared yet
+    assert call("pip install x") == 0  # balanced: asked, and not (yet) denied by the shared rule
     r0 = gw.last_decision
     assert r0 is not None and r0.verdict.rule_id != "shared.no-pip"
     time.sleep(0.02)

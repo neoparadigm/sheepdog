@@ -39,6 +39,14 @@ The shell normaliser is a conservative approximation of POSIX shell parsing, not
 * **Look-alikes.** A fixed table maps common Cyrillic/Greek look-alikes and NFKC folds fullwidth
   forms. It is not a full confusables implementation.
 
+## Redaction
+
+Redaction is pattern based (key formats such as AWS, GitHub, Slack and `sk-` keys, JWTs, private-key
+blocks, `Bearer` tokens, credentials in URLs, and `key=value` assignments whose name looks secret).
+**A bare password or token with no recognisable format or key name cannot be recognised**
+(`echo correct-horse-battery-staple > f` is logged as written). Long strings are shortened, and
+secrets split across several tool calls are not reassembled.
+
 ## Log integrity
 
 * The hash chain detects edits, deleted lines in the middle, and reordering.

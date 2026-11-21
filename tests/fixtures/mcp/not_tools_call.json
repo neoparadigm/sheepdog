@@ -1,0 +1,10 @@
+{
+  "cwd": "/home/user/proj",
+  "request": {
+    "id": 3,
+    "jsonrpc": "2.0",
+    "method": "tools/list"
+  },
+  "server": "github",
+  "session_id": "mcp-1"
+}

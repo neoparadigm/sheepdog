@@ -1,0 +1,10 @@
+{
+  "arguments": {
+    "command": "ls -la"
+  },
+  "cwd": "/home/user/proj",
+  "framework": "langgraph",
+  "kind": "shell",
+  "session_id": "fw-1",
+  "tool_name": "run_shell"
+}

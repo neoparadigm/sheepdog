@@ -9,7 +9,7 @@ from sheepdogai.adapters import get_adapter
 from sheepdogai.core.errors import ParseError
 from sheepdogai.core.verdict import Action, Verdict
 
-NEGATIVE = {"not_pretooluse", "not_beforetool"}
+NEGATIVE = {"not_pretooluse", "not_beforetool", "not_tools_call", "not_a_tool_call"}
 
 
 def cmd_conformance(name: str) -> int:

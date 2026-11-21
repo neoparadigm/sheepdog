@@ -1,0 +1,10 @@
+{
+  "arguments": {
+    "path": "/home/user/proj/README.md"
+  },
+  "cwd": "/home/user/proj",
+  "framework": "langgraph",
+  "kind": "file_read",
+  "session_id": "fw-1",
+  "tool_name": "read_file"
+}

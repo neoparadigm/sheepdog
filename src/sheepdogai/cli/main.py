@@ -66,7 +66,10 @@ def _parser() -> argparse.ArgumentParser:
     r.add_argument("run")
     r.add_argument("--html", metavar="FILE", help="write a static HTML report")
     c = sub.add_parser("conformance", help="run the adapter conformance checks")
-    c.add_argument("adapter", choices=["claude", "codex", "gemini"])
+    c.add_argument("adapter", choices=["claude", "codex", "gemini", "mcp", "framework"])
+    mp = sub.add_parser("mcp-proxy", help="experimental stdio proxy in front of an MCP server")
+    mp.add_argument("--name", required=True, help="server name used in event tool names")
+    mp.add_argument("server_cmd", nargs=argparse.REMAINDER, help="-- <server command and args>")
     b = sub.add_parser("bench", help="run the injection gauntlet")
     b.add_argument("--out", default=None)
     b.add_argument("--corpus", default="v1")
@@ -140,6 +143,18 @@ def _dispatch(a: argparse.Namespace) -> int:  # noqa: C901
         else:
             print(inst.uninstall(a.cli, scope, project, home, a.dry_run))
         return 0
+    if a.cmd == "mcp-proxy":
+        import os
+
+        from sheepdogai.adapters.mcp_proxy import McpProxy, default_decide
+        from sheepdogai.core.canonical import uuid7
+
+        cmd = [c for c in a.server_cmd if c != "--"][:]
+        if not cmd:
+            print("usage: sheepdog mcp-proxy --name NAME -- <server command>", file=sys.stderr)
+            return 2
+        sid = os.environ.get("SHEEPDOG_SESSION") or f"mcp-{uuid7()[:8]}"
+        return McpProxy(cmd, a.name, sid, os.getcwd(), default_decide).run()
     if a.cmd == "approve-shared":
         from sheepdogai.cli.approve import cmd_approve_shared
 

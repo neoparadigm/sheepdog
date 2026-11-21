@@ -60,5 +60,5 @@ def test_every_generator_runs_and_changes_the_string() -> None:
     applicable = {n: g(cmd) for n, g in obfuscate.ALL.items()}
     assert sum(1 for v in applicable.values() if v) >= 25
     assert all(v != cmd for v in applicable.values() if v)
-    assert obfuscate.variants("") == [] or True
+    assert all(v != "" for _, v in obfuscate.variants(""))
     assert obfuscate.brace("rm -rf 'a b'") is None

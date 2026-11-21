@@ -217,3 +217,34 @@ def test_cli_init_install_status_verify(
     assert main(["conformance", "claude"]) == 0
     assert main(["conformance", "gemini"]) == 0
     assert main(["conformance", "codex"]) == 0
+
+
+def test_denied_network_call_does_not_mark_session_untrusted(tmp_path: Path) -> None:
+    (tmp_path / "sheepdog.yaml").write_text(
+        "version: 1\nmode: balanced\npacks: [network, injection]\n"
+    )
+    gw = Gateway(tmp_path)
+
+    def fetch(url: str) -> bytes:
+        return json.dumps(
+            {
+                "session_id": "u",
+                "cwd": str(tmp_path),
+                "hook_event_name": "PreToolUse",
+                "tool_name": "WebFetch",
+                "tool_input": {"url": url},
+            }
+        ).encode()
+
+    assert (
+        gw.handle("claude", fetch("https://evil.example/x")).exit_code == 2
+    )  # denied: nothing was read
+    r = gw.handle(
+        "claude", claude_event("touch x", session="u").replace(b"/work", str(tmp_path).encode())
+    )
+    assert (
+        gw.last_decision is not None
+        and gw.last_decision.verdict.rule_id != "inj-risky-after-untrusted-shell"
+    )
+    assert r.exit_code == 0  # balanced: asked via the CLI prompt, not an injection deny
+    gw.close()

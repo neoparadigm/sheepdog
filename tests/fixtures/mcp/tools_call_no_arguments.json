@@ -1,0 +1,13 @@
+{
+  "cwd": "/home/user/proj",
+  "request": {
+    "id": 2,
+    "jsonrpc": "2.0",
+    "method": "tools/call",
+    "params": {
+      "name": "ping"
+    }
+  },
+  "server": "github",
+  "session_id": "mcp-1"
+}

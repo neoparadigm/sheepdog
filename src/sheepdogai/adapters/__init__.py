@@ -79,8 +79,16 @@ def get_adapter(name: str, *, experimental: bool = False) -> Adapter:
         return ClaudeCodeAdapter()
     if name == "gemini":
         return GeminiAdapter()
+    if name in {"codex", "mcp", "framework"} and not experimental:
+        raise ParseError(f"the {name} adapter is experimental; pass --experimental to use it")
     if name == "codex":
-        if not experimental:
-            raise ParseError("the codex adapter is experimental; pass --experimental to use it")
         return CodexAdapter()
+    if name == "mcp":
+        from sheepdogai.adapters.mcp_proxy import McpProxyAdapter
+
+        return McpProxyAdapter()
+    if name == "framework":
+        from sheepdogai.adapters.wrap import FrameworkAdapter
+
+        return FrameworkAdapter()
     raise ParseError(f"unknown adapter {name!r}")
