@@ -56,6 +56,11 @@ determined adversary who controls the machine.
 | T13 | A CLI that cannot ask is asked to ask | Adapter capabilities; ask is downgraded to deny and logged | `tests/conformance`, `tests/unit/test_matchers.py` |
 | T14 | Core code phones home | No network imports in core packages; telemetry opt-in | `tests/unit/test_hygiene.py` |
 | T15 | Quadratic or catastrophic-backtracking input | Bounded parser, ReDoS check on rules, size limits | `tests/fuzz/test_fuzz.py` |
+| T17 | Agent approves its own action (reads a token, answers a prompt, runs `approve`) | Tokens in daemon memory and the human channel only; `self_protect` denies approval files, `~/.config/<cli>/` and `sheepdog approve*` | `tests/unit/test_approvals.py`, `tests/unit/test_shared_config.py` |
+| T18 | Approval replayed, used late, or used for another call | Single-use token bound to event hash and expiry; timeout is deny | `tests/unit/test_approvals.py` |
+| T19 | A committed shared config loosens the user's policy | Applies only after the user approves its hash; can only tighten; loosening is rejected | `tests/unit/test_shared_config.py` |
+| T20 | MCP proxy forwards a call when the daemon is down, or rewrites results | Refuses on any decision failure; only secret redaction touches results | `tests/unit/test_mcp_proxy_wrap.py` |
+| T21 | A shared report leaks secrets or runs content | Re-redaction, HTML escaping, CSP `default-src 'none'`, no scripts | `tests/replay/test_html_report.py` |
 | T16 | Policy drift unnoticed | Policy hash in every record; `replay` shows exact verdict diffs | `tests/replay` |
 
 ## Residual risk (read `limitations.md`)

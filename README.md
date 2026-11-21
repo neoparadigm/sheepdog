@@ -51,14 +51,14 @@ sheepdog replay t                     # re-feed the run through the current poli
 ## Benchmark: injection gauntlet, corpus v1
 
 `make bench` runs scripted agents (no model, no network) through each adapter. Mode `balanced`,
-policy hash `ba6a0f4c8410…`, corpus sha256 `da34e40795922b3b…`, Linux x86_64, Python 3.13.18.
+policy hash `45e708060a98…`, corpus sha256 `da34e40795922b3b…`, Linux x86_64, Python 3.13.18.
 Intervals are 95% (Wilson for rates, fixed-seed bootstrap for latency).
 
 | adapter | attacks blocked | hard-denied | benign hard-denied (false positives) | benign asks (friction) | p50 / p95 ms | CPU ms / 1,000 decisions |
 |---|---|---|---|---|---|---|
-| claude | **blocked 338 of 340 scenarios in corpus v1** (99.4%, 97.9-99.8%) | 259 of 340 (71.4-80.4%) | 0 of 45 (0.0-7.9%) | 20 of 45 (30.9-58.8%) | 3.45 / 5.06 | 2107 (2057-2152) |
-| gemini | blocked 338 of 340 scenarios in corpus v1 | 259 of 340 | 0 of 45 | 20 of 45 (asks become denies) | 2.74 / 3.88 | 1676 |
-| codex (experimental) | blocked 338 of 340 scenarios in corpus v1 | 259 of 340 | 0 of 45 | 20 of 45 (asks become denies) | 2.73 / 4.31 | 1657 |
+| claude | **blocked 338 of 340 scenarios in corpus v1** (99.4%, 97.9-99.8%) | 259 of 340 (71.4-80.4%) | 0 of 45 (0.0-7.9%) | 20 of 45 (30.9-58.8%) | 2.82 / 4.25 | 1669 (1637-1703) |
+| gemini | blocked 338 of 340 scenarios in corpus v1 | 259 of 340 | 0 of 45 | 20 of 45 (asks become denies) | 2.64 / 3.56 | 1601 |
+| codex (experimental) | blocked 338 of 340 scenarios in corpus v1 | 259 of 340 | 0 of 45 | 20 of 45 (asks become denies) | 3.16 / 4.30 | 1995 |
 
 The two attacks that got through are documented gaps (`A-S16` `grep -r 'BEGIN RSA PRIVATE KEY' ~`,
 `A-S17` a credential file the pack does not list). The first run of this corpus found five more
@@ -73,8 +73,15 @@ How to read this honestly:
   gaps; it is **not** an independent adversarial evaluation, and 340 scenarios is a small sample.
 * Latency is the in-process gateway (parse, decide, fsynced log write) and excludes interpreter
   start-up. The decision-latency gate (p95 under 25 ms) is enforced in `tests/perf`: engine p95
-  0.57 ms, gateway p95 3.8 ms on the same machine. A full `sheepdog hook` process round trip
-  measured p50 46 ms, p95 56 ms (CPython start-up dominates).
+  0.49 ms, gateway p95 2.6 ms on the same machine. A full `sheepdog hook` process round trip
+  measured p50 44 ms, p95 60 ms (CPython start-up dominates).
+
+## Beyond coding agents (Phase 2)
+
+An opt-in `personal` pack (email, payments with a cap, credential stores, deletion, account
+changes), phone approvals with single-use tokens, an experimental MCP proxy and `wrap()`, a static
+`sheepdog replay --html` report, and a tighten-only shared `.sheepdog/shared.yaml` that applies only
+after you approve its hash. See [`docs/phase2.md`](docs/phase2.md).
 
 ## How it works
 
@@ -130,8 +137,9 @@ Full list, with the known-bypass table: [`docs/limitations.md`](docs/limitations
 | `tests/` | unit, property, fuzz, conformance, redteam, replay, ontology, perf, self_protect |
 | `docs/`, `examples/` | threat model, limitations, architecture, ADRs; three sample policies |
 
-Three small additions to the planned layout: `core/canonical.py`, `cli/status.py`,
-`cli/conformance.py`, `cli/report.py`, and `tools/` (repo gates). `make verify` runs lint,
+Small additions to the planned layout: `core/canonical.py`, `constants.py`, `approvals.py`,
+`approvals_net.py`, `cli/{status,conformance,report,approve}.py`, `adapters/{mcp_proxy,wrap,framework_template}.py`
+and `tools/` (repo gates). `make verify` runs lint,
 `mypy --strict`, the suite-presence and hygiene gates, every test suite with a 90% coverage gate on
 core, policy, log, redact and budget, and the latency gate.
 

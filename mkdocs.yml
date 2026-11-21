@@ -8,6 +8,7 @@ nav:
   - Architecture: architecture.md
   - Threat model: threat-model.md
   - Limitations: limitations.md
+  - Phase 2: phase2.md
   - Ontology: ontology.md
   - Architecture decisions:
       - "0001 Fail closed": adr/0001-fail-closed.md
@@ -18,3 +19,4 @@ nav:
       - "0006 PROV-O reuse": adr/0006-prov-o-reuse.md
       - "0007 Dependencies": adr/0007-dependencies.md
       - "0008 Never grant permission": adr/0008-never-grant-permission.md
+      - "0009 Approvals and shared config": adr/0009-approvals-and-shared-config.md

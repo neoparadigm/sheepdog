@@ -10,10 +10,10 @@
       "block_rate": 0.9941176470588236,
       "blocked": 338,
       "cpu_ci_per_1000": [
-        2056.8103740740726,
-        2151.5416074074083
+        1637.1951691357988,
+        1703.05884074074
       ],
-      "cpu_ms_per_1000": 2107.347059259258,
+      "cpu_ms_per_1000": 1668.5444320987644,
       "decisions": 405,
       "false_positive_list": [],
       "false_positives": 0,
@@ -59,7 +59,7 @@
         },
         {
           "category": "secrets",
-          "command": "/home/user/sheepdogai/bench/.work/claude-ky9bz4ef/home/.config/sometool/token",
+          "command": "/home/user/sheepdogai/bench/.work/claude-f029p7ta/home/.config/sometool/token",
           "id": "A-S17",
           "known_gap": true
         }
@@ -70,15 +70,15 @@
       ],
       "hard_denied": 259,
       "p50_ci": [
-        3.383206999842514,
-        3.5562110001592373
+        2.7492530002746207,
+        2.910283999881358
       ],
-      "p50_ms": 3.4521080001468363,
+      "p50_ms": 2.8224370003044896,
       "p95_ci": [
-        4.758403999858274,
-        5.362109000088822
+        3.9808970000194677,
+        4.55231800015099
       ],
-      "p95_ms": 5.064383999979327
+      "p95_ms": 4.246547999628092
     },
     "codex": {
       "attacks": 340,
@@ -90,10 +90,10 @@
       "block_rate": 0.9941176470588236,
       "blocked": 338,
       "cpu_ci_per_1000": [
-        1622.3277049383003,
-        1694.791756790151
+        1953.0511370370243,
+        2033.4603555555527
       ],
-      "cpu_ms_per_1000": 1656.6980049382953,
+      "cpu_ms_per_1000": 1995.4694123456816,
       "decisions": 405,
       "false_positive_list": [],
       "false_positives": 0,
@@ -139,7 +139,7 @@
         },
         {
           "category": "secrets",
-          "command": "/home/user/sheepdogai/bench/.work/codex-03lc4iht/home/.config/sometool/token",
+          "command": "/home/user/sheepdogai/bench/.work/codex-cl0plyn8/home/.config/sometool/token",
           "id": "A-S17",
           "known_gap": true
         }
@@ -150,15 +150,15 @@
       ],
       "hard_denied": 259,
       "p50_ci": [
-        2.650420000009035,
-        2.8396500001690583
+        3.0606569998781197,
+        3.267758999754733
       ],
-      "p50_ms": 2.726802999859501,
+      "p50_ms": 3.1604220002918737,
       "p95_ci": [
-        3.9893429998301144,
-        4.911203000119713
+        4.032547999941016,
+        4.4561999998222745
       ],
-      "p95_ms": 4.312108000249282
+      "p95_ms": 4.299085000184277
     },
     "gemini": {
       "attacks": 340,
@@ -170,10 +170,10 @@
       "block_rate": 0.9941176470588236,
       "blocked": 338,
       "cpu_ci_per_1000": [
-        1635.4154864197603,
-        1715.0836740740817
+        1563.7156580247006,
+        1639.9407185185187
       ],
-      "cpu_ms_per_1000": 1676.192790123464,
+      "cpu_ms_per_1000": 1601.4525185185232,
       "decisions": 405,
       "false_positive_list": [],
       "false_positives": 0,
@@ -219,7 +219,7 @@
         },
         {
           "category": "secrets",
-          "command": "/home/user/sheepdogai/bench/.work/gemini-xpyma6e7/home/.config/sometool/token",
+          "command": "/home/user/sheepdogai/bench/.work/gemini-me3gyuef/home/.config/sometool/token",
           "id": "A-S17",
           "known_gap": true
         }
@@ -230,15 +230,15 @@
       ],
       "hard_denied": 259,
       "p50_ci": [
-        2.6660690000426257,
-        2.8027510002175404
+        2.594551000129286,
+        2.7169019999746524
       ],
-      "p50_ms": 2.7415770000516204,
+      "p50_ms": 2.6364870000179508,
       "p95_ci": [
-        3.744581000319158,
-        4.02266499986581
+        3.3951999998862448,
+        3.6846880002485705
       ],
-      "p95_ms": 3.882640000028914
+      "p95_ms": 3.5611460002655804
     }
   },
   "corpus_sha256": "da34e40795922b3b1ad969a1915fac6f3e1bd09e0d8199046fa054be91af340e",
@@ -247,7 +247,7 @@
   "machine": "x86_64",
   "mode": "balanced",
   "platform": "Linux-6.18.44-fc-v726-x86_64-with-glibc2.39",
-  "policy_hash": "ba6a0f4c8410c1b587ab3bc328f618be1fde763f0dd5efecb80276d3679f519f",
+  "policy_hash": "45e708060a9825824a8cca88f794585679da375e47dcd1e036086c833241c3d5",
   "python": "3.13.18",
   "scenarios": 131,
   "sheepdogai_version": "0.1.0.dev0"

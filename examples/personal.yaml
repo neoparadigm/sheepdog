@@ -1,0 +1,10 @@
+# Personal assistant agent. List `personal` BEFORE `secrets`: first match wins.
+version: 1
+mode: strict
+fail: closed
+packs: [self_protect, personal, machine, secrets, repo, network, injection]
+approvals: {ask_timeout_s: 90, remember: run, channel: cli}   # channel: ntfy|telegram|webhook for a phone
+settings:
+  payment_cap_usd: 25
+  own_addresses: [me@example.org]
+  delete_allowlist: ["~/Downloads/**"]

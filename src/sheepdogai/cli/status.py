@@ -16,6 +16,7 @@ def cmd_status(project: Path, home: Path) -> int:
     from sheepdogai.policy.loader import load_policy
 
     rules = project / CONFIG_FILE
+    pol = None
     print(f"project: {project}")
     try:
         pol = load_policy(rules if rules.exists() else None, project_root=project)
@@ -27,6 +28,17 @@ def cmd_status(project: Path, home: Path) -> int:
         print(f"policy:  INVALID: {e}")
         print("         (the daemon denies every call until this is fixed)")
     from sheepdogai.policy.loader import shared_state
+
+    ap = pol.config.approvals if pol is not None else None
+    if (
+        ap is not None
+        and ap.channel != "cli"
+        and float(os.environ.get("SHEEPDOG_TIMEOUT_S", "5")) <= ap.ask_timeout_s
+    ):
+        print(
+            f"warning: approvals.channel={ap.channel} needs SHEEPDOG_TIMEOUT_S > {ap.ask_timeout_s} "
+            "or the hook times out (and denies) before you can answer"
+        )
 
     state, h = shared_state(project)
     if state != "absent":
