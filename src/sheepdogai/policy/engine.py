@@ -7,7 +7,7 @@ from dataclasses import dataclass, field
 
 from sheepdogai.budget.guard import BudgetGuard
 from sheepdogai.core.adapter import AdapterCapabilities
-from sheepdogai.core.decider import Decider, apply_decider
+from sheepdogai.core.decider import Decider, apply_decider_ex
 from sheepdogai.core.errors import RulesError
 from sheepdogai.core.events import ToolCallEvent
 from sheepdogai.core.verdict import Action, BudgetState, Verdict
@@ -25,6 +25,8 @@ class Decision:
     notes: list[str] = field(default_factory=list)
     budget: BudgetState = field(default_factory=BudgetState)
     origin: str = "engine"
+    rules_verdict: Verdict | None = None
+    decider_proposed: Verdict | None = None
 
 
 def load_decider(spec: str) -> Decider | None:
@@ -146,8 +148,11 @@ class PolicyEngine:
             verdict, origin = budget_verdict, "budget"
         if verdict is None:
             verdict = self._default(f)
+        rules_verdict: Verdict | None = None
+        proposed: Verdict | None = None
         if self.decider is not None:
-            verdict, note = apply_decider(self.decider, event, verdict)
+            rules_verdict = verdict
+            verdict, note, proposed = apply_decider_ex(self.decider, event, verdict)
             if note:
                 notes.append(note)
         if caps is not None:
@@ -161,4 +166,4 @@ class PolicyEngine:
                 notes.append("ask_downgraded_to_deny: adapter cannot ask")
             if not caps.can_block:
                 notes.append("adapter_cannot_block: verdict is advisory only")
-        return Decision(verdict, notes, new_state, origin)
+        return Decision(verdict, notes, new_state, origin, rules_verdict, proposed)

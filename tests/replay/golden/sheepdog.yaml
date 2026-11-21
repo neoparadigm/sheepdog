@@ -1,0 +1,10 @@
+version: 1
+mode: strict
+rules:
+  - id: no-force-push
+    match: {tool: Bash, command: "git push --force*"}
+    action: deny
+    reason: force-push rewrites shared history
+  - id: allow-echo
+    match: {tool: Bash, command: "echo *"}
+    action: allow

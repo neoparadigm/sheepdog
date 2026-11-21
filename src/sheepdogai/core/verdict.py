@@ -5,7 +5,7 @@ from __future__ import annotations
 from enum import IntEnum
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, field_serializer, field_validator
 
 from sheepdogai.core.events import ToolCallEvent
 
@@ -40,6 +40,15 @@ class Verdict(BaseModel):
     rule_id: str | None = None
     reason: str = ""
     decided_by: str = "rules"
+
+    @field_validator("action", mode="before")
+    @classmethod
+    def _parse_action(cls, v: object) -> object:
+        return Action.parse(v) if isinstance(v, str) else v
+
+    @field_serializer("action")
+    def _ser_action(self, a: Action) -> str:
+        return a.label
 
     def stricter_than_or_equal(self, other: Verdict) -> bool:
         """True when this verdict is at least as strict as ``other``."""
@@ -76,3 +85,5 @@ class DecisionRecord(BaseModel):
     policy_hash: str
     notes: list[str] = []
     budget: BudgetState | None = None
+    rules_verdict: Verdict | None = None  # set when a Decider ran: what the rules said
+    decider_proposed: Verdict | None = None  # set when a Decider ran: its raw answer

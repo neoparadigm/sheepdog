@@ -53,7 +53,7 @@ def test_log_records_shape_and_approval_for_ask(tmp_path: Path) -> None:
     kinds = [r["kind"] for r in recs]
     assert kinds == ["anchor", "decision", "approval", "decision"]
     d = recs[1]["data"]
-    assert d["verdict"]["action"] == 1 and d["policy_hash"] == recs[0]["data"]["policy_hash"]
+    assert d["verdict"]["action"] == "ask" and d["policy_hash"] == recs[0]["data"]["policy_hash"]
     assert d["event"]["seq"] == 1 and recs[3]["data"]["event"]["seq"] == 2
     assert recs[2]["data"]["outcome"] == "delegated"
     assert any("steps only" in n for n in d["notes"])
