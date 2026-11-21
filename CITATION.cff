@@ -6,7 +6,7 @@ version: 0.1.0.dev0
 license: Apache-2.0
 authors:
   - name: "sheepdogai contributors"
-repository-code: "https://github.com/OWNER/sheepdogai"
+repository-code: "https://github.com/neoparadigm/sheepdog"
 abstract: >-
   Framework-agnostic guard at the tool-call boundary of AI agents: deterministic policy, a
   stricter-only Decider, budgets, and a tamper-evident replayable log mapped to PROV-O and OpenTelemetry.
