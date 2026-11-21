@@ -14,7 +14,7 @@ That's it. `setup` finds Claude Code and Gemini CLI, shows exactly what it will 
 Enter, and proves it works by blocking a test command. Undo any time with `sheepdogai setup --undo`.
 
 <p align="center">
-  <img src="docs/assets/landing.png" alt="Sheepdog guards the fence: install with uv tool install sheepdogai, then sheepdogai setup" width="595">
+  <img src="docs/assets/hero.png" alt="Sheepdog guards the fence. Install with uv tool install sheepdogai, then run sheepdogai setup." width="640">
   <br><sub>Sheepdog is the name; the package and command are <code>sheepdogai</code>.</sub>
 </p>
 
