@@ -7,7 +7,7 @@ the user-facing names appear in code, so a rename is a one-line change here plus
 
 from __future__ import annotations
 
-__version__ = "0.1.0.dev0"
+__version__ = "0.1.0"
 
 PACKAGE_NAME = "sheepdogai"
 CLI_NAME = "sheepdog"

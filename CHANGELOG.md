@@ -5,6 +5,8 @@ versioning: [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+Version bumped to 0.1.0 (not yet published).
+
 ### Added
 - Core contracts (`ToolCallEvent`, `Verdict`, Decider clamp), policy engine with shell normaliser,
   six rule packs, budget guard, redaction, hash-chained log with `verify-log`.
@@ -20,6 +22,11 @@ versioning: [Semantic Versioning](https://semver.org/).
 
 - `sheepdog setup`: detect agents, show the diff, confirm, install user-wide, self-test; `--undo`.
   User-wide policy at `~/.config/sheepdog/sheepdog.yaml` for projects without their own.
+
+- `sheepdog doctor` (plain-language health check with fix hints) and `sheepdog recent`.
+
+### Fixed
+- The wheel no longer ships a top-level `agents` package (it collides with other libraries).
 
 ### Security
 - Fixed while building (kept as permanent regressions): `curl | sudo bash`, `echo $TOKEN`,

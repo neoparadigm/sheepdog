@@ -33,6 +33,30 @@ restored byte for byte). Use `--yes` to skip the prompt, `--mode strict` to ask 
 Want per-project rules instead? `sheepdog init` writes a commented `sheepdog.yaml`; a project's own file
 overrides the user-wide one. Codex support is experimental: `sheepdog install codex --experimental`.
 
+## How do I know it's working?
+
+Three ways, from easiest:
+
+1. **`sheepdog doctor`**: a checklist in plain words. Each line says OK or FAIL, and every FAIL comes with
+   the one command that fixes it. It even sends a fake dangerous command through the real hook to prove
+   the protection is live.
+2. **Ask your agent to run `sudo whoami`.** It is harmless, and sheepdog refuses it with a message like
+   *"privilege escalation is not allowed"*. If the agent just runs it, protection is off: run `sheepdog doctor`.
+3. **`sheepdog recent`**: a short list of what your agent did in this folder, marked `BLOCKED`, `ASKED` or
+   `allowed`, with the reason.
+
+```text
+$ sheepdog recent
+21:33:17  BLOCKED   sudo whoami
+                      why: privilege escalation is not allowed
+21:33:40  ASKED     git push origin main
+                      why: pushing publishes code
+21:34:02  allowed   ls src
+```
+
+If protection ever breaks (for example a typo in your rules), it fails *closed*: your agent is blocked,
+not left unprotected, and `sheepdog doctor` tells you what to fix.
+
 ## What a block looks like
 
 With the default policy, an agent that tries `rm -rf /` gets this back from the hook (exit code 2,

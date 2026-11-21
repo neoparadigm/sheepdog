@@ -58,6 +58,9 @@ def _parser() -> argparse.ArgumentParser:
     st.add_argument("--yes", action="store_true", help="apply without asking")
     st.add_argument("--mode", choices=["strict", "balanced", "relaxed"], default="balanced")
     st.add_argument("--undo", action="store_true", help="remove the hooks that setup installed")
+    sub.add_parser("doctor", help="check that protection is working, in plain language")
+    rc = sub.add_parser("recent", help="show what was blocked, asked or allowed in this folder")
+    rc.add_argument("-n", type=int, default=15)
     sub.add_parser("status", help="show policy, daemon and installed hooks")
     ap = sub.add_parser("approve-shared", help="approve (or revoke) the committed shared config")
     ap.add_argument("--yes", action="store_true", help="do not ask for confirmation")
@@ -149,6 +152,14 @@ def _dispatch(a: argparse.Namespace) -> int:  # noqa: C901
         else:
             print(inst.uninstall(a.cli, scope, project, home, a.dry_run))
         return 0
+    if a.cmd == "doctor":
+        from sheepdogai.cli.doctor import cmd_doctor
+
+        return cmd_doctor(project, home)
+    if a.cmd == "recent":
+        from sheepdogai.cli.doctor import cmd_recent
+
+        return cmd_recent(project, a.n)
     if a.cmd == "setup":
         from sheepdogai.cli.setup import cmd_setup
 

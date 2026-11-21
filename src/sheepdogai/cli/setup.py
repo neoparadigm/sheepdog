@@ -131,5 +131,7 @@ def cmd_setup(home: Path, yes: bool, mode: str, undo: bool) -> int:
         os.close(fd)
     ok, msg = self_test(home)
     print(f"\nself-test: {'blocked `rm -rf /` as expected' if ok else 'FAILED'}  ({msg})")
-    print(f"\nDone. Restart your agent. Undo anytime: {CLI_NAME} setup --undo")
+    print(
+        f"\nDone. Restart your agent. Check any time: {CLI_NAME} doctor   Undo: {CLI_NAME} setup --undo"
+    )
     return 0 if ok else 1
