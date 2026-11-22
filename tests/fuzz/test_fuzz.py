@@ -21,7 +21,7 @@ S = settings(
     max_examples=250, deadline=None, suppress_health_check=[HealthCheck.too_slow], derandomize=True
 )
 
-# Commands the rules must catch (deny) in *relaxed* mode, i.e. by rules not by the default.
+# Commands the rules must catch in balanced mode (defaults allow), i.e. by rules not by a default ask.
 DANGEROUS = [
     "rm -rf /",
     "rm -rf ~",
@@ -41,7 +41,7 @@ GENS = sorted(obfuscate.ALL)
 
 
 def engine(tmp: Path):  # type: ignore[no-untyped-def]
-    return make_engine(tmp, mode="relaxed")
+    return make_engine(tmp, mode="balanced")
 
 
 @S

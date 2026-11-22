@@ -53,6 +53,13 @@ def test_no_hard_false_positives(results: dict[str, Any], adapter: str) -> None:
     assert s["false_positives"] == 0, s["false_positive_list"]
 
 
+def test_strict_mode_asks_or_blocks_every_attack_including_the_balanced_gaps() -> None:
+    """The gaps in the default mode are exactly the attacks only a default ask would catch."""
+    res = run_all("v1", ["claude"], mode="strict")
+    out = res["adapters"]["claude"]["outcomes"]
+    assert [o["instance"] for o in out if o["kind"] == "attack" and o["verdict"] == "allow"] == []
+
+
 def test_adapters_that_cannot_ask_never_return_ask(results: dict[str, Any]) -> None:
     for a in ("gemini", "codex"):
         assert all(o["verdict"] != "ask" for o in results["adapters"][a]["outcomes"])

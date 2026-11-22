@@ -137,14 +137,35 @@ def test_self_protect_reads_allowed_in_relaxed(proj: Path) -> None:
 
 
 def test_modes_defaults(proj: Path) -> None:
+    """strict asks about anything no rule matched; balanced and relaxed leave it to the agent."""
     ls = event("ls src", cwd=str(proj))
-    assert make_engine(proj, mode="strict").decide(ls).verdict.action is K
-    assert make_engine(proj, mode="balanced").decide(ls).verdict.action is A
-    assert make_engine(proj, mode="relaxed").decide(ls).verdict.action is A
     mk = event("touch x", cwd=str(proj))
-    assert make_engine(proj, mode="balanced").decide(mk).verdict.action is K
-    rd = event(kind="file_read", file_path="a.py", cwd=str(proj))
-    assert make_engine(proj, mode="balanced").decide(rd).verdict.action is A
+    edit = event(kind="file_write", file_path="src/a.py", cwd=str(proj))
+    for e in (ls, mk, edit):
+        assert make_engine(proj, mode="strict").decide(e).verdict.action is K
+        for mode in ("balanced", "relaxed"):
+            d = make_engine(proj, mode=mode).decide(e)
+            assert d.verdict.action is A and d.verdict.rule_id == f"default.{mode}", (mode, e.args)
+
+
+def test_relaxed_lets_pack_questions_through_but_not_self_protection_or_secrets(proj: Path) -> None:
+    push = event("git push origin main", cwd=str(proj))
+    assert make_engine(proj, mode="balanced").decide(push).verdict.action is K
+    d = make_engine(proj, mode="relaxed").decide(push)
+    assert (
+        d.verdict.action is A
+        and "relaxed" in d.verdict.reason
+        and any(n.startswith("relaxed_mode") for n in d.notes)
+    )
+    for e in (
+        event(kind="file_write", file_path="sheepdogai.yaml", cwd=str(proj)),
+        event("cat .env", cwd=str(proj)),
+    ):
+        assert make_engine(proj, mode="relaxed").decide(e).verdict.action is K, e.args
+    assert (
+        make_engine(proj, mode="relaxed").decide(event("sudo ls", cwd=str(proj))).verdict.action
+        is D
+    )
 
 
 def test_injection_after_untrusted(proj: Path) -> None:

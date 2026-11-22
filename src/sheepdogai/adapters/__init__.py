@@ -51,6 +51,7 @@ def build_event(
     agent_id: str,
     untrusted: bool = False,
     raw_ref: str | None = None,
+    permission_mode: str | None = None,
 ) -> ToolCallEvent:
     """Create the standard event. ``seq`` is 0 here; the session stamps the real value."""
     return ToolCallEvent(
@@ -66,6 +67,7 @@ def build_event(
         cwd=cwd,
         provenance=Provenance(trusted=not untrusted, untrusted_content_seen=untrusted),
         raw_ref=raw_ref,
+        permission_mode=permission_mode,
     )
 
 

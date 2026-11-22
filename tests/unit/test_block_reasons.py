@@ -130,6 +130,12 @@ def test_our_own_read_only_commands_and_shell_builtins_run_without_a_prompt(
     assert d.verdict.action is Action.ALLOW, (cmd, d.verdict)
 
 
+def _mutates(proj: Path, cmd: str) -> bool:
+    from sheepdogai.policy.matchers import compute_facts
+
+    return compute_facts(event(cmd, cwd=str(proj)), str(proj), "/h").mutates
+
+
 @pytest.mark.parametrize(
     "cmd",
     [
@@ -141,37 +147,29 @@ def test_our_own_read_only_commands_and_shell_builtins_run_without_a_prompt(
         "sheepdogai --project x recent",
         "sheepdogai mode relaxed",
         "sheepdogai allow 'rm *'",
+        'export PATH="$HOME/.local/bin:$PATH"; sheepdogai doctor',  # changed PATH: bare name not trusted
     ],
 )
-def test_lookalikes_and_changing_commands_are_still_checked(proj: Path, cmd: str) -> None:
-    assert decide(proj, cmd, mode="balanced").verdict.action >= Action.ASK, cmd
+def test_lookalikes_and_changing_commands_still_count_as_modifying(proj: Path, cmd: str) -> None:
+    assert _mutates(proj, cmd), cmd
 
 
-def test_changing_path_then_running_the_bare_name_asks_but_is_not_called_a_write(
-    proj: Path,
-) -> None:
-    """A changed PATH could make `sheepdogai` a look-alike, so it is not trusted: ask, never a false deny."""
-    d = decide(proj, 'export PATH="$HOME/.local/bin:$PATH"; sheepdogai doctor', mode="balanced")
-    assert d.verdict.action is Action.ASK and d.verdict.rule_id != "repo-write-outside"
+def test_changing_path_is_not_called_a_write_outside_the_project(proj: Path) -> None:
+    d = decide(proj, 'export PATH="$HOME/.local/bin:$PATH"; sheepdogai doctor', mode="strict")
+    assert d.verdict.rule_id != "repo-write-outside"
     assert (
         decide(proj, 'export PATH="$HOME/.local/bin:$PATH"', mode="balanced").verdict.action
         is Action.ALLOW
     )
 
 
-def test_agent_helper_tools_do_not_nag_but_unknown_tools_still_ask(proj: Path) -> None:
-    eng = make_engine(proj, mode="balanced")
+def test_agent_helper_tools_are_not_modifying_but_unknown_tools_are(proj: Path) -> None:
+    from sheepdogai.policy.matchers import compute_facts
+
     for name in ("Skill", "TodoWrite", "AskUserQuestion", "ExitPlanMode"):
-        assert (
-            eng.decide(event(kind="other", name=name, cwd=str(proj))).verdict.action is Action.ALLOW
-        ), name
-    assert (
-        eng.decide(event(kind="other", name="SomethingNew", cwd=str(proj))).verdict.action
-        is Action.ASK
-    )
-    assert (
-        eng.decide(
-            event(kind="other", name="apply_patch", patch="*** Update File: a\n", cwd=str(proj))
-        ).verdict.action
-        is Action.ASK
-    )
+        assert not compute_facts(
+            event(kind="other", name=name, cwd=str(proj)), str(proj), "/h"
+        ).mutates, name
+    assert compute_facts(
+        event(kind="other", name="SomethingNew", cwd=str(proj)), str(proj), "/h"
+    ).mutates

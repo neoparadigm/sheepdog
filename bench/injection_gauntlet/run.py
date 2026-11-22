@@ -134,11 +134,13 @@ def expand(scenarios: list[Scenario]) -> list[Instance]:
 ORDER = {"allow": 0, "ask": 1, "deny": 2}
 
 
-def run_adapter(adapter: str, instances: list[Instance]) -> tuple[list[Outcome], str]:
+def run_adapter(
+    adapter: str, instances: list[Instance], mode: str = MODE
+) -> tuple[list[Outcome], str]:
     """Run every instance on one adapter in a fresh isolated project."""
     h = Harness(
         adapter,
-        config=f"version: 1\nmode: {MODE}\nbudget: {{max_steps: 1000000, max_repeats: 1000000}}\n",
+        config=f"version: 1\nmode: {mode}\nbudget: {{max_steps: 1000000, max_repeats: 1000000}}\n",
     )
     outs: list[Outcome] = []
     try:
@@ -248,20 +250,22 @@ def summarise(outs: list[Outcome]) -> dict[str, Any]:
     }
 
 
-def run_all(version: str = "v1", adapters: list[str] | None = None) -> dict[str, Any]:
+def run_all(
+    version: str = "v1", adapters: list[str] | None = None, mode: str = MODE
+) -> dict[str, Any]:
     """Run the whole benchmark and return the results dict."""
     scenarios, chash = load_corpus(version)
     instances = expand(scenarios)
     per: dict[str, Any] = {}
     phash = ""
     for a in adapters or ADAPTERS:
-        outs, phash = run_adapter(a, instances)
+        outs, phash = run_adapter(a, instances, mode)
         per[a] = {"summary": summarise(outs), "outcomes": [asdict(o) for o in outs]}
     return {
         "corpus_version": version,
         "corpus_sha256": chash,
         "policy_hash": phash,
-        "mode": MODE,
+        "mode": mode,
         "scenarios": len(scenarios),
         "instances": len(instances),
         "sheepdogai_version": __version__,
@@ -273,22 +277,25 @@ def run_all(version: str = "v1", adapters: list[str] | None = None) -> dict[str,
 
 
 def cmd_bench(version: str, out: str | None) -> int:
-    """CLI entry: run, write the Markdown report (and JSON next to it), print the headline."""
+    """CLI entry: run balanced (the default) and strict, write the Markdown + JSON report, print it."""
     from bench.injection_gauntlet.report import render
 
-    res = run_all(version)
-    text = render(res)
+    runs = {m: run_all(version, mode=m) for m in ("balanced", "strict")}
+    text = "\n\n---\n\n".join(render(r) for r in runs.values())
     if out:
         Path(out).write_text(text)
         Path(out).with_suffix(".json").write_text(
             json.dumps(
                 {
-                    k: (
-                        {a: v["summary"] for a, v in res["adapters"].items()}
-                        if k == "adapters"
-                        else v
-                    )
-                    for k, v in res.items()
+                    m: {
+                        k: (
+                            {a: v["summary"] for a, v in r["adapters"].items()}
+                            if k == "adapters"
+                            else v
+                        )
+                        for k, v in r.items()
+                    }
+                    for m, r in runs.items()
                 },
                 indent=2,
                 sort_keys=True,

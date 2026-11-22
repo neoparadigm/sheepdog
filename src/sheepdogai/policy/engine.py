@@ -80,38 +80,23 @@ class PolicyEngine:
             )
 
     def _default(self, f: Facts) -> Verdict:
+        """No rule matched. strict asks; balanced and relaxed leave it to the agent's own permissions.
+
+        An allow here never grants permission (ADR 0008): the agent's own prompts and classifier still
+        apply. Asking on top of that only duplicates them and makes the agent slower for no gain.
+        """
         mode = self.policy.config.mode
-        if mode == "relaxed":
+        if mode == "strict":
             return Verdict(
-                action=Action.ALLOW, rule_id="default.relaxed", reason="no rule matched (relaxed)"
-            )
-        if mode == "balanced" and self._read_only(f):
-            return Verdict(
-                action=Action.ALLOW,
-                rule_id="default.balanced",
-                reason="no rule matched; read-only call (balanced)",
+                action=Action.ASK,
+                rule_id="default.strict",
+                reason="no rule matched (strict mode asks)",
             )
         return Verdict(
-            action=Action.ASK,
+            action=Action.ALLOW,
             rule_id=f"default.{mode}",
-            reason=f"no rule matched ({mode} mode asks)",
+            reason=f"no rule matched; left to the agent's own permissions ({mode})",
         )
-
-    @staticmethod
-    def _read_only(f: Facts) -> bool:
-        if f.extra.get("harmless"):
-            return True
-        if f.event.tool.kind in _READ_KINDS:
-            return not f.mutates
-        if f.event.tool.kind == "shell" and f.parsed is not None:
-            return (
-                not f.mutates
-                and not f.network_use
-                and not f.parsed.opaque
-                and not f.parsed.pipe_to_shell
-                and bool(f.parsed.segments)
-            )
-        return False
 
     def _decide(
         self,
@@ -154,6 +139,18 @@ class PolicyEngine:
             verdict, origin = budget_verdict, "budget"
         if verdict is None:
             verdict = self._default(f)
+        if (
+            self.policy.config.mode == "relaxed"
+            and verdict.action is Action.ASK
+            and origin in {"repo", "injection"}
+        ):  # relaxed: pack-level questions pass; self-protection, secrets and your own rules still ask
+            verdict = Verdict(
+                action=Action.ALLOW,
+                rule_id=verdict.rule_id,
+                reason=f"{verdict.reason} (relaxed mode: not asked)",
+                decided_by="rules",
+            )
+            notes.append("relaxed_mode: pack question passed")
         rules_verdict: Verdict | None = None
         proposed: Verdict | None = None
         if self.decider is not None:

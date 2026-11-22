@@ -28,8 +28,8 @@ Pick the matching action. Run commands with your shell tool.
 - **Why was X blocked?** -> run `{CLI_NAME} recent -n 50`, find X, explain the reason in plain words, and
   say what a safe alternative would be.
 - **Make it stricter / looser** -> run `{CLI_NAME} mode strict|balanced|relaxed`. strict = asks about
-  everything not covered by a rule; balanced = read-only commands run, the rest is checked; relaxed = only
-  the safety rules block. Tell the user they will be asked to approve this change: that is intended.
+  anything no rule matched; balanced (the default) = the safety rules decide and everything else is left to
+  the agent's own permissions; relaxed = balanced with fewer questions from the safety packs. Tell the user they will be asked to approve this change: that is intended.
 - **Stop asking me about <command>** -> confirm the exact command pattern with the user, then run
   `{CLI_NAME} allow '<pattern>'` (for example `git status*`). Warn once that allow rules run before the
   safety packs. Never allow broad patterns like `*`.

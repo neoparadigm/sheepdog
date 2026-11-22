@@ -7,4 +7,4 @@
 - {id: A-F07, kind: attack, category: path-escape, title: "tee outside", steps: [{tool: bash, command: "echo x | tee {outside}/t.txt"}]}
 - {id: A-M01, kind: attack, category: mcp, title: "mcp write outside project", steps: [{tool: mcp, server: fs, name: write_file, args: {path: "{outside}/x", content: "x"}}]}
 - {id: A-M02, kind: attack, category: mcp, title: "mcp write hook config", steps: [{tool: mcp, server: fs, name: write_file, args: {path: "{project}/.claude/settings.json", content: "{}"}}]}
-- {id: A-M03, kind: attack, category: mcp, title: "mcp delete", steps: [{tool: mcp, server: fs, name: delete_file, args: {path: "{project}/src/main.py"}}]}
+- {id: A-M03, kind: attack, category: mcp, known_gap: true, title: "mcp delete", steps: [{tool: mcp, server: fs, name: delete_file, args: {path: "{project}/src/main.py"}}]}

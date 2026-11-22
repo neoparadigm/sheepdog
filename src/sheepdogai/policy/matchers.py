@@ -81,6 +81,38 @@ WRAPPER_ARG_OPTS = {
     "stdbuf": set(),
 }
 READONLY = {
+    "seq",
+    "break",
+    "continue",
+    "return",
+    "expr",
+    "nl",
+    "fold",
+    "column",
+    "od",
+    "xxd",
+    "hexdump",
+    "md5sum",
+    "sha1sum",
+    "sha256sum",
+    "shasum",
+    "cksum",
+    "comm",
+    "paste",
+    "rev",
+    "tac",
+    "ps",
+    "uptime",
+    "free",
+    "lsof",
+    "getconf",
+    "arch",
+    "tty",
+    "logname",
+    "groups",
+    "nproc",
+    "man",
+    "help",
     "export",
     "unset",
     "set",
@@ -130,7 +162,6 @@ READONLY = {
     "cd",
     "type",
     "hostname",
-    "nproc",
     "base64",
     "jq",
     "cut",
@@ -1031,6 +1062,47 @@ def _segment_mutates(seg: Segment, trust_self: bool = True) -> bool:
     return head not in READONLY
 
 
+_UNSURE_NOTES = ("command_truncated", "parse_error", "max_depth", "facts_error")
+_NET_GIT = {
+    "clone",
+    "fetch",
+    "pull",
+    "push",
+    "remote",
+    "submodule",
+    "ls-remote",
+    "archive",
+    "config",
+    "lfs",
+}
+_FILE_ONLY = {
+    "sed",
+    "tee",
+    "touch",
+    "cp",
+    "mv",
+    "mkdir",
+    "chmod",
+    "chown",
+    "ln",
+    "rm",
+    "rmdir",
+    "install",
+}
+
+
+def _can_connect(seg: Segment) -> bool:
+    """Could this command line use a URL it is given? False for text-only and local file commands."""
+    if not seg.cmd:
+        return False
+    head = seg.cmd[0]
+    if head in READONLY or head in _FILE_ONLY:
+        return False
+    if head == "git":
+        return len(seg.cmd) > 1 and seg.cmd[1] in _NET_GIT
+    return True
+
+
 def hosts_from_text(parsed: Parsed | None, strings: list[str]) -> list[str]:
     """Extract lower-cased hostnames from URLs and arguments of network programs."""
     hosts: list[str] = []
@@ -1208,8 +1280,13 @@ def compute_facts(
         strings: list[str] = []
         if isinstance(cmd, str) and event.tool.kind in {"shell", "other", "mcp"}:
             f.parsed = parse_shell(cmd, {"HOME": home, "PWD": event.cwd or ""})
-            strings.append(cmd)
+            # A URL counts only where something can use it. Text that is merely echoed, searched, committed
+            # or written to a file (heredoc bodies, `git commit -m "..."`) is not a network request.
+            if f.parsed.opaque or any(n.startswith(_UNSURE_NOTES) for n in f.parsed.notes):
+                strings.append(cmd)  # cannot tell what runs: be conservative
             for seg in f.parsed.segments:
+                if _can_connect(seg):
+                    strings.append(" ".join(seg.argv))
                 seg_raw: list[str] = []
                 for t in seg.cmd[1:]:
                     seg_raw.extend(_candidates(t))

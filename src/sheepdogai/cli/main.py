@@ -11,7 +11,7 @@ from sheepdogai.constants import CLI_NAME, CONFIG_FILE, __version__
 INIT_TEMPLATE = """\
 # sheepdogai.yaml: strict by default. Hooks are guardrails, not isolation (see docs/limitations.md).
 version: 1
-mode: strict            # strict: ask when no rule matches | balanced: allow read-only | relaxed: allow
+mode: strict            # strict: ask about anything no rule matched | balanced: rules decide, the rest is left to your agent | relaxed: balanced + fewer questions
 fail: closed            # the only supported value
 packs: [self_protect, machine, secrets, repo, network, injection]
 budget: {max_steps: 200, max_cost_usd: 5, max_repeats: 3}

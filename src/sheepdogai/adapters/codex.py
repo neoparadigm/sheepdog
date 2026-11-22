@@ -78,6 +78,9 @@ class CodexAdapter:
             cwd=cwd,
             tool_name=tool,
             kind=classify(tool),
+            permission_mode=obj["permission_mode"]
+            if isinstance(obj.get("permission_mode"), str)
+            else None,
             args=args,
             agent_id="codex",
         )

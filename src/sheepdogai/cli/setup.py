@@ -19,7 +19,7 @@ DETECT = [("claude", "claude", ".claude"), ("gemini", "gemini", ".gemini")]
 USER_CONFIG_TEMPLATE = """\
 # {cli} user-wide policy: used in any project that has no {config} of its own.
 version: 1
-mode: {mode}          # strict: ask unless a rule matches | balanced: allow read-only | relaxed: allow
+mode: {mode}          # strict: ask about anything no rule matched | balanced: rules decide, the rest is left to your agent | relaxed: fewer questions
 fail: closed
 packs: [self_protect, machine, secrets, repo, network, injection]
 """

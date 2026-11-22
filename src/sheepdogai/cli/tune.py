@@ -58,9 +58,9 @@ def set_mode(project: Path, home: Path, mode: str) -> str:
     )
     _write_checked(path, new, project, home)
     meaning = {
-        "strict": "asks before anything not covered by a rule",
-        "balanced": "lets read-only commands run and checks the rest",
-        "relaxed": "only blocks what the safety rules forbid",
+        "strict": "asks about anything no rule matched",
+        "balanced": "the safety rules decide; everything else is left to your agent's own permissions",
+        "relaxed": "like balanced, and the safety packs ask fewer questions (secrets and self-protection still ask)",
     }[mode]
     return f"Mode is now {mode}: {meaning}.  ({path})"
 

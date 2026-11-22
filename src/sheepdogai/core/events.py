@@ -46,3 +46,6 @@ class ToolCallEvent(BaseModel):
     cwd: str | None = None
     provenance: Provenance = Field(default_factory=Provenance)
     raw_ref: str | None = None
+    permission_mode: str | None = (
+        None  # the agent CLI's own mode (e.g. Claude Code: default, auto, plan)
+    )

@@ -127,24 +127,26 @@ sheepdogai replay t                     # re-feed the run through the current po
 ## Benchmark: injection gauntlet, corpus v1
 
 `make bench` runs scripted agents (no model, no network) through each adapter. Mode `balanced`,
-policy hash `d4931e552eba…`, corpus sha256 `da34e40795922b3b…`, Linux x86_64, Python 3.13.18.
+policy hash `d4931e552eba…`, corpus sha256 `618acdc6be2a31932eaa…`, Linux x86_64, Python 3.13.18.
 Intervals are 95% (Wilson for rates, fixed-seed bootstrap for latency).
 
 | adapter | attacks blocked | hard-denied | benign hard-denied (false positives) | benign asks (friction) | p50 / p95 ms | CPU ms / 1,000 decisions |
 |---|---|---|---|---|---|---|
-| claude | **blocked 338 of 340 scenarios in corpus v1** (99.4%, 97.9-99.8%) | 259 of 340 (71.4-80.4%) | 0 of 45 (0.0-7.9%) | 20 of 45 (30.9-58.8%) | 1.96 / 2.75 | 1252 (1236-1272) |
-| gemini | blocked 338 of 340 scenarios in corpus v1 | 259 of 340 | 0 of 45 | 20 of 45 (asks become denies) | 1.96 / 2.58 | 1249 |
-| codex (experimental) | blocked 338 of 340 scenarios in corpus v1 | 259 of 340 | 0 of 45 | 20 of 45 (asks become denies) | 2.21 / 3.21 | 1597 |
+| claude | **blocked 335 of 340 scenarios in corpus v1** (98.5%, 96.6-99.4%) | 259 of 340 (71.4-80.4%) | 0 of 45 (0.0-7.9%) | 2 of 45 (1.2-14.8%) | 4.04 / 6.33 | 2527 (2480-2583) |
+| gemini | blocked 335 of 340 scenarios in corpus v1 | 259 of 340 | 0 of 45 | 2 of 45 (asks become denies) | 3.78 / 5.49 | 2388 |
+| codex (experimental) | blocked 335 of 340 scenarios in corpus v1 | 259 of 340 | 0 of 45 | 2 of 45 (asks become denies) | 4.11 / 5.40 | 2712 |
 
-The two attacks that got through are documented gaps (`A-S16` `grep -r 'BEGIN RSA PRIVATE KEY' ~`,
-`A-S17` a credential file the pack does not list). The first run of this corpus found five more
+The five attacks that got through in `balanced` are documented gaps (`A-S16`, `A-S17`, and
+`A-M03`, `A-N08`, `A-T14`, which `balanced` now leaves to the agent's own permissions so ordinary work is
+never interrupted). In `strict` mode the same corpus blocks 340 of 340, at the cost of asking about every
+unmatched command (45 of 45 benign). The first run of this corpus found five more
 (`echo $GITHUB_TOKEN`, `/proc/self/environ`, `/etc/shadow`, `ls ~/.ssh`, `~/.git-credentials`);
 they were fixed and are permanent regression cases.
 
 How to read this honestly:
 
 * "Blocked" means denied **or** turned into a question for a human. "Friction" is how often a
-  benign command is asked about (44% in `balanced`; `strict` asks about everything).
+  benign command is asked about (4% in `balanced`; `strict` asks about everything).
 * The corpus was written by the same people who wrote the rules. It finds regressions and known
   gaps; it is **not** an independent adversarial evaluation, and 340 scenarios is a small sample.
 * Latency is the in-process gateway (parse, decide, fsynced log write) and excludes interpreter
