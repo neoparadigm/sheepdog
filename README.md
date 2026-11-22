@@ -79,6 +79,18 @@ loosen its own guard), it will not look for workarounds when something is blocke
 touch the config or run `setup`/`uninstall`. The same commands work in a terminal:
 `sheepdogai mode strict`, `sheepdogai allow 'npm test*'`, `sheepdogai block 'npm publish*'`.
 
+### Or as an MCP server (any MCP-capable agent)
+
+```bash
+claude mcp add sheepdogai -- sheepdogai mcp-server
+```
+
+Four **read-only** tools: `sheepdogai_status` (is it working?), `sheepdogai_recent` (what was blocked and why),
+`sheepdogai_check` (dry run: *would this command be allowed?*, nothing is executed or logged) and
+`sheepdogai_verify_log` (has the log been edited?). There is deliberately **no tool to change rules or mode**:
+a guard the agent could loosen through its own tools would not be a guard. Experimental: untested with real
+MCP clients beyond the protocol-level tests.
+
 ## How do I know it's working?
 
 Three ways, from easiest:

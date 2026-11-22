@@ -13,6 +13,7 @@ versioning: [Semantic Versioning](https://semver.org/).
 Version bumped to 0.1.0 (not yet published).
 
 ### Added
+- `sheepdogai mcp-server`: sheepdogai's own read-only MCP server (status, recent, dry-run check, verify-log). It has no tool that can change rules, mode or hooks, by design.
 - Core contracts (`ToolCallEvent`, `Verdict`, Decider clamp), policy engine with shell normaliser,
   six rule packs, budget guard, redaction, hash-chained log with `verify-log`.
 - Adapters for Claude Code and Gemini CLI (verified against official docs); Codex (experimental).

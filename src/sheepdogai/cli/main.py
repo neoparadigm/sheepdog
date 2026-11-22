@@ -87,6 +87,7 @@ def _parser() -> argparse.ArgumentParser:
     mp = sub.add_parser("mcp-proxy", help="experimental stdio proxy in front of an MCP server")
     mp.add_argument("--name", required=True, help="server name used in event tool names")
     mp.add_argument("server_cmd", nargs=argparse.REMAINDER, help="-- <server command and args>")
+    sub.add_parser("mcp-server", help="run sheepdogai's own read-only MCP server (stdio)")
     b = sub.add_parser("bench", help="run the injection gauntlet")
     b.add_argument("--out", default=None)
     b.add_argument("--corpus", default="v1")
@@ -185,6 +186,10 @@ def _dispatch(a: argparse.Namespace) -> int:  # noqa: C901
         from sheepdogai.cli.setup import cmd_setup
 
         return cmd_setup(home, a.yes, a.mode, a.undo)
+    if a.cmd == "mcp-server":
+        from sheepdogai.adapters.mcp_server import serve as serve_mcp
+
+        return serve_mcp(project, home)
     if a.cmd == "mcp-proxy":
         import os
 
