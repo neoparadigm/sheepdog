@@ -1,6 +1,6 @@
 # sheepdogai
 
-### Let your agents roam. sheepdogai guards the fence.
+### Let your agents roam. sheepdog guards the fence.
 
 AI agents run commands, edit files and push code on their own. **sheepdogai watches every move, waves the safe
 ones through, and stops the risky ones.**
