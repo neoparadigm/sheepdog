@@ -99,6 +99,8 @@ class PolicyEngine:
 
     @staticmethod
     def _read_only(f: Facts) -> bool:
+        if f.extra.get("harmless"):
+            return True
         if f.event.tool.kind in _READ_KINDS:
             return not f.mutates
         if f.event.tool.kind == "shell" and f.parsed is not None:

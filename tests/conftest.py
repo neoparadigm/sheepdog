@@ -33,3 +33,12 @@ def project(short_tmp: Path) -> Path:
     p.mkdir()
     os.chmod(p, 0o755)
     return p
+
+
+@pytest.fixture(autouse=True)
+def _isolated_home(
+    tmp_path_factory: pytest.TempPathFactory, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Never let a developer's real ~/.config/<tool>/ policy (or ~/.claude) leak into a test."""
+    h = tmp_path_factory.mktemp("home")
+    monkeypatch.setenv("HOME", str(h))

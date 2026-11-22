@@ -17,6 +17,7 @@ import unicodedata
 from dataclasses import dataclass, field
 from typing import Any
 
+from sheepdogai.constants import CLI_NAME
 from sheepdogai.core.events import ToolCallEvent
 from sheepdogai.core.verdict import BudgetState
 from sheepdogai.policy.schema import Match
@@ -80,6 +81,19 @@ WRAPPER_ARG_OPTS = {
     "stdbuf": set(),
 }
 READONLY = {
+    "export",
+    "unset",
+    "set",
+    "umask",
+    "ulimit",
+    "alias",
+    "unalias",
+    "pushd",
+    "popd",
+    "shift",
+    "sleep",
+    "exit",
+    "wait",
     "ls",
     "cat",
     "head",
@@ -943,7 +957,60 @@ def _git_mutates(cmd: list[str]) -> bool:
     )
 
 
-def _segment_mutates(seg: Segment) -> bool:
+_SELF_SAFE = {
+    None,
+    "doctor",
+    "recent",
+    "status",
+    "verify-log",
+    "graph",
+    "conformance",
+    "--version",
+    "-h",
+    "--help",
+}
+HARMLESS_TOOLS = {
+    "skill",
+    "todowrite",
+    "askuserquestion",
+    "exitplanmode",
+    "enterplanmode",
+    "toolsearch",
+    "taskcreate",
+    "taskupdate",
+    "taskget",
+    "tasklist",
+    "taskstop",
+}
+
+
+def _installed_programs() -> set[str]:
+    """Real paths of this program, so only *our* binary (not a look-alike script) is trusted."""
+    import shutil
+    import sys
+
+    cands = [
+        shutil.which(CLI_NAME),
+        os.path.join(os.path.dirname(sys.executable), CLI_NAME),
+        os.path.join(os.path.expanduser("~"), ".local", "bin", CLI_NAME),
+    ]
+    return {os.path.realpath(c) for c in cands if c and os.path.exists(c)}
+
+
+def _is_self_readonly(seg: Segment) -> bool:
+    """`sheepdogai doctor|recent|status|...` only reads. Requires argv0 to be our real program."""
+    raw0 = seg.argv[0] if seg.argv else ""
+    if raw0 != CLI_NAME and not (
+        os.path.isabs(raw0) and os.path.realpath(raw0) in _installed_programs()
+    ):
+        return False
+    sub = seg.cmd[1] if len(seg.cmd) > 1 else None
+    if sub == "replay":
+        return "--html" not in seg.cmd[2:]
+    return sub in _SELF_SAFE
+
+
+def _segment_mutates(seg: Segment, trust_self: bool = True) -> bool:
     if any(
         op not in {"<", "<<", "<<<", "<&"} and t not in DEVICE_SCRATCH for op, t in seg.redirects
     ):
@@ -959,6 +1026,8 @@ def _segment_mutates(seg: Segment) -> bool:
         return any(a.startswith("-i") or a == "--in-place" for a in seg.cmd[1:])
     if head == "sort":
         return any(a == "-o" or a.startswith("--output") for a in seg.cmd[1:])
+    if head == CLI_NAME and trust_self and _is_self_readonly(seg):
+        return False
     return head not in READONLY
 
 
@@ -1129,7 +1198,9 @@ def compute_facts(
             for m in _PATCH_FILE.finditer(patch):
                 raw.append(m.group(1) or m.group(2))
         if event.tool.kind == "file_write" or (
-            event.tool.kind in {"mcp", "other"} and not _MCP_READ.search(event.tool.name)
+            event.tool.kind in {"mcp", "other"}
+            and not _MCP_READ.search(event.tool.name)
+            and not (event.tool.kind == "other" and event.tool.name.lower() in HARMLESS_TOOLS)
         ):
             f.mutates = True
         wraw: list[str] = list(raw) if f.mutates else []
@@ -1144,7 +1215,7 @@ def compute_facts(
                     seg_raw.extend(_candidates(t))
                 seg_raw.extend(t for _, t in seg.redirects)
                 raw.extend(seg_raw)
-                if _segment_mutates(seg):
+                if _segment_mutates(seg, trust_self=not re.search(r"(^|[\s;&|(])PATH=", cmd)):
                     f.mutates = True
                     wraw.extend(
                         seg_raw
@@ -1180,6 +1251,9 @@ def compute_facts(
             if rp is not None and rp not in _DEVICES:
                 f.write_paths.append(rp)
         f.text = event_text(event)
+        f.extra["harmless"] = (
+            event.tool.kind == "other" and event.tool.name.lower() in HARMLESS_TOOLS
+        )
         _personal_facts(f, own_addresses)
     except Exception as e:
         f.parsed = Parsed(opaque=True, notes=[f"facts_error:{type(e).__name__}"])

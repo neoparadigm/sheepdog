@@ -105,3 +105,73 @@ def test_writes_outside_the_project_still_denied_with_reads_around_them(proj: Pa
         decide(proj, "cat /usr/share/dict/words | tee words.txt", mode="relaxed").verdict.rule_id
         != "repo-write-outside"
     )
+
+
+# ---- found in a live Claude Code session: ordinary actions must not be blocked or asked about --------------------
+
+
+@pytest.mark.parametrize(
+    "cmd",
+    [
+        "export FOO=bar",
+        "unset FOO && echo ok",
+        "sheepdogai doctor",
+        "sheepdogai recent -n 20",
+        "sheepdogai status",
+        "sheepdogai verify-log run1",
+        "sheepdogai replay run1",
+        "sheepdogai",
+    ],
+)
+def test_our_own_read_only_commands_and_shell_builtins_run_without_a_prompt(
+    proj: Path, cmd: str
+) -> None:
+    d = decide(proj, cmd, mode="balanced")
+    assert d.verdict.action is Action.ALLOW, (cmd, d.verdict)
+
+
+@pytest.mark.parametrize(
+    "cmd",
+    [
+        "./sheepdogai doctor",  # a look-alike script is not our program
+        "/tmp/evil/sheepdogai doctor",
+        "PATH=.:$PATH sheepdogai doctor",
+        "env PATH=./bin:$PATH sheepdogai doctor",
+        "sheepdogai replay run1 --html out.html",  # writes a file
+        "sheepdogai --project x recent",
+        "sheepdogai mode relaxed",
+        "sheepdogai allow 'rm *'",
+    ],
+)
+def test_lookalikes_and_changing_commands_are_still_checked(proj: Path, cmd: str) -> None:
+    assert decide(proj, cmd, mode="balanced").verdict.action >= Action.ASK, cmd
+
+
+def test_changing_path_then_running_the_bare_name_asks_but_is_not_called_a_write(
+    proj: Path,
+) -> None:
+    """A changed PATH could make `sheepdogai` a look-alike, so it is not trusted: ask, never a false deny."""
+    d = decide(proj, 'export PATH="$HOME/.local/bin:$PATH"; sheepdogai doctor', mode="balanced")
+    assert d.verdict.action is Action.ASK and d.verdict.rule_id != "repo-write-outside"
+    assert (
+        decide(proj, 'export PATH="$HOME/.local/bin:$PATH"', mode="balanced").verdict.action
+        is Action.ALLOW
+    )
+
+
+def test_agent_helper_tools_do_not_nag_but_unknown_tools_still_ask(proj: Path) -> None:
+    eng = make_engine(proj, mode="balanced")
+    for name in ("Skill", "TodoWrite", "AskUserQuestion", "ExitPlanMode"):
+        assert (
+            eng.decide(event(kind="other", name=name, cwd=str(proj))).verdict.action is Action.ALLOW
+        ), name
+    assert (
+        eng.decide(event(kind="other", name="SomethingNew", cwd=str(proj))).verdict.action
+        is Action.ASK
+    )
+    assert (
+        eng.decide(
+            event(kind="other", name="apply_patch", patch="*** Update File: a\n", cwd=str(proj))
+        ).verdict.action
+        is Action.ASK
+    )
