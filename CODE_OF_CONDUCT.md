@@ -15,6 +15,5 @@ best for the community; show empathy.
 publishing others' private information, and other conduct reasonably considered inappropriate.
 
 **Enforcement.** Maintainers may remove, edit or reject contributions that violate this code and
-may ban contributors temporarily or permanently. Report incidents privately to the maintainers
-(`conduct@example.invalid`, placeholder: replace before publishing). Reports are handled
+may ban contributors temporarily or permanently. Report incidents privately to the maintainers. Reports are handled
 confidentially. This applies in project spaces and when representing the project in public.
