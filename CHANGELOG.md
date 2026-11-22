@@ -5,6 +5,11 @@ versioning: [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.1.4] - 2026-11-22
+
+### Fixed
+- Asking the `sheepdogai_check` MCP tool about a dangerous command (for example `sudo whoami`) was blocked by the hook, which read the question as a command to run. The four sheepdogai MCP tools now treat their `command` argument as data; every other MCP server is still screened.
+
 ## [0.1.3] - 2026-11-22
 
 (0.1.2 was published earlier; this release adds the low-friction defaults and the MCP server on top of it.)

@@ -945,6 +945,8 @@ class Facts:
     @property
     def command_strings(self) -> list[str]:
         """Candidate strings for command matchers."""
+        if is_self_mcp(self.event):
+            return []  # the dry-run tool's `command` is data being asked about, not something that runs
         c = self.event.args.get("command")
         first = [sanitize_unicode(c)[0]] if isinstance(c, str) else []
         if not self.parsed:
@@ -1170,6 +1172,16 @@ def event_text(event: ToolCallEvent) -> str:
     return "\n".join(parts)
 
 
+SELF_MCP_TOOLS = frozenset(
+    f"mcp__sheepdogai__sheepdogai_{n}" for n in ("status", "recent", "check", "verify_log")
+)
+
+
+def is_self_mcp(event: ToolCallEvent) -> bool:
+    """One of sheepdogai's own four read-only MCP tools (adapters/mcp_server.py)."""
+    return event.tool.kind == "mcp" and event.tool.name in SELF_MCP_TOOLS
+
+
 _MCP_READ = re.compile(r"(?i)(^|[_\-.])(get|list|read|search|view|find|fetch|describe|show|query)")
 _DEVICES = {"/dev/null", "/dev/stdout", "/dev/stderr", "/dev/tty", "/dev/stdin"}
 _PATH_KEYS = ("file_path", "path", "filePath", "notebook_path", "target_file", "directory", "dir")
@@ -1271,6 +1283,7 @@ def compute_facts(
                 raw.append(m.group(1) or m.group(2))
         if event.tool.kind == "file_write" or (
             event.tool.kind in {"mcp", "other"}
+            and not is_self_mcp(event)
             and not _MCP_READ.search(event.tool.name)
             and not (event.tool.kind == "other" and event.tool.name.lower() in HARMLESS_TOOLS)
         ):
@@ -1278,7 +1291,11 @@ def compute_facts(
         wraw: list[str] = list(raw) if f.mutates else []
         cmd = args.get("command")
         strings: list[str] = []
-        if isinstance(cmd, str) and event.tool.kind in {"shell", "other", "mcp"}:
+        if (
+            isinstance(cmd, str)
+            and event.tool.kind in {"shell", "other", "mcp"}
+            and not is_self_mcp(event)
+        ):
             f.parsed = parse_shell(cmd, {"HOME": home, "PWD": event.cwd or ""})
             # A URL counts only where something can use it. Text that is merely echoed, searched, committed
             # or written to a file (heredoc bodies, `git commit -m "..."`) is not a network request.

