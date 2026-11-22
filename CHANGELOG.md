@@ -5,6 +5,11 @@ versioning: [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.1.5] - 2026-11-22
+
+### Fixed
+- After `uv tool upgrade` the hook kept talking to the old background daemon (still running the previous rules) until it went idle, so fixes looked like they had not shipped. The daemon socket now includes the version, so a new version always starts its own daemon.
+
 ## [0.1.4] - 2026-11-22
 
 ### Fixed

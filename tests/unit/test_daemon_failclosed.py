@@ -192,3 +192,18 @@ def test_autostart_real_subprocess_and_cleanup(runtime: Path, project: Path) -> 
 def test_cli_hook_bad_target_and_main() -> None:
     assert main(["hook", "bogus"]) == 2
     assert main(["hook"]) == 2
+
+
+def test_client_and_server_agree_on_the_socket_and_it_depends_on_the_version(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """An upgrade must not reuse a daemon that still runs the previous version's rules."""
+    import sheepdogai.constants as c
+    from sheepdogai.daemon.client import sock_for
+
+    monkeypatch.setenv("SHEEPDOGAI_RUNTIME_DIR", str(tmp_path))
+    here = sock_for(str(tmp_path))
+    assert here == str(socket_path(tmp_path))
+    monkeypatch.setattr(c, "__version__", "9.9.9")
+    assert sock_for(str(tmp_path)) != here
+    assert str(socket_path(tmp_path)) == sock_for(str(tmp_path))

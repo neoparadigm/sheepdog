@@ -45,7 +45,12 @@ def find_project(start: str | None = None) -> str:
 def sock_for(project: str) -> str:
     """Socket path (mirrors daemon.server.socket_path without importing it)."""
     base = os.environ.get("SHEEPDOGAI_RUNTIME_DIR") or f"/tmp/sheepdogai-{os.getuid()}"
-    return os.path.join(base, hashlib.sha256(project.encode()).hexdigest()[:16] + ".sock")
+    from sheepdogai.constants import (
+        __version__,
+    )  # tiny module; keeps a new version off an old daemon
+
+    key = f"{project}\0{__version__}"
+    return os.path.join(base, hashlib.sha256(key.encode()).hexdigest()[:16] + ".sock")
 
 
 def _check_socket(path: str) -> str | None:

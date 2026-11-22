@@ -61,7 +61,11 @@ def socket_path(project_root: Path) -> Path:
     """Socket path for a project (hash keeps it short)."""
     import hashlib
 
-    h = hashlib.sha256(str(project_root).encode()).hexdigest()[:16]
+    from sheepdogai.constants import __version__
+
+    # The version is part of the name: after an upgrade the hook starts a fresh daemon instead of
+    # reusing an old one that still runs the previous rules. (Mirrors daemon.client.sock_for.)
+    h = hashlib.sha256(f"{project_root}\0{__version__}".encode()).hexdigest()[:16]
     return runtime_dir() / f"{h}.sock"
 
 
