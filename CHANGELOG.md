@@ -5,6 +5,10 @@ versioning: [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-11-22
+
+(0.1.2 was published earlier; this release adds the low-friction defaults and the MCP server on top of it.)
+
 ### Changed
 - Renamed the command, config file (`sheepdogai.yaml`), state folder (`.sheepdogai/`), env vars (`SHEEPDOGAI_*`) and ontology
   prefix from `sheepdog` to `sheepdogai`, to avoid clashing with the `sheepdog` PyPI package and sheepdog.sh. The chat

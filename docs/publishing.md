@@ -20,7 +20,7 @@ Release:
 
 ```bash
 make verify                      # must pass
-git tag v0.1.2 && git push origin v0.1.2
+git tag v0.1.3 && git push origin v0.1.3
 ```
 
 Check the Actions run, then in a clean machine: `uv tool install sheepdogai && sheepdogai setup && sheepdogai doctor`.
