@@ -1,4 +1,4 @@
-# sheepdogai
+# sheepdog
 
 ### Let your agents roam. sheepdog guards the fence.
 
@@ -9,7 +9,8 @@ ones through, and stops the risky ones.**
 uv tool install sheepdogai
 sheepdogai setup
 ```
-
+> **No `uv` yet?** Install it once with `curl -LsSf https://astral.sh/uv/install.sh | sh`, then open a new terminal tab.
+> Prefer pip? `python3 -m pip install --user sheepdogai`, then `python3 -m sheepdogai setup`.
 That's it. `setup` finds Claude Code and Gemini CLI, shows exactly what it will change, waits for you to press
 Enter, and proves it works by blocking a test command. Undo any time with `sheepdogai setup --undo`.
 
@@ -84,7 +85,18 @@ touch the config or run `setup`/`uninstall`. The same commands work in a termina
 ```bash
 claude mcp add sheepdogai -- sheepdogai mcp-server
 ```
+Using the Claude desktop app, where the `claude` command is not on your PATH? Create a file named `.mcp.json` in your
+project folder (get the full path with `which sheepdogai`), then restart the app and approve the server:
 
+```json
+{
+  "mcpServers": {
+    "sheepdogai": { "command": "/full/path/to/sheepdogai", "args": ["mcp-server"] }
+  }
+}
+```
+
+Tip: don't commit that file. It contains a path specific to your machine.
 Four **read-only** tools: `sheepdogai_status` (is it working?), `sheepdogai_recent` (what was blocked and why),
 `sheepdogai_check` (dry run: *would this command be allowed?*, nothing is executed or logged) and
 `sheepdogai_verify_log` (has the log been edited?). There is deliberately **no tool to change rules or mode**:
